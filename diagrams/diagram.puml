@@ -1,0 +1,135 @@
+@startuml
+' + - public
+' # - protected
+' - - private 
+' ~ - package private
+
+''' GameController '''
+class GameController {
+    IsGameActive : bool
+    RunCommand(string input) : void
+    GameFactory(GameConfig) : Game
+    Start() : void
+    NewGame() : void
+    LoadGame() : void
+    ChangeGrid() : void
+}
+note left of GameController::GameFactory
+    This creates Game objects
+end note
+
+''' Game '''
+abstract class Game {
+    Grid : Grid
+    PlayerOne : Player
+    PlayerTwo: Player
+    TurnCounter: int
+    MoveSequence : String
+    IOController : IOController
+    FileController : FileController
+    CreateDisc() : Disc
+    {abstract} GameLoop() : void
+    ResetGame() : void
+}
+note left of Game::TurnCounter
+    Could also belong on Grid
+end note
+note left of Game::ResetGame
+    May not need this.
+    Depends on how we treat loading, 
+    grid sizing 
+    and quitting
+end note
+
+' Game Subclasses
+class LineUpClassic {
+    GameLoop() : void
+}
+
+class LineUpBasic {
+    GameLoop() : void
+}
+
+class LineUpSpin {
+    GameLoop() : void
+}
+
+''' Grid '''
+class Grid {
+    Board : Disc[][]
+    WinLength : int
+    AddDisc(int lane) : bool
+}
+
+'''Disc'''
+abstract class Disc {
+    Symbol : string
+    IsPlayerOne : bool
+    {abstract} ApplyEffects(Disc[][] Board, int lane) : void
+}
+
+class OrdinaryDisc {
+    ApplyEffects(Disc[][] Board, int lane) : void
+}
+
+class BoringDisc {
+    ApplyEffects(Disc[][] Board, int lane) : void
+}
+
+class ExplosiveDisc {
+    ApplyEffects(Disc[][] Board, int lane) : void
+}
+
+class MagneticDisc {
+    ApplyEffects(Disc[][] Board, int lane) : void
+}
+
+''' Player '''
+class Player {
+    DiscBalance : Dictionary<string, int>
+    HasDiscRemaining() : bool
+    WithdrawDisc(Disc disc) : void
+}
+
+''' IOController '''
+class IOController {
+    PrintMenu() : void
+    GetInputMenu() : string
+    GetInputNewGame() : GameConfig
+}
+
+''' GameConfig '''
+class GameConfig {
+    PlayerMode {HvH, HvC} : enum
+    GameMode {Classic, Basic, Spin} : enum
+    GridHeight : int
+    GridWidth : int
+}
+''' FileController '''
+class FileController {
+
+}
+
+' Relationships
+' Game Subclasses
+Game <|-- LineUpClassic : inherits
+Game <|-- LineUpBasic : inherits
+Game <|-- LineUpSpin : inherits
+
+Game *-- "1" Grid : instantiates
+Game - IOController
+
+' GameController
+GameController - Game
+GameController <-- IOController
+
+' Disc Subclasses
+Disc <|-- OrdinaryDisc : inherits
+Disc <|-- BoringDisc : inherits
+Disc <|-- ExplosiveDisc : inherits
+Disc <|-- MagneticDisc : inherits
+
+' IOController
+IOController <-- GameConfig
+
+@enduml
