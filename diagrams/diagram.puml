@@ -6,13 +6,12 @@
 
 ''' GameController '''
 class GameController {
-    IsGameActive : bool
+    IsMenuActive : bool
     RunCommand(string input) : void
-    GameFactory(GameConfig) : Game
+    GameFactory(GameConfig config) : Game
     Start() : void
     NewGame() : void
     LoadGame() : void
-    ChangeGrid() : void
 }
 note left of GameController::GameFactory
     This creates Game objects
@@ -23,7 +22,6 @@ abstract class Game {
     Grid : Grid
     PlayerOne : Player
     PlayerTwo: Player
-    TurnCounter: int
     MoveSequence : String
     IOController : IOController
     FileController : FileController
@@ -57,8 +55,27 @@ class LineUpSpin {
 ''' Grid '''
 class Grid {
     Board : Disc[][]
+    Orientation : enum
+    orientation : Orientation
     WinLength : int
+    TurnCounter : int
+    IncrementTurnCounter() : void
+    DecrementTurnCounter() : void
+    SetTurnCounter() : void
+    IsTieGame(Player p1, Player p2) : bool
     AddDisc(int lane) : bool
+    ApplyGravity(int lane) : void
+    Spin() : void
+    DrawGrid() : void
+    CheckWinCondition() : bool
+
+}
+
+enum Orientation {
+    0
+    90
+    180
+    270
 }
 
 '''Disc'''
@@ -85,29 +102,52 @@ class MagneticDisc {
 }
 
 ''' Player '''
-class Player {
+abstract class Player {
     DiscBalance : Dictionary<string, int>
     HasDiscRemaining() : bool
     WithdrawDisc(Disc disc) : void
+    {abstract} PlayTurn() : void
+}
+
+class Human {
+    PlayTurn() : void
+}
+
+class Computer {
+    PlayTurn() : void
 }
 
 ''' IOController '''
 class IOController {
     PrintMenu() : void
+    PrintWinner(bool P1, bool P2) : void
     GetInputMenu() : string
     GetInputNewGame() : GameConfig
+
 }
 
 ''' GameConfig '''
 class GameConfig {
-    PlayerMode {HvH, HvC} : enum
-    GameMode {Classic, Basic, Spin} : enum
+    PlayerMode : enum
+    GameMode : enum
     GridHeight : int
     GridWidth : int
 }
+
+enum PlayerMode {
+    HvH
+    HvC
+}
+
+enum GameMode {
+    Classic
+    Basic
+    Spin
+}
 ''' FileController '''
 class FileController {
-
+    GridSerialization() : void
+    GridDeserialization() : void
 }
 
 ' Relationships
@@ -116,18 +156,31 @@ Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
 
-Game *-- "1" Grid : instantiates
+
+Game::Grid *-- "1" Grid : uses
 Game - IOController
 
 ' GameController
 GameController - Game
 GameController <-- IOController
+GameController::LoadGame <-- FileController : uses
+
+' GameConfig
+GameConfig::PlayerMode <-- PlayerMode : uses
+GameConfig::GameMode <-- GameMode: uses
+
+' Player Subclasses
+Player <|-- Human : inherits
+Player <|-- Computer : inherits
 
 ' Disc Subclasses
 Disc <|-- OrdinaryDisc : inherits
 Disc <|-- BoringDisc : inherits
 Disc <|-- ExplosiveDisc : inherits
 Disc <|-- MagneticDisc : inherits
+
+' Grid
+Grid::Orientation <-- Orientation : uses
 
 ' IOController
 IOController <-- GameConfig

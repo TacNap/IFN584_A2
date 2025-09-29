@@ -8,25 +8,29 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/Users/matt/.nuget/packages/": {}
+    "C:\\Users\\matt5\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/matt/Documents/LocalRepos/IFN584_A2/IFN584_A2.csproj",
+      "projectUniqueName": "X:\\Repos\\IFN584_A2\\IFN584_A2.csproj",
       "projectName": "IFN584_A2",
-      "projectPath": "/Users/matt/Documents/LocalRepos/IFN584_A2/IFN584_A2.csproj",
-      "packagesPath": "/Users/matt/.nuget/packages/",
-      "outputPath": "/Users/matt/Documents/LocalRepos/IFN584_A2/obj/",
+      "projectPath": "X:\\Repos\\IFN584_A2\\IFN584_A2.csproj",
+      "packagesPath": "C:\\Users\\matt5\\.nuget\\packages\\",
+      "outputPath": "X:\\Repos\\IFN584_A2\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/matt/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\matt5\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -39,6 +43,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -60,7 +69,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
