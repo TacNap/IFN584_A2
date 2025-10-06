@@ -144,6 +144,7 @@ enum GameMode {
     Basic
     Spin
 }
+
 ''' FileController '''
 class FileController {
     GridSerialization() : void
