@@ -61,7 +61,8 @@ class Grid {
     TurnCounter : int
     IncrementTurnCounter() : void
     DecrementTurnCounter() : void
-    SetTurnCounter() : void
+    SetTurnCounter(int num) : bool
+    IncrementOrientation() : void
     IsTieGame(Player p1, Player p2) : bool
     AddDisc(int lane) : bool
     ApplyGravity(int lane) : void
