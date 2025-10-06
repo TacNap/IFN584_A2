@@ -155,7 +155,7 @@ class FileController {
 Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
-
+Game <-- Player
 
 Game::Grid *-- "1" Grid : uses
 Game - IOController
@@ -181,6 +181,7 @@ Disc <|-- MagneticDisc : inherits
 
 ' Grid
 Grid::Orientation <-- Orientation : uses
+Grid::Board <-- Disc : uses
 
 ' IOController
 IOController <-- GameConfig
