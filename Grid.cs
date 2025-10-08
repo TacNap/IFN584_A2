@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 public class Grid
 {
-    // private Disc[][] Board;
+    private Disc[][] Board;
     public enum Orientation // Defines the clockwise rotation of the Board
     {
         North, // 0 Degrees
@@ -19,26 +19,43 @@ public class Grid
     // Constructor
     public Grid(int GridHeight, int GridWidth)
     {
-        // this.Board = new Disc[GridHeight];
-        // for (int col = 0; col < GridHeight; i++) {
-        //      Board[i] = new Disc[GridWidth]
-        // }
+        this.Board = new Disc[GridHeight][];
+        for (int col = 0; col < GridHeight; col++)
+        {
+            Board[col] = new Disc[GridWidth];
+        }
 
         this.orientation = Orientation.North;
         this.WinLength = (int)Math.Floor(GridHeight * GridWidth * 0.1);
+        this.TurnCounter = 0;
     }
     // Methods
+
+    /// <summary>
+    /// Increment turn counter by 1. 
+    /// Used when a successful move is made by a player.
+    /// </summary>
     public void IncrementTurnCounter()
     {
         TurnCounter++;
     }
 
+    /// <summary>
+    /// Decrement turn counter by 1.
+    /// Might not actually need this but will leave for now.
+    /// </summary>
     public void DecrementTurnCounter()
     {
         TurnCounter--;
     }
 
-    // Needs to be updated in class diagram
+    /// <summary>
+    /// Set turn counter to a specified value.
+    /// Must be positive.
+    /// Used for undo / redo / load game.
+    /// </summary>
+    /// <param name="num"></param>
+    /// <returns>true if TurnCounter value is changed.</returns>
     public bool SetTurnCounter(int num)
     {
         if (num < 0) return false;
