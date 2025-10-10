@@ -39,9 +39,9 @@ namespace LineUpGame
 
         public virtual void ResetGame()
         {
-            Grid.ResetGrid(); //need to create a resetgrid method in grid class
-            PlayerOne.ResetPlayer();
-            PlayerTwo.ResetPlayer();
+            // Grid.ResetGrid(); //need to create a resetgrid method in grid class
+            // PlayerOne.ResetPlayer();
+            // PlayerTwo.ResetPlayer();
             MoveSequence = string.Empty;
         }
 

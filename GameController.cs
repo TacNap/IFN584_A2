@@ -7,11 +7,11 @@ public class GameController
         Console.WriteLine("[Run]\t GameController | RunCommand");
     }
     
-    public Game GameFactory(GameConfig config)
-    {
-        Console.WriteLine("[Run]\t GameController | GameFactory");
-        return null;
-    }
+    // public Game GameFactory(GameConfig config)
+    // {
+    //     Console.WriteLine("[Run]\t GameController | GameFactory");
+    //     return null;
+    // }
     
     public void Start()
     {
