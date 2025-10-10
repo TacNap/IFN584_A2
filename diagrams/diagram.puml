@@ -61,7 +61,8 @@ class Grid {
     TurnCounter : int
     IncrementTurnCounter() : void
     DecrementTurnCounter() : void
-    SetTurnCounter() : void
+    SetTurnCounter(int num) : bool
+    IncrementOrientation() : void
     IsTieGame(Player p1, Player p2) : bool
     AddDisc(int lane) : bool
     ApplyGravity(int lane) : void
@@ -156,7 +157,7 @@ class FileController {
 Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
-
+Game <-- Player
 
 Game::Grid *-- "1" Grid : uses
 Game - IOController
@@ -182,6 +183,7 @@ Disc <|-- MagneticDisc : inherits
 
 ' Grid
 Grid::Orientation <-- Orientation : uses
+Grid::Board <-- Disc : uses
 
 ' IOController
 IOController <-- GameConfig

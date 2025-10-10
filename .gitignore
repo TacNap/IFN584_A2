@@ -52,6 +52,7 @@ CodeCoverage/
 # NUnit
 *.VisualState.xml
 TestResult.xml
-nunit-*.xml.DS_Store
+nunit-*.xml
+
 .DS_Store
-.DS_Store
+desktop.ini
