@@ -56,8 +56,8 @@ public class IOController
     {
         while(true)
         {
-            Console.Write("> \n");
-            string input = Console.ReadLine(); // .read?
+            Console.Write("> ");
+            string input = Console.ReadLine(); 
             int num;
             bool success = int.TryParse(input, out num);
             if(success)

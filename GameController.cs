@@ -15,7 +15,25 @@ public class GameController
     // Methods
     public void RunCommand(int input)
     {
-        Console.WriteLine("I run the commands!");
+        switch (input)
+        {
+            case 1:
+                Console.WriteLine("New Game");
+                break;
+            case 2:
+                Console.WriteLine("Load Game");
+                break;
+            case 3:
+                Console.WriteLine("Help");
+                break;
+            case 4:
+                Console.WriteLine("Bye Bye!");
+                IsMenuActive = false;
+                break;    
+            default:
+                io.PrintError("Error: Unknown Command");
+                break;
+        }
     }
     
     // public Game GameFactory(GameConfig config)
