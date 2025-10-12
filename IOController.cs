@@ -87,15 +87,14 @@ public class IOController
         }
     }
     
-    // ** this function is pretty bloated. Could be separated
-    // Also hard-coded for enum values. Coupled problem. 
-    // Is there a more dynamic way of converting int's into enum values?
+    // This should be broken into 3 methods later.
+    // too beefy atm
     public GameConfig GetInputNewGame()
     {
         PrintBannerNewGame();
         GameConfig config = new GameConfig();
-        
-        // Get selected game mode 
+
+        // ## Get Game Mode 
         while (true)
         {
             // Get Input
@@ -131,7 +130,7 @@ public class IOController
                         mode = GameConfig.GameMode.Spin;
                         break;
                 }
-                
+
                 // GameConfig value gets set here
                 if (!config.SetGameMode(mode))
                 {
@@ -139,9 +138,149 @@ public class IOController
                     continue;
                 }
                 break;
-            } else
+            }
+            else
             {
                 PrintError("Error: Must be a number");
+            }
+        }
+
+        // ## Get Player Mode  
+        while (true)
+        {
+            // Get Input
+            PrintGreen("Which Player Mode?\n");
+            PrintGreen("[1] HvH\n");
+            PrintGreen("[2] HvC\n");
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+            int num;
+
+            // Validate it
+            bool success = int.TryParse(input, out num);
+            if (success)
+            {
+                if (num < 1 || num > 2)
+                {
+                    PrintError("Error: Invalid Choice");
+                    continue;
+                }
+
+                // Convert into PlayerMode value
+                GameConfig.PlayerMode mode = GameConfig.PlayerMode.HvH;
+                switch (num)
+                {
+                    case 1:
+                        mode = GameConfig.PlayerMode.HvH;
+                        break;
+                    case 2:
+                        mode = GameConfig.PlayerMode.HvC;
+                        break;
+                }
+
+                // GameConfig value gets set here
+                if (!config.SetPlayerMode(mode))
+                {
+                    PrintError("Error: Unsupported Player Mode");
+                    continue;
+                }
+                break;
+            }
+            else
+            {
+                PrintError("Error: Must be a number");
+            }
+        }
+        
+        // Get Grid Size, if game mode is Classic
+        if(config.SelectedGameMode == GameConfig.GameMode.Classic)
+        {
+            // Check if they want to deviate from default
+            bool ChangeGrid = false;
+            while (true)
+            {
+                // Get Input
+                PrintGreen("Change Grid Size? [ Default : 6 x 7 ]\n");
+                PrintGreen("[1] Yes\n");
+                PrintGreen("[2] No\n");
+                Console.Write("> ");
+                string? input = Console.ReadLine();
+                int num;
+
+                // Validate it
+                bool success = int.TryParse(input, out num);
+                if (success)
+                {
+                    if (num < 1 || num > 2)
+                    {
+                        PrintError("Error: Invalid Choice");
+                        continue;
+                    }
+                    if (num == 1)
+                    {
+                        ChangeGrid = true;
+                        break;
+                    }
+                    break;
+                }
+                else
+                {
+                    PrintError("Error: Must be a number");
+                }
+            }
+
+            // If yes, get dimensions
+            if(ChangeGrid)
+            {
+                while (true)
+                {
+                    // Get Input
+                    PrintGreen("Enter Rows [Min 1, Max 10]:\n");
+                    Console.Write("> ");
+                    string? input = Console.ReadLine();
+                    int num;
+
+                    // Validate it
+                    bool success = int.TryParse(input, out num);
+                    if (success)
+                    {
+                        if (!config.SetGridHeight(num))
+                        {
+                            PrintError("Error: Invalid value");
+                            continue;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        PrintError("Error: Must be a number");
+                    }
+                }
+                
+                while (true)
+                {
+                    // Get Input
+                    PrintGreen($"Enter Columns [Min {config.GridHeight}, Max 10]:\n");
+                    Console.Write("> ");
+                    string? input = Console.ReadLine();
+                    int num;
+
+                    // Validate it
+                    bool success = int.TryParse(input, out num);
+                    if (success)
+                    {
+                        if (!config.SetGridWidth(num))
+                        {
+                            PrintError("Error: Invalid value");
+                            continue;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        PrintError("Error: Must be a number");
+                    }
+                }
             }
         }
         return config;

@@ -15,14 +15,14 @@ public class GameConfig
         Spin,
     }
     
-    public PlayerMode SelectedPlayerMode { get; set; }
-    public GameMode SelectedGameMode { get; set; }  
+    public PlayerMode SelectedPlayerMode { get; private set; }
+    public GameMode SelectedGameMode { get; private set; }  
     
     // Initial number of rows
-    public int GridHeight { get; set; }
+    public int GridHeight { get; private set; }
 
     // Initial number of columns
-    public int GridWidth { get; set; }
+    public int GridWidth { get; private set; }
 
     // Constructor
     public GameConfig(
@@ -45,6 +45,39 @@ public class GameConfig
         }
 
         SelectedGameMode = mode;
+        return true;
+    }
+
+    public bool SetPlayerMode(PlayerMode mode)
+    {
+        if (!Enum.IsDefined(typeof(PlayerMode), mode))
+        {
+            return false;
+        }
+
+        SelectedPlayerMode = mode;
+        return true;
+    }
+
+    public bool SetGridHeight(int rows)
+    {
+        if (rows < 1 || rows > 10)
+        {
+            return false;
+        }
+
+        GridHeight = rows;
+        return true;
+    }
+
+    public bool SetGridWidth(int cols)
+    {
+        if (cols < 1 || cols > 10 || cols < GridHeight)
+        {
+            return false;
+        }
+
+        GridWidth = cols;
         return true;
     }
 }
