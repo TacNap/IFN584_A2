@@ -38,7 +38,16 @@ public class GameController
     
     public Game GameFactory(GameConfig config)
     {
-        Console.WriteLine("[Run]\t GameController | GameFactory");
+        switch (config.SelectedGameMode)
+        {
+            case GameConfig.GameMode.Classic:
+                break;
+            case GameConfig.GameMode.Basic:
+                break;
+            case GameConfig.GameMode.Spin:
+                break;
+        }
+            
         return null;
     }
 
