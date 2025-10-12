@@ -1,55 +1,51 @@
-namespace LineUpGame
+public abstract class Game
 {
-    public abstract class Game
+    // Core Components
+    public Grid Grid { get; set; }
+    public Player PlayerOne { get; set; }
+    public Player PlayerTwo { get; set; }
+
+    public string MoveSequence { get; set; }
+    public IOController IOController { get; set; }
+    public FileController FileController { get; set; }
+
+    // Constructor
+    public Game()
     {
-        // Core Components
-        public Grid Grid { get; set; }
-        public Player PlayerOne { get; set; }
-        public Player PlayerTwo { get; set; }
-
-        public string MoveSequence { get; set; }
-        public IOController IOController { get; set; }
-        public FileController FileController { get; set; }
-
-        // Constructor
-        public Game()
-        {
-            PlayerOne = new Human();
-            PlayerTwo = new Human(); // this can be overriden later if need be
-            Grid = new Grid(6, 7);
-            IOController = new IOController();
-            FileController = new FileController();
-            MoveSequence = string.Empty;
-        }
-        public abstract void GameLoop();
-        public virtual Disc CreateDisc(string discType, bool isPlayerOne)
-        {
-            Disc disc = discType.ToLower() switch
-            {
-                "ordinary" => new OrdinaryDisc(),
-                "boring" => new BoringDisc(),
-                "exploding" or "explosive" => new ExplodingDisc(),
-                "magnetic" => new MagneticDisc(),
-                _ => throw new ArgumentException($"Invalid disc type: {discType}")
-            };
-            // Get symbol based on player
-
-            return disc;
-        }
-
-        public virtual void ResetGame()
-        {
-            // Grid.ResetGrid(); //need to create a resetgrid method in grid class
-            // PlayerOne.ResetPlayer();
-            // PlayerTwo.ResetPlayer();
-            MoveSequence = string.Empty;
-        }
-
-    // Determines whether the game has ended (win or tie).
-    public virtual bool IsGameOver()
+        PlayerOne = new Human();
+        PlayerTwo = new Human(); // this can be overriden later if need be
+        Grid = new Grid(6, 7);
+        IOController = new IOController();
+        FileController = new FileController();
+        MoveSequence = string.Empty;
+    }
+    public abstract void GameLoop();
+    public virtual Disc CreateDisc(string discType, bool isPlayerOne)
     {
-        return Grid.CheckWinCondition() || Grid.IsTieGame();
+        Disc disc = discType.ToLower() switch
+        {
+            "ordinary" => new OrdinaryDisc(),
+            "boring" => new BoringDisc(),
+            "exploding" or "explosive" => new ExplodingDisc(),
+            "magnetic" => new MagneticDisc(),
+            _ => throw new ArgumentException($"Invalid disc type: {discType}")
+        };
+        // Get symbol based on player
+
+        return disc;
     }
 
+    public virtual void ResetGame()
+    {
+        // Grid.ResetGrid(); //need to create a resetgrid method in grid class
+        // PlayerOne.ResetPlayer();
+        // PlayerTwo.ResetPlayer();
+        MoveSequence = string.Empty;
     }
+
+// Determines whether the game has ended (win or tie).
+public virtual bool IsGameOver()
+{
+    return Grid.CheckWinCondition() || Grid.IsTieGame();
+}
 }

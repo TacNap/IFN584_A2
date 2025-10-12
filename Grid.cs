@@ -5,7 +5,7 @@ public class Grid
     private Disc[][] Board;
     
     // Should this be defined in the class, or elsewhere?
-    private enum Orientation // Defines the clockwise rotation of the Board
+    public enum Orientation // Defines the clockwise rotation of the Board
     {
         North, // 0 Degrees
         East, // 90 Degrees

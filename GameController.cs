@@ -36,11 +36,11 @@ public class GameController
         }
     }
     
-    // public Game GameFactory(GameConfig config)
-    // {
-    //     Console.WriteLine("[Run]\t GameController | GameFactory");
-    //     return null;
-    // }
+    public Game GameFactory(GameConfig config)
+    {
+        Console.WriteLine("[Run]\t GameController | GameFactory");
+        return null;
+    }
 
     
     public void Start()
@@ -55,7 +55,9 @@ public class GameController
     
     public void NewGame()
     {
-        Console.WriteLine("[Run]\t GameController | NewGame");
+        GameConfig config = io.GetInputNewGame();
+        Game game = GameFactory(config);
+        game.GameLoop();
     }
     
     public void LoadGame()

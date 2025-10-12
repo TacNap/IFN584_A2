@@ -78,9 +78,9 @@ public class IOController
         }
     }
     
-    // public GameConfig GetInputNewGame()
-    // {
-    //     Console.WriteLine("[Run]\t IOController | GetInputNewGame");
-    //     return null;
-    // }
+    public GameConfig GetInputNewGame()
+    {
+        Console.WriteLine("[Run]\t IOController | GetInputNewGame");
+        return null;
+    }
 }
