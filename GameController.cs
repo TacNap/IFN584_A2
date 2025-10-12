@@ -41,11 +41,11 @@ public class GameController
         switch (config.SelectedGameMode)
         {
             case GameConfig.GameMode.Classic:
-                break;
+                return new LineUpClassic();
             case GameConfig.GameMode.Basic:
-                break;
+                return new LineUpBasic();
             case GameConfig.GameMode.Spin:
-                break;
+                return new LineUpSpin();
         }
             
         return null;
