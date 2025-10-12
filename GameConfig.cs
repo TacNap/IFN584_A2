@@ -37,7 +37,14 @@ public class GameConfig
         this.GridWidth = GridWidth;
     }
 
+    public bool SetGameMode(GameMode mode)
+    {
+        if (!Enum.IsDefined(typeof(GameMode), mode))
+        {
+            return false;
+        }
 
-
-
+        SelectedGameMode = mode;
+        return true;
+    }
 }

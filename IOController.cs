@@ -46,41 +46,104 @@ public class IOController
         PrintGreen("[3] Help\n");
         PrintGreen("[4] Quit\n");
     }
+
+    public void PrintBannerNewGame()
+    {
+        PrintGreen("╔═══════════════════════════════════════╗\n");
+        PrintGreen("║                New Game               ║\n");
+        PrintGreen("╚═══════════════════════════════════════╝\n");
+    }
     
     public void PrintWinner(bool P1, bool P2)
     {
         Console.WriteLine("[Run]\t IOController | PrintWinner");
     }
-    
+
     public int GetInputMenu()
     {
-        while(true)
+        while (true)
         {
             Console.Write("> ");
-            string input = Console.ReadLine(); 
+            string? input = Console.ReadLine();
             int num;
             bool success = int.TryParse(input, out num);
-            if(success)
+            if (success)
             {
-                if(num > 0 && num < 5)
+                if (num > 0 && num < 5)
                 {
                     return num;
-                } else
+                }
+                else
                 {
                     PrintError("Invalid!");
                     continue;
                 }
-            } else
+            }
+            else
             {
                 PrintError("Must be a number!");
             }
-            
+
         }
     }
     
+    // ** this function is pretty bloated. Could be separated
+    // Also hard-coded for enum values. Coupled problem. 
+    // Is there a more dynamic way of converting int's into enum values?
     public GameConfig GetInputNewGame()
     {
-        Console.WriteLine("[Run]\t IOController | GetInputNewGame");
-        return null;
+        PrintBannerNewGame();
+        GameConfig config = new GameConfig();
+        
+        // Get selected game mode 
+        while (true)
+        {
+            // Get Input
+            PrintGreen("Which Game Mode?\n");
+            PrintGreen("[1] Classic\n");
+            PrintGreen("[2] Basic\n");
+            PrintGreen("[3] Spin\n");
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+            int num;
+
+            // Validate it
+            bool success = int.TryParse(input, out num);
+            if (success)
+            {
+                if (num < 1 || num > 3)
+                {
+                    PrintError("Error: Invalid Choice");
+                    continue;
+                }
+
+                // Convert into GameMode value
+                GameConfig.GameMode mode = GameConfig.GameMode.Classic;
+                switch (num)
+                {
+                    case 1:
+                        mode = GameConfig.GameMode.Classic;
+                        break;
+                    case 2:
+                        mode = GameConfig.GameMode.Basic;
+                        break;
+                    case 3:
+                        mode = GameConfig.GameMode.Spin;
+                        break;
+                }
+                
+                // GameConfig value gets set here
+                if (!config.SetGameMode(mode))
+                {
+                    PrintError("Error: Unsupported Game Mode");
+                    continue;
+                }
+                break;
+            } else
+            {
+                PrintError("Error: Must be a number");
+            }
+        }
+        return config;
     }
 }

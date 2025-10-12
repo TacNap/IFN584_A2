@@ -18,7 +18,7 @@ public class GameController
         switch (input)
         {
             case 1:
-                Console.WriteLine("New Game");
+                NewGame();
                 break;
             case 2:
                 Console.WriteLine("Load Game");
