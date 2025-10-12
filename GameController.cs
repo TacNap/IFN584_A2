@@ -13,7 +13,7 @@ public class GameController
     }
     
     // Methods
-    public void RunCommand(string input)
+    public void RunCommand(int input)
     {
         Console.WriteLine("I run the commands!");
     }
@@ -30,7 +30,7 @@ public class GameController
         while(IsMenuActive) // may need to place a variable here later
         {
             io.PrintMenu();
-            string input = io.GetInputMenu();
+            int input = io.GetInputMenu();
             RunCommand(input);
         } 
     }

@@ -52,10 +52,30 @@ public class IOController
         Console.WriteLine("[Run]\t IOController | PrintWinner");
     }
     
-    public string GetInputMenu()
+    public int GetInputMenu()
     {
-        Console.WriteLine("[Run]\t IOController | GetInputMenu");
-        return "";
+        while(true)
+        {
+            Console.Write("> \n");
+            string input = Console.ReadLine(); // .read?
+            int num;
+            bool success = int.TryParse(input, out num);
+            if(success)
+            {
+                if(num > 0 && num < 5)
+                {
+                    return num;
+                } else
+                {
+                    PrintError("Invalid!");
+                    continue;
+                }
+            } else
+            {
+                PrintError("Must be a number!");
+            }
+            
+        }
     }
     
     // public GameConfig GetInputNewGame()
