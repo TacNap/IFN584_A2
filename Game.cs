@@ -12,13 +12,13 @@ namespace LineUpGame
         public FileController FileController { get; set; }
 
         // Constructor
-        public Game(Player playerOne, Player playerTwo, Grid grid, IOController ioController, FileController fileController)
+        public Game()
         {
-            PlayerOne = playerOne;
-            PlayerTwo = playerTwo;
-            Grid = grid;
-            IOController = ioController;
-            FileController = fileController;
+            PlayerOne = new Human();
+            PlayerTwo = new Human(); // this can be overriden later if need be
+            Grid = new Grid(6, 7);
+            IOController = new IOController();
+            FileController = new FileController();
             MoveSequence = string.Empty;
         }
         public abstract void GameLoop();
