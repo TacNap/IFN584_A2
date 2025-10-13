@@ -51,17 +51,21 @@ public class GameController
         return null;
     }
 
-    
+    // Typical program entry point
     public void Start()
     {
-        while(IsMenuActive) // may need to place a variable here later
+        while (IsMenuActive) // may need to place a variable here later
         {
             io.PrintMenu();
             int input = io.GetInputMenu();
             RunCommand(input);
-        } 
+        }
     }
     
+    /// <summary>
+    /// Prompts the user for game configuration.
+    /// Then creates a Game object and runs the main loop
+    /// </summary>
     public void NewGame()
     {
         GameConfig config = io.GetInputNewGame();

@@ -1,3 +1,6 @@
+/// <summary>
+/// This class is basically a 'settings' object that defines the configuration for the chosen game
+/// </summary>
 public class GameConfig
 {
     // Defines the options for player modes
@@ -14,10 +17,10 @@ public class GameConfig
         Basic,
         Spin,
     }
-    
+
     public PlayerMode SelectedPlayerMode { get; private set; }
-    public GameMode SelectedGameMode { get; private set; }  
-    
+    public GameMode SelectedGameMode { get; private set; }
+
     // Initial number of rows
     public int GridHeight { get; private set; }
 
