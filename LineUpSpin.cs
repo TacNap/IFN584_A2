@@ -13,7 +13,7 @@ public class LineUpSpin : Game {
         }
         Grid = new Grid(GridHeight, GridWidth);
         io = new IOController();
-        FileController = new FileController();
+        file = new FileController();
         MoveSequence = string.Empty;        
     }
     public override void GameLoop()

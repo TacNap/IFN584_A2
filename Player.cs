@@ -19,10 +19,10 @@ public class Player
 	public bool HasDiscRemaining()
 	{
 		return (
-			DiscBalance["Ordinary"] < 1 &&
-			DiscBalance["Boring"] < 1 &&
-			DiscBalance["Explosive"] < 1 &&
-			DiscBalance["Magnetic"] < 1
+			DiscBalance["Ordinary"] > 0 ||
+			DiscBalance["Boring"] > 0 ||
+			DiscBalance["Explosive"] > 0 ||
+			DiscBalance["Magnetic"] > 0
 			);
 	}
 

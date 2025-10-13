@@ -7,6 +7,7 @@
 ''' GameController '''
 class GameController {
     IsMenuActive : bool
+    io : IOController
     RunCommand(string input) : void
     GameFactory(GameConfig config) : Game
     Start() : void
@@ -22,21 +23,18 @@ abstract class Game {
     Grid : Grid
     PlayerOne : Player
     PlayerTwo: Player
-    MoveSequence : String
-    IOController : IOController
-    FileController : FileController
-    CreateDisc() : Disc
+    IsGameActive : bool
+    MoveSequence : string
+    io : IOController
+    file : FileController
     {abstract} GameLoop() : void
-    ResetGame() : void
+    CreateDisc() : Disc
+    ' ResetGame() : void
+    ' May not need the above method
 }
-note left of Game::TurnCounter
-    Could also belong on Grid
-end note
-note left of Game::ResetGame
-    May not need this.
-    Depends on how we treat loading, 
-    grid sizing 
-    and quitting
+note left of Game::CreateDisc
+    Unsure exactly where this disc should be created.
+    May belong in another class
 end note
 
 ' Game Subclasses
@@ -65,7 +63,7 @@ class Grid {
     IncrementOrientation() : void
     IsTieGame(Player p1, Player p2) : bool
     AddDisc(int lane) : bool
-    ApplyGravity(int lane) : void
+    ApplyGravity(Orientation orientation) : void
     Spin() : void
     DrawGrid() : void
     CheckWinCondition() : bool
@@ -120,19 +118,37 @@ class Computer {
 
 ''' IOController '''
 class IOController {
+    PrintGreen(string text) : void
+    PrintError(string text) : void
+    PrintSuccess(string text) : void
     PrintMenu() : void
+    PrintBannerNewGame() : void
     PrintWinner(bool P1, bool P2) : void
-    GetInputMenu() : string
+    GetInputMenu() : int
     GetInputNewGame() : GameConfig
-
 }
+
+note left of IOController::GetInputNewGame
+    Currently responsible for too much.
+    Will need to be broken into:
+    GetInputGameMode
+    GetInputPlayerMode
+    GetInputGridSize
+end note
+
 
 ''' GameConfig '''
 class GameConfig {
     PlayerMode : enum
     GameMode : enum
+    SelectedPlayerMode : PlayerMode
+    SelectedGameMode : GameMode
     GridHeight : int
     GridWidth : int
+    SetGameMode(GameMode mode) : bool
+    SetPlayerMode(PlayerMode mode) : bool
+    SetGridHeight(int rows) : bool
+    SetGridWidth(int cols) : bool
 }
 
 enum PlayerMode {
@@ -148,8 +164,8 @@ enum GameMode {
 
 ''' FileController '''
 class FileController {
-    GridSerialization() : void
-    GridDeserialization() : void
+    GameSerialization() : void
+    GameDeserialization() : void
 }
 
 ' Relationships

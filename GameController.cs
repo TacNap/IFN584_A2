@@ -61,7 +61,7 @@ public class GameController
                     config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
                 );
         }
-            
+        io.PrintError("Error: Unrecognised GameMode");
         return null;
     }
 

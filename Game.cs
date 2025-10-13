@@ -11,7 +11,7 @@ public abstract class Game
 
     public string MoveSequence { get; set; }
     public IOController io { get; set; }
-    public FileController FileController { get; set; }
+    public FileController file { get; set; }
 
     public abstract void GameLoop();
     public virtual Disc CreateDisc(string discType, bool isPlayerOne)

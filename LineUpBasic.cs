@@ -17,21 +17,32 @@ public class LineUpBasic : Game {
         {
             PlayerTwo = new Computer(discBalance);
         }
-        
+
         IsGameActive = true;
         MoveSequence = string.Empty;        
         io = new IOController();
-        FileController = new FileController();
+        file = new FileController();
     }
     public override void GameLoop()
     {
         while(IsGameActive)
         {
-            if(Grid.IsTieGame(PlayerOne, PlayerTwo))
+            // DrawGrid
+            Console.WriteLine("< Grid should be drawn here >");
+            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
                 io.PrintWinner(true, true);
                 IsGameActive = false;
                 break;
+            }
+
+            if (Grid.TurnCounter % 2 == 0)
+            {
+                PlayerOne.PlayTurn();
+            }
+            else
+            {
+                PlayerTwo.PlayTurn();
             }
         }
     }

@@ -81,8 +81,7 @@ public class Grid
     // Not implemented yet
     public bool IsTieGame(Player p1, Player p2)
     {
-        Console.WriteLine("This method isn't implemented yet");
-        return false;
+        return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
     public bool AddDisc(int lane)
