@@ -9,16 +9,6 @@ public abstract class Game
     public IOController IOController { get; set; }
     public FileController FileController { get; set; }
 
-    // Constructor
-    public Game()
-    {
-        PlayerOne = new Human();
-        PlayerTwo = new Human(); // this can be overriden later if need be
-        Grid = new Grid(6, 7);
-        IOController = new IOController();
-        FileController = new FileController();
-        MoveSequence = string.Empty;
-    }
     public abstract void GameLoop();
     public virtual Disc CreateDisc(string discType, bool isPlayerOne)
     {

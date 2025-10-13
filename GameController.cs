@@ -38,14 +38,28 @@ public class GameController
     
     public Game GameFactory(GameConfig config)
     {
+        int fixedRows = 8;
+        int fixedColumns = 9;
         switch (config.SelectedGameMode)
         {
             case GameConfig.GameMode.Classic:
-                return new LineUpClassic();
+                return new LineUpClassic(
+                    config.GridHeight,
+                    config.GridWidth,
+                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                );
             case GameConfig.GameMode.Basic:
-                return new LineUpBasic();
+                return new LineUpBasic(
+                    fixedRows,
+                    fixedColumns,
+                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                );
             case GameConfig.GameMode.Spin:
-                return new LineUpSpin();
+                return new LineUpSpin(
+                    fixedRows,
+                    fixedColumns,
+                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                );
         }
             
         return null;
