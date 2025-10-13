@@ -3,8 +3,11 @@ public class LineUpBasic : Game {
     // Constructor
     public LineUpBasic(int GridHeight, int GridWidth, bool HvH = true)
     {
+        // Create the grid
         Grid = new Grid(GridHeight, GridWidth);
-        int discBalance = (GridHeight * GridWidth / 2) + 4; // Defines the starting number of discs
+        // Define the number of starting discs
+        int discBalance = (GridHeight * GridWidth / 2) + 4; 
+        // Create the player objects
         PlayerOne = new Human(discBalance);
         if (HvH)
         {
@@ -14,6 +17,7 @@ public class LineUpBasic : Game {
         {
             PlayerTwo = new Computer(discBalance);
         }
+        
         IsGameActive = true;
         MoveSequence = string.Empty;        
         io = new IOController();
