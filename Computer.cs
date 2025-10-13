@@ -5,6 +5,6 @@ public class Computer : Player
 	public Computer(int discBalance) : base(discBalance) { }
 	public override void PlayTurn()
 	{
-		Console.WriteLine("[Run]\t Computer | PlayTurn");
+		Console.WriteLine("> find best move to play");
 	}
 }

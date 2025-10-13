@@ -2,15 +2,16 @@ public class LineUpClassic : Game {
     
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
     {
-        PlayerOne = new Human();
+        Grid = new Grid(GridHeight, GridWidth);
+        int discBalance = (GridHeight * GridWidth / 2) + 4; 
+        PlayerOne = new Human(discBalance);
         if (HvH)
         {
-            PlayerTwo = new Human();
+            PlayerTwo = new Human(discBalance);
         } else
         {
-            PlayerTwo = new Computer();
+            PlayerTwo = new Computer(discBalance);
         }
-        Grid = new Grid(GridHeight, GridWidth);
         io = new IOController();
         file = new FileController();
         MoveSequence = string.Empty;        
@@ -18,6 +19,7 @@ public class LineUpClassic : Game {
 
     public override void GameLoop()
     {
-        // very cool
+        Console.WriteLine("< Core Loop starts here! >");
+        Console.ReadLine();
     }
 }

@@ -1,23 +1,27 @@
 public class LineUpSpin : Game {
 
     // Constructor
-    public LineUpSpin(int GridHeight, int GridWidth, bool HvH = true)
+    public LineUpSpin(bool HvH = true)
     {
-        PlayerOne = new Human();
+        int fixedRows = 8;
+        int fixedCols = 9;
+        int discBalance = (fixedRows * fixedCols / 2) + 4; 
+        PlayerOne = new Human(discBalance);
         if (HvH)
         {
-            PlayerTwo = new Human();
+            PlayerTwo = new Human(discBalance);
         } else
         {
-            PlayerTwo = new Computer();
+            PlayerTwo = new Computer(discBalance);
         }
-        Grid = new Grid(GridHeight, GridWidth);
+        Grid = new Grid(fixedRows, fixedCols);
         io = new IOController();
         file = new FileController();
         MoveSequence = string.Empty;        
     }
     public override void GameLoop()
     {
-        // very cool
+        Console.WriteLine("< Core Loop starts here! >");
+        Console.ReadLine();
     }
 }

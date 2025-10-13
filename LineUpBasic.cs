@@ -1,12 +1,14 @@
 public class LineUpBasic : Game {
     
     // Constructor
-    public LineUpBasic(int GridHeight, int GridWidth, bool HvH = true)
+    public LineUpBasic(bool HvH = true)
     {
+        int fixedRows = 8;
+        int fixedCols = 9;
         // Create the grid
-        Grid = new Grid(GridHeight, GridWidth);
+        Grid = new Grid(fixedRows, fixedCols);
         // Define the number of starting discs
-        int discBalance = (GridHeight * GridWidth / 2) + 4; 
+        int discBalance = (fixedRows * fixedCols / 2) + 4; 
         // Create the player objects
         PlayerOne = new Human(discBalance);
         if (HvH)

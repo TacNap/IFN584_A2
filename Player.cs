@@ -32,6 +32,7 @@ public class Player
 	} 
 	public virtual void PlayTurn()
 	{
-		Console.WriteLine("[Run]\t Player | PlayTurn");
+		Console.WriteLine("> get input from player");
+		Console.ReadLine();
 	}
 }

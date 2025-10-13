@@ -31,15 +31,9 @@ public abstract class Game
 
     public virtual void ResetGame()
     {
-        // Grid.ResetGrid(); //need to create a resetgrid method in grid class
+        // Grid.ResetGrid();
         // PlayerOne.ResetPlayer();
         // PlayerTwo.ResetPlayer();
         MoveSequence = string.Empty;
     }
-
-// Determines whether the game has ended (win or tie).
-public virtual bool IsGameOver()
-{
-    return Grid.CheckWinCondition() || Grid.IsTieGame();
-}
 }

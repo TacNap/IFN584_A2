@@ -38,8 +38,6 @@ public class GameController
     
     public Game GameFactory(GameConfig config)
     {
-        int fixedRows = 8;
-        int fixedColumns = 9;
         switch (config.SelectedGameMode)
         {
             case GameConfig.GameMode.Classic:
@@ -50,14 +48,10 @@ public class GameController
                 );
             case GameConfig.GameMode.Basic:
                 return new LineUpBasic(
-                    fixedRows,
-                    fixedColumns,
                     config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
                 );
             case GameConfig.GameMode.Spin:
                 return new LineUpSpin(
-                    fixedRows,
-                    fixedColumns,
                     config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
                 );
         }
