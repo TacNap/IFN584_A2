@@ -3,21 +3,32 @@ public class LineUpBasic : Game {
     // Constructor
     public LineUpBasic(int GridHeight, int GridWidth, bool HvH = true)
     {
-        PlayerOne = new Human();
+        Grid = new Grid(GridHeight, GridWidth);
+        int discBalance = (GridHeight * GridWidth / 2) + 4; // Defines the starting number of discs
+        PlayerOne = new Human(discBalance);
         if (HvH)
         {
-            PlayerTwo = new Human();
-        } else
-        {
-            PlayerTwo = new Computer();
+            PlayerTwo = new Human(discBalance);
         }
-        Grid = new Grid(GridHeight, GridWidth);
-        IOController = new IOController();
-        FileController = new FileController();
+        else
+        {
+            PlayerTwo = new Computer(discBalance);
+        }
+        IsGameActive = true;
         MoveSequence = string.Empty;        
+        io = new IOController();
+        FileController = new FileController();
     }
     public override void GameLoop()
     {
-        // very cool
+        while(IsGameActive)
+        {
+            if(Grid.IsTieGame(PlayerOne, PlayerTwo))
+            {
+                io.PrintWinner(true, true);
+                IsGameActive = false;
+                break;
+            }
+        }
     }
 }

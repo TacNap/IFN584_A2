@@ -12,7 +12,7 @@ public class LineUpSpin : Game {
             PlayerTwo = new Computer();
         }
         Grid = new Grid(GridHeight, GridWidth);
-        IOController = new IOController();
+        io = new IOController();
         FileController = new FileController();
         MoveSequence = string.Empty;        
     }

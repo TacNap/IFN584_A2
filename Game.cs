@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 public abstract class Game
 {
     // Core Components
@@ -5,8 +7,10 @@ public abstract class Game
     public Player PlayerOne { get; set; }
     public Player PlayerTwo { get; set; }
 
+    public bool IsGameActive { get; set; }
+
     public string MoveSequence { get; set; }
-    public IOController IOController { get; set; }
+    public IOController io { get; set; }
     public FileController FileController { get; set; }
 
     public abstract void GameLoop();

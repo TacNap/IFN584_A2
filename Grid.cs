@@ -78,9 +78,8 @@ public class Grid
         orientation = values[index];
     }
 
-    // needs Player object parameters
     // Not implemented yet
-    public bool IsTieGame()
+    public bool IsTieGame(Player p1, Player p2)
     {
         Console.WriteLine("This method isn't implemented yet");
         return false;
