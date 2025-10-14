@@ -125,6 +125,72 @@ public class Grid
 
     public bool CheckWinCondition()
     {
+        for (int row = 0; row < Board.Length; row++)
+        {
+            for (int col = 0; col < Board[0].Length; col++)
+            {
+                if (Board[row][col] == null) //skip empty cells and see if this is the correct way later
+                    continue;
+
+                if (col + WinLength - 1 <= Board[0].Length) // Horizontal check
+                {
+                    bool win = true;
+                    for (int i = 0; i < WinLength; i++)
+                    {
+                        if (Board[row][col + i] != symbol)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win) return true;
+                }
+
+                if (row + WinLength - 1 <= Board.Length) // Vertical check
+                {
+                    bool win = true;
+                    for (int i = 0; i < WinLength; i++)
+                    {
+                        if (Board[row + i][col] != symbol)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win) return true;
+                }
+
+                if (col + WinLength - 1 <= Board[0].Length && row + WinLength - 1 <= Board.Length) // Diagonal down-right check
+                {
+                    bool win = true;
+                    for (int i = 0; i < WinLength; i++)
+                    {
+                        if (Board[row + i][col + i] != symbol)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win) return true;
+                }
+
+                if (col - WinLength + 1 >= 0 && row + WinLength - 1 <= Board.Length) // Diagonal down-left check
+                {
+                    bool win = true;
+                    for (int i = 0; i < WinLength; i++)
+                    {
+                        if (Board[row + i][col - i] != symbol)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win) return true;
+                }
+            }
+        }
         return false;
+
     }
 }
+
