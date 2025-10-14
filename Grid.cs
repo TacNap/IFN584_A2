@@ -91,10 +91,92 @@ public class Grid
     }
 
     // requires Orientation parameter
-    public void ApplyGravity()
+    public void ApplyGravity(Orientation orientation)
     {
-        Console.WriteLine("This method isn't implemented yet");
-        return;
+        if (orientation == Orientation.Degree0)
+        {
+            for (int col = 0; col < GridWidth; col++)
+            {
+                List<int> discs = new List<int>();
+                for (int row = 0; row < GridHeight; row++)
+                {
+                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    {
+                        discs.Add(Board[row][col]); // store the symbol (@ or #)
+                        Board[row][col] = 0;   // clear the cell?
+                    }
+                }
+
+                int placementIndex = 0;
+                for (int row = GridHeight - 1; row >= 0 && placementIndex < discs.Count; row--)
+                {
+                    Board[row][col] = discs[placementIndex++];
+                }
+            }
+        }
+        else if (orientation == Orientation.Degree90)
+        {
+            for (int row = GridHeight - 1; row >= 0; row--)
+            {
+                List<int> discs = new List<int>();
+                for (int col = 0; col < GridWidth; col++)
+                {
+                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    {
+                        discs.Add(Board[row][col]); 
+                        Board[row][col] = 0;   
+                    }
+                }
+
+                int placementIndex = 0;
+                for (int col = GridWidth - 1; col >= 0 && placementIndex < discs.Count; col--)
+                {
+                    Board[row][col] = discs[placementIndex++];
+                }
+            }
+        }
+        else if (orientation == Orientation.Degree180)
+        {
+            for (int col = GridWidth - 1; col >= 0; col--)
+            {
+                List<int> discs = new List<int>();
+                for (int row = 0; row < GridHeight; row++)
+                {
+                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = 0;
+                    }
+                }
+
+                int placementIndex = 0;
+                for (int row = 0; row < GridHeight && placementIndex < discs.Count; row++)
+                {
+                    Board[row][col] = discs[placementIndex++];
+                }
+            }
+        }
+        else if (orientation == Orientation.Degree270)
+        {
+            for (int row = 0; row < GridHeight; row++)
+            {
+                List<int> discs = new List<int>();
+                for (int col = 0; col < GridWidth; col++)
+                {
+                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = 0;
+                    }
+                }
+
+                int placementIndex = 0;
+                for (int col = 0; col < GridWidth && placementIndex < discs.Count; col++)
+                {
+                    Board[row][col] = discs[placementIndex++];
+                }
+            }
+        }
     }
 
     public void Spin()
