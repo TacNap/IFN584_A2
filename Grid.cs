@@ -123,16 +123,16 @@ public class Grid
         return;
     }
 
-    public bool CheckWinCondition()
+    public bool CheckWinCondition() //how to check for both players symbols?
     {
         for (int row = 0; row < Board.Length; row++)
         {
             for (int col = 0; col < Board[0].Length; col++)
             {
-                if (Board[row][col] == null) //skip empty cells and see if this is the correct way later
+                if (Board[row][col] == null) //skip empty cells but is null empty cell?
                     continue;
 
-                if (col + WinLength - 1 <= Board[0].Length) // Horizontal check
+                if (col + WinLength - 1 <= Board[0].Length) // horizontal
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
@@ -146,7 +146,7 @@ public class Grid
                     if (win) return true;
                 }
 
-                if (row + WinLength - 1 <= Board.Length) // Vertical check
+                if (row + WinLength - 1 <= Board.Length) // vertical 
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
@@ -160,7 +160,7 @@ public class Grid
                     if (win) return true;
                 }
 
-                if (col + WinLength - 1 <= Board[0].Length && row + WinLength - 1 <= Board.Length) // Diagonal down-right check
+                if (col + WinLength - 1 <= Board[0].Length && row + WinLength - 1 <= Board.Length) // diagonal down-right 
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
@@ -174,7 +174,7 @@ public class Grid
                     if (win) return true;
                 }
 
-                if (col - WinLength + 1 >= 0 && row + WinLength - 1 <= Board.Length) // Diagonal down-left check
+                if (col - WinLength + 1 >= 0 && row + WinLength - 1 <= Board.Length) // diagonal down-left 
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
