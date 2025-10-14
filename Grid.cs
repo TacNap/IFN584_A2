@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Data;
 
 public class Grid
 {
@@ -120,7 +121,64 @@ public class Grid
     // requires Orientation parameter
     public void DrawGrid()
     {
-        return;
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
+        switch(orientation)
+
+        {
+            case Orientation.North:
+                for (int row = 0; row < pre_rows; row++) 
+                {
+                    for (int col = 0; col < pre_cols; col++) 
+                    
+                    if (Board[row][col] != null)
+                    {
+                        Console.Write(Board[row][col].Symbol);
+                    }
+                        Console.WriteLine();
+                }
+                break;
+
+            case Orientation.East:
+                
+                for (int col = 0; col < pre_cols; col++)
+                {
+                    for (int row = pre_rows - 1; row >= 0; row--)
+
+                    if (Board[row][col] != null)
+                    {
+                        Console.Write(Board[row][col].Symbol);
+                    }
+                        Console.WriteLine();
+                }
+                break;
+        
+            case Orientation.South:
+                for (int row = pre_rows - 1; row >= 0; row--)
+                {
+                    for (int col = pre_cols - 1; col >= 0; col--)
+
+                    if (Board[row][col] != null)
+                    {
+                        Console.Write(Board[row][col].Symbol);
+                    }
+                        Console.WriteLine();
+                }
+                break;
+            
+            case Orientation.West:
+                for (int col = pre_cols - 1; col >= 0; col--)
+                {
+                    for (int row = 0; row < pre_rows; row++)
+
+                    if (Board[row][col] != null)
+                    {
+                        Console.Write(Board[row][col].Symbol);
+                    }
+                        Console.WriteLine();
+                }
+                break;
+	    }
     }
 
     public bool CheckWinCondition()
