@@ -2,24 +2,40 @@
 
 public class MagneticDisc : Disc
 {
-	
-	public override void ApplyEffects(Disc[][] Board, int lane)
+    public MagneticDisc(string symbol_) : base(symbol_)
+    {
+    }
+
+    public override void ApplyEffects(Disc[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t MagneticDisc, ApplyEffects");
-		// Apply effect
-		// Loop through played lane, check if disc = symbol
-		// Find the nearest ally in lane
-		// Swap place with disc right above
-		for (int i = Board.Length - 1; i >= 0; i--)
+		string PlayerDiscSymbol = (IsPlayerOne) ? "@" : "#";
+
+		// Loop through played lane from the top
+		for (int i = 0; i < Board.Length; i++)
 		{
 			Disc? d = Board[i][lane];
-			if (d == null) continue;
+
+			// Check if disc = symbol
 			if (d.Symbol == this.Symbol)
 			{
-
+				for (int j = i - 2; j >= 0; j--)
+				{
+					// Find the nearest ally in lane
+					if (Board[j][lane].Symbol == PlayerDiscSymbol)
+					{
+						// Swap place with disc right above
+						Disc TempDisc = Board[j][lane];
+						Board[j][lane] = Board[j + 1][lane];
+						Board[j + 1][lane] = TempDisc;
+						break;
+					}
+				}
+				
+				// Convert special disc into ordinary
+				Board[i][lane] = new OrdinaryDisc(PlayerDiscSymbol);
 			}
 		}
-		// Convert special disc into ordinary
 		
 		// Return (?)
 	}
