@@ -99,6 +99,21 @@ public class Grid
 
     public void Spin()
     {
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
+        Disc[][] newBoard = new Disc[pre_cols][];
+
+        for (int new_col = 0; new_col < pre_cols; new_col++)
+            newBoard[new_col] = new Disc[pre_rows];
+            
+        for (int new_row = 0; new_row < pre_rows; new_row++)
+        {
+            for (int col = 0; col < pre_cols; col++)
+            {
+                newBoard[col][pre_rows - 1 - new_row] = Board[new_row][col];
+            }
+        }
+        Board = newBoard;
         return;
     }
 
