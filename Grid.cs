@@ -3,6 +3,8 @@ using System.ComponentModel;
 public class Grid
 {
     private Disc[][] Board;
+    
+    // Should this be defined in the class, or elsewhere?
     public enum Orientation // Defines the clockwise rotation of the Board
     {
         North, // 0 Degrees
@@ -76,12 +78,10 @@ public class Grid
         orientation = values[index];
     }
 
-    // needs Player object parameters
     // Not implemented yet
-    public bool IsTieGame()
+    public bool IsTieGame(Player p1, Player p2)
     {
-        Console.WriteLine("This method isn't implemented yet");
-        return false;
+        return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
     public bool AddDisc(int lane)
