@@ -2,8 +2,9 @@
 
 public class MagneticDisc : Disc
 {
-    public MagneticDisc(string symbol_) : base(symbol_)
+    public MagneticDisc(bool isPlayerOne)
     {
+        Symbol = isPlayerOne ? "M" : "m";
     }
 
     public override bool ApplyEffects(Disc[][] Board, int lane)

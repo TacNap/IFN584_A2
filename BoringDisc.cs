@@ -2,8 +2,9 @@
 
 public class BoringDisc : Disc
 {
-    public BoringDisc(string symbol_) : base(symbol_)
+    public BoringDisc(bool isPlayerOne)
     {
+        Symbol = isPlayerOne ? "B" : "b";
     }
 
     public override bool ApplyEffects(Disc?[][] Board, int lane)

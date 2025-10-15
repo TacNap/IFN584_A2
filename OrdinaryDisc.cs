@@ -2,8 +2,9 @@
 
 public class OrdinaryDisc : Disc
 {
-    public OrdinaryDisc(string symbol_) : base(symbol_)
+    public OrdinaryDisc(bool isPlayerOne)
     {
+        Symbol = isPlayerOne ? "@" : "#";
     }
 
     public override bool ApplyEffects(Disc[][] Board, int lane)

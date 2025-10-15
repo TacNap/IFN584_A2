@@ -2,8 +2,9 @@
 
 public class ExplodingDisc : Disc
 {
-    public ExplodingDisc(string symbol_) : base(symbol_)
+    public ExplodingDisc(bool isPlayerOne)
     {
+        Symbol = isPlayerOne ? "E" : "e";
     }
 
     public override bool ApplyEffects(Disc?[][] Board, int lane)
