@@ -30,8 +30,8 @@ public class LineUpBasic : Game {
     {
         Console.WriteLine("Enter move/command");
         Console.Write("> ");
-        string input = Console.ReadLine();
-        return input;
+        string? input = Console.ReadLine();
+        return input.ToLower();
     }
 
     public override bool TryParseMove(string input, out int lane)
