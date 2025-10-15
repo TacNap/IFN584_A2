@@ -1,8 +1,5 @@
 
 
-using System.ComponentModel;
-using System.Dynamic;
-
 public abstract class Disc
 {
 	public string Symbol { get; protected set; }
