@@ -93,8 +93,99 @@ public class Grid
     // requires Orientation parameter
     public void ApplyGravity()
     {
-        Console.WriteLine("This method isn't implemented yet");
-        return;
+        int rows = Board.Length;
+        int cols = Board[0].Length;
+
+        if (orientation == Orientation.North)
+        {
+            // gravity down
+            for (int col = 0; col < cols; col++)
+            {
+                List<Disc> discs = new List<Disc>();
+                
+                for (int row = 0; row < rows; row++)
+                {
+                    if (Board[row][col] != null)
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
+                    }
+                }
+                
+                int startRow = rows - discs.Count;
+                for (int i = 0; i < discs.Count; i++)
+                {
+                    Board[startRow + i][col] = discs[i];
+                }
+            }
+        }
+        else if (orientation == Orientation.East)
+        {
+            // gravity left
+            for (int row = 0; row < rows; row++)
+            {
+                List<Disc> discs = new List<Disc>();
+                
+                for (int col = cols - 1; col >= 0; col--)
+                {
+                    if (Board[row][col] != null)
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
+                    }
+                }
+
+                for (int i = 0; i < discs.Count; i++)
+                {
+                    Board[row][i] = discs[i];
+                }
+            }
+        }
+        else if (orientation == Orientation.South)
+        {
+            // gravity up
+            for (int col = 0; col < cols; col++)
+            {
+                List<Disc> discs = new List<Disc>();
+                
+                for (int row = rows - 1; row >= 0; row--)
+                {
+                    if (Board[row][col] != null)
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
+                    }
+                }
+                
+                for (int i = 0; i < discs.Count; i++)
+                {
+                    Board[i][col] = discs[i];
+                }
+            }
+        }
+        else if (orientation == Orientation.West)
+        {
+            // gravity left
+            for (int row = 0; row < rows; row++)
+            {
+                List<Disc> discs = new List<Disc>();
+                
+                for (int col = 0; col < cols; col++)
+                {
+                    if (Board[row][col] != null)
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
+                    }
+                }
+                
+                int startCol = cols - discs.Count;
+                for (int i = 0; i < discs.Count; i++)
+                {
+                    Board[row][startCol + i] = discs[i];
+                }
+            }
+        }
     }
 
     public void Spin()
@@ -103,8 +194,8 @@ public class Grid
         int pre_cols = Board[0].Length;
         Disc[][] newBoard = new Disc[pre_cols][];
 
-        for (int new_col = 0; new_col < pre_cols; new_col++)
-            newBoard[new_col] = new Disc[pre_rows];
+        for (int i = 0; i < pre_cols; i++)
+            newBoard[i] = new Disc[pre_rows];
             
         for (int new_row = 0; new_row < pre_rows; new_row++)
         {

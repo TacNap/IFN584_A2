@@ -2,12 +2,13 @@
 
 public class OrdinaryDisc : Disc
 {
-    public OrdinaryDisc(bool isPlayerOne)
+    public OrdinaryDisc(bool isPlayerOne_)
     {
-        Symbol = isPlayerOne ? "@" : "#";
+        IsPlayerOne = isPlayerOne_;
+        Symbol = IsPlayerOne ? "@" : "#";
     }
 
-    public override bool ApplyEffects(Disc[][] Board, int lane)
+    public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
         return false;
 	}

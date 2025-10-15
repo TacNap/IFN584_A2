@@ -92,7 +92,8 @@ public abstract class Game
             _ => throw new ArgumentException($"Invalid disc type: {discType}")
         };
 
-        return disc;
+        // return disc;
+        return null;
     }
 
     public virtual void ResetGame()

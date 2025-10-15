@@ -2,38 +2,38 @@
 
 public class BoringDisc : Disc
 {
-    public BoringDisc(bool isPlayerOne)
+    public BoringDisc(bool isPlayerOne_)
     {
-        Symbol = isPlayerOne ? "B" : "b";
+        IsPlayerOne = isPlayerOne_;
+        Symbol = IsPlayerOne ? "B" : "b";
     }
 
-    public override bool ApplyEffects(Disc?[][] Board, int lane)
+    public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
-		string PlayerDiscSymbol = (IsPlayerOne) ? "@" : "#";
 		int DiscCount1 = 0;
 		int DiscCount2 = 0;
-		
-		// Loop through played lane from the top
+
+		// Count discs of each player
 		for (int i = 0; i < Board.Length; i++)
 		{
+			if (Board[i][lane] == null) continue;
 			Disc? d = Board[i][lane];
-			if (d.Symbol == "@") DiscCount1 += 1;
-			if (d.Symbol == "#") DiscCount2 += 1;
-
-			// Check if disc = symbol
-			if (d.Symbol == this.Symbol)
-			{
-				// Drill down to the bottom of the lane and Convert special disc into ordinary
-				Disc NewDisc = new OrdinaryDisc(IsPlayerOne);
-				Disc?[] NewLane = new Disc[Board.Length];
-				NewLane[0] = NewDisc;
-				Board[i] = NewLane;
-
-				// Return all disk to hands of respective players
-				// ...
-			}
+			if (d.IsPlayerOne) DiscCount1 += 1;
+			else DiscCount2 += 1;
 		}
+
+		// Drill the lane
+		for (int i = 1; i < Board.Length; i++)
+		{
+			Board[i][lane] = null;
+		}
+		
+		// Convert Boring to Ordinary at the bottom of the lane
+		Board[0][lane] = new OrdinaryDisc(IsPlayerOne);
+
+		// TODO: Return all disk to hands of respective players
+		// ...
 
 		return true;
 	}
