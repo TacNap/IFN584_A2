@@ -15,25 +15,36 @@ public abstract class Game
 
     public abstract string GetInputGame();
 
+    public bool TryHandleCommand(string input)
+    {
+        //check if starts with "/"
+        // if not, return false
+        // otherwise try to run command against a switch statement
+        // return true regardless of outcome - attempted to run command
+        // Errors printed here
+        return false;
+    }
+
+    public abstract bool TryParseMove(string input, out int lane);
+
     public abstract bool PlayTurn(Human player);
 
     public abstract bool PlayTurn(Computer player);
 
     public abstract void GameLoop();
-    public virtual Disc CreateDisc(string discType, bool isPlayerOne)
+    public virtual Disc CreateDisc(char discType, bool isPlayerOne)
     {
-        // Disc disc = discType.ToLower() switch
-        // {
-        //     "ordinary" => new OrdinaryDisc(),
-        //     "boring" => new BoringDisc(),
-        //     "exploding" or "explosive" => new ExplodingDisc(),
-        //     "magnetic" => new MagneticDisc(),
-        //     _ => throw new ArgumentException($"Invalid disc type: {discType}")
-        // };
-        // // Get symbol based on player
+        Disc disc = Char.ToLower(discType) switch
+        {
+            'o' => new OrdinaryDisc(isPlayerOne),
+            'b' => new BoringDisc(isPlayerOne),
+            'e' => new ExplodingDisc(isPlayerOne),
+            'm' => new MagneticDisc(isPlayerOne),
+            _ => throw new ArgumentException($"Invalid disc type: {discType}")
+        };
+        // Get symbol based on player
 
-        // return disc;
-        return null;
+        return disc;
     }
 
     public virtual void ResetGame()

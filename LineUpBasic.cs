@@ -34,6 +34,17 @@ public class LineUpBasic : Game {
         return input;
     }
 
+    public override bool TryParseMove(string input, out int lane)
+    {
+        lane = 0;
+        // check if the input is valid for a move
+        // check if the type is allowed
+        // check if lane numbers are within reason. use orientation
+        // extract and IntParse lane.
+        // print errors as necessary
+        return false;
+    }
+
     // Ideally this could become a template method 
     public override bool PlayTurn(Human player)
     {
@@ -46,23 +57,19 @@ public class LineUpBasic : Game {
                 continue;
             }
 
-            // check if starts with "/" - if not, return false
-            // otherwise, attempt to run as comamnd. 
-            // return true regardless of outcome.
-            // Errors printed within 
-            // if (TryHandleCommand(input))
-            //     return false;
+            if (TryHandleCommand(input))
+                return false;
 
-            // // check if the input is valid for a move
-            // // check if the type is allowed
-            // // check if lane numbers are within reason. use orientation. 
-            // // Extract and IntParse lane.
-            // // Errors printed within method
-            // if (!TryParseMove(input, out int lane))
-            //     return false;
+            
+            if (!TryParseMove(input, out int lane))
+                return false;
 
             // // At this point, its valid input
-            // Disc disc = CreateDisc(input);
+            Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 0 ? false : true);
+            if(!player.HasDiscRemaining(disc))
+            {
+                io.PrintError("No Disc of that type remaining");
+            }
             // if (!player.HasDiscRemaining(disc))
             // {
             //     io.PrintError("No disc of that type remaining");
