@@ -13,6 +13,8 @@ public abstract class Game
     public IOController io { get; set; }
     public FileController file { get; set; }
 
+    public abstract string GetInputGame();
+
     public abstract bool PlayTurn(Human player);
 
     public abstract bool PlayTurn(Computer player);

@@ -20,6 +20,10 @@ public class LineUpSpin : Game {
         file = new FileController();
         MoveSequence = string.Empty;
     }
+    public override string GetInputGame()
+    {
+        throw new NotImplementedException();
+    }
     
     public override bool PlayTurn(Human player)
     {

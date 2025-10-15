@@ -25,16 +25,42 @@ public class LineUpBasic : Game {
         io = new IOController();
         file = new FileController();
     }
-    
+
+    public override string GetInputGame()
+    {
+        Console.WriteLine("Enter move/command");
+        Console.Write("> ");
+        string input = Console.ReadLine();
+        throw new NotImplementedException();
+    }
+
     public override bool PlayTurn(Human player)
     {
+        // while(true) {
+        // string input = GetInputGame();
+        // if input.startsWith("/") {
+        //     RunCommand(input); // may need to be bool
+        // } else {
+        //     string validatedInput = TryParseMove(input);
+        //     Disc disc = CreateDisc(validatedInput);
+        // }
+        // if (AddDisc(disc, lane)) {
+        //     Player.WithDraw(disc);
+        //      ApplyGravity();
+        //     if(disc.ApplyEffects(grid)) {
+                // ApplyGravity
+                // Draw
+                //}
+        // }        
+        // }
         throw new NotImplementedException();
     }
     public override bool PlayTurn(Computer player)
     {
+        // Disc = FindWinningMove
         throw new NotImplementedException();
     }
-    
+
     public override void GameLoop()
     {
         while(IsGameActive)
