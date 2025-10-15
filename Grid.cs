@@ -196,7 +196,7 @@ public class Grid
 
         for (int i = 0; i < pre_cols; i++)
             newBoard[i] = new Disc[pre_rows];
-            
+
         for (int new_row = 0; new_row < pre_rows; new_row++)
         {
             for (int col = 0; col < pre_cols; col++)
@@ -208,11 +208,15 @@ public class Grid
         return;
     }
 
-    // requires Orientation parameter
+    /// <summary>
+    /// DrawGrid renders the board and its contents to the console.
+    /// Orientation defines the rotation of the board.
+    /// </summary>
     public void DrawGrid()
     {
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
+
         // Print Column Numbers
         switch(orientation)
         {
@@ -225,6 +229,7 @@ public class Grid
                 }
                 Console.WriteLine();
                 break;
+
             case Orientation.East:
             case Orientation.West:
                 Console.Write(" ");
@@ -239,6 +244,7 @@ public class Grid
         // Print Board contents and Barriers
         switch(orientation)
         {
+            // 0 Degrees
             case Orientation.North:
                 for (int row = 0; row < pre_rows; row++)
                 {
@@ -251,7 +257,7 @@ public class Grid
                         Console.WriteLine("|");
                 }
                 break;
-
+            // 90 Degrees Clockwise
             case Orientation.East:
                 
                 for (int col = 0; col < pre_cols; col++)
@@ -266,7 +272,8 @@ public class Grid
                     
                 }
                 break;
-        
+
+            // 180 Degrees Clockwise
             case Orientation.South:
                 for (int row = pre_rows - 1; row >= 0; row--)
                 {
@@ -280,6 +287,7 @@ public class Grid
                 }
                 break;
             
+            // 270 Degrees Clockwise
             case Orientation.West:
                 for (int col = pre_cols - 1; col >= 0; col--)
                 {
