@@ -27,14 +27,60 @@ public abstract class Game
 
     public abstract bool TryParseMove(string input, out int lane);
 
-    public abstract bool PlayTurn(Human player);
+    // Template Method
+    public bool PlayTurn(Human player)
+    {
+        while(true)
+        {
+            string input = GetInputGame();
+            if (string.IsNullOrEmpty(input))
+            {
+                io.PrintError("Please enter a valid move or command.");
+                continue;
+            }
 
+            if (TryHandleCommand(input))
+                return false;
+
+            
+            if (!TryParseMove(input, out int lane))
+                return false;
+
+            // // At this point, its valid input
+            Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 0 ? false : true);
+            if(!player.HasDiscRemaining(disc))
+            {
+                io.PrintError("No Disc of that type remaining");
+            }
+
+            // // At this point, we have a disc and know its within balance.
+            // // Try to add the disc. If it fails, its because the lane is full.
+            if(!Grid.AddDisc(disc, lane))
+            {
+                //Move fails
+                io.PrintError("Error: Lane is full");
+                return false;
+            } else
+            {
+                // Successful move
+                player.WithdrawDisc(disc);
+                Grid.ApplyGravity();
+                if (disc.ApplyEffects(Grid.Board, lane))
+                {
+                    Grid.ApplyGravity();
+                    Grid.DrawGrid();
+                }
+            }
+        }
+    }
+
+    // Will become a template method later 
     public abstract bool PlayTurn(Computer player);
 
     public abstract void GameLoop();
     public virtual Disc CreateDisc(char discType, bool isPlayerOne)
     {
-        Disc disc = Char.ToLower(discType) switch
+        Disc disc = char.ToLower(discType) switch
         {
             'o' => new OrdinaryDisc(isPlayerOne),
             'b' => new BoringDisc(isPlayerOne),

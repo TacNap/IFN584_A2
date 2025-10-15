@@ -33,10 +33,6 @@ public class LineUpClassic : Game {
         return false;
     }
 
-    public override bool PlayTurn(Human player)
-    {
-        throw new NotImplementedException();
-    }
     public override bool PlayTurn(Computer player)
     {
         throw new NotImplementedException();
