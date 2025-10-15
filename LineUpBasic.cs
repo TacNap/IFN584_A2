@@ -31,29 +31,62 @@ public class LineUpBasic : Game {
         Console.WriteLine("Enter move/command");
         Console.Write("> ");
         string input = Console.ReadLine();
-        throw new NotImplementedException();
+        return input;
     }
 
+    // Ideally this could become a template method 
     public override bool PlayTurn(Human player)
     {
-        // while(true) {
-        // string input = GetInputGame();
-        // if input.startsWith("/") {
-        //     RunCommand(input); // may need to be bool
-        // } else {
-        //     string validatedInput = TryParseMove(input);
-        //     Disc disc = CreateDisc(validatedInput);
-        // }
-        // if (AddDisc(disc, lane)) {
-        //     Player.WithDraw(disc);
-        //      ApplyGravity();
-        //     if(disc.ApplyEffects(grid)) {
-                // ApplyGravity
-                // Draw
-                //}
-        // }        
-        // }
-        throw new NotImplementedException();
+        while(true)
+        {
+            string input = GetInputGame();
+            if (string.IsNullOrEmpty(input))
+            {
+                io.PrintError("Please enter a valid move or command.");
+                continue;
+            }
+
+            // check if starts with "/" - if not, return false
+            // otherwise, attempt to run as comamnd. 
+            // return true regardless of outcome.
+            // Errors printed within 
+            // if (TryHandleCommand(input))
+            //     return false;
+
+            // // check if the input is valid for a move
+            // // check if the type is allowed
+            // // check if lane numbers are within reason. use orientation. 
+            // // Extract and IntParse lane.
+            // // Errors printed within method
+            // if (!TryParseMove(input, out int lane))
+            //     return false;
+
+            // // At this point, its valid input
+            // Disc disc = CreateDisc(input);
+            // if (!player.HasDiscRemaining(disc))
+            // {
+            //     io.PrintError("No disc of that type remaining");
+            // }
+
+            // // At this point, we have a disc and know its within balance.
+            // // Try to add the disc. If it fails, its because the lane is full.
+            // if(!Grid.AddDisc(disc, lane))
+            // {
+            //     //Move fails
+            //     io.PrintError("Error: Lane is full");
+            //     return false;
+            // } else
+            // {
+            //     // Successful move
+            //     player.WithdrawDisc(disc);
+            //     Grid.ApplyGravity();
+            //     if (disc.ApplyEffects(Grid.Board, lane))
+            //     {
+            //         Grid.ApplyGravity();
+            //         Grid.DrawGrid();
+            //     }
+            // }
+        }
     }
     public override bool PlayTurn(Computer player)
     {
