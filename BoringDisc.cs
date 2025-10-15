@@ -30,8 +30,7 @@ public class BoringDisc : Disc
 		}
 		
 		// Convert Boring to Ordinary at the bottom of the lane
-		Disc NewDisc = new OrdinaryDisc(IsPlayerOne);
-		Board[0][lane] = NewDisc;
+		Board[0][lane] = new OrdinaryDisc(IsPlayerOne);;
 
 		// Return all disk to hands of respective players
 		// ...
