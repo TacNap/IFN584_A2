@@ -3,9 +3,8 @@ using System.Data;
 
 public class Grid
 {
-    private Disc[][] Board;
-    
-    // Should this be defined in the class, or elsewhere?
+    public Disc[][] Board; // need to change privacy. May need to add 'get' and 'set' methods for disc.ApplyEffects
+
     public enum Orientation // Defines the clockwise rotation of the Board
     {
         North, // 0 Degrees
@@ -85,7 +84,7 @@ public class Grid
         return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
-    public bool AddDisc(int lane)
+    public bool AddDisc(Disc disc, int lane)
     {
         Console.WriteLine("This method isn't implemented yet");
         return false;
