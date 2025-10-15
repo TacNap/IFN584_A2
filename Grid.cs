@@ -3,7 +3,7 @@ using System.Data;
 
 public class Grid
 {
-    public Disc[][] Board; // need to change privacy. May need to add 'get' and 'set' methods for disc.ApplyEffects
+    public Disc?[][] Board; // need to change privacy. May need to add 'get' and 'set' methods for disc.ApplyEffects
 
     public enum Orientation // Defines the clockwise rotation of the Board
     {

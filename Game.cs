@@ -67,7 +67,7 @@ public abstract class Game
                 // Successful move
                 player.WithdrawDisc(disc);
                 Grid.DrawGrid();
-                if (disc.ApplyEffects(Grid.Board, lane))
+                if (disc.ApplyEffects(ref Grid.Board, lane))
                 {
                     Grid.ApplyGravity();
                     Grid.DrawGrid();
@@ -92,8 +92,7 @@ public abstract class Game
             _ => throw new ArgumentException($"Invalid disc type: {discType}")
         };
 
-        // return disc;
-        return null;
+        return disc;
     }
 
     public virtual void ResetGame()
