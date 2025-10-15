@@ -38,14 +38,14 @@ public class LineUpBasic : Game {
     {
         lane = 0;
         // check if the input is valid for a move
-        // check if the type is allowed
+        // check if the type is allowed for this game mode
         // check if lane numbers are within reason. use orientation
         // extract and IntParse lane.
         // print errors as necessary
         return false;
     }
 
-    // Ideally this could become a template method 
+    // Ideally this could become a template method that sits in the abstract Game class
     public override bool PlayTurn(Human player)
     {
         while(true)

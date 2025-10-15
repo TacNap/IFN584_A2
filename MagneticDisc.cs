@@ -34,7 +34,7 @@ public class MagneticDisc : Disc
 				}
 				
 				// Convert special disc into ordinary
-				Board[i][lane] = new OrdinaryDisc(PlayerDiscSymbol);
+				Board[i][lane] = new OrdinaryDisc(IsPlayerOne);
 			}
 		}
 

@@ -25,7 +25,7 @@ public class BoringDisc : Disc
 			if (d.Symbol == this.Symbol)
 			{
 				// Drill down to the bottom of the lane and Convert special disc into ordinary
-				Disc NewDisc = new OrdinaryDisc(PlayerDiscSymbol);
+				Disc NewDisc = new OrdinaryDisc(IsPlayerOne);
 				Disc?[] NewLane = new Disc[Board.Length];
 				NewLane[0] = NewDisc;
 				Board[i] = NewLane;

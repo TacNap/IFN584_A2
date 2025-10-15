@@ -42,7 +42,6 @@ public abstract class Game
             'm' => new MagneticDisc(isPlayerOne),
             _ => throw new ArgumentException($"Invalid disc type: {discType}")
         };
-        // Get symbol based on player
 
         return disc;
     }
