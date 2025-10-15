@@ -123,74 +123,81 @@ public class Grid
         return;
     }
 
-    public bool CheckWinCondition() //how to check for both players symbols?
+    // i changed checkwin to an int because i dont understand how to return who won in bool
+    // returns 0 if no winner(can be null too right?), 1 if player 1 wins, 2 if player 2 wins
+    public int CheckWinCondition()
     {
         for (int row = 0; row < Board.Length; row++)
         {
             for (int col = 0; col < Board[0].Length; col++)
             {
-                if (Board[row][col] == null) //skip empty cells but is null empty cell?
+                if (Board[row][col] == null)
                     continue;
 
-                if (col + WinLength - 1 <= Board[0].Length) // horizontal
+                string symbol = Board[row][col].Symbol;
+
+                // Horizontal
+                if (col + WinLength <= Board[0].Length)
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
                     {
-                        if (Board[row][col + i] != symbol)
+                        if (Board[row][col + i] == null || Board[row][col + i].Symbol != symbol)
                         {
                             win = false;
                             break;
                         }
                     }
-                    if (win) return true;
+                    if (win) return symbol == "@" ? 1 : 2;
                 }
 
-                if (row + WinLength - 1 <= Board.Length) // vertical 
+                // Vertical
+                if (row + WinLength <= Board.Length)
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
                     {
-                        if (Board[row + i][col] != symbol)
+                        if (Board[row + i][col] == null || Board[row + i][col].Symbol != symbol)
                         {
                             win = false;
                             break;
                         }
                     }
-                    if (win) return true;
+                    if (win) return symbol == "@" ? 1 : 2;
                 }
 
-                if (col + WinLength - 1 <= Board[0].Length && row + WinLength - 1 <= Board.Length) // diagonal down-right 
+                // Diagonal down-right
+                if (col + WinLength <= Board[0].Length && row + WinLength <= Board.Length)
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
                     {
-                        if (Board[row + i][col + i] != symbol)
+                        if (Board[row + i][col + i] == null || Board[row + i][col + i].Symbol != symbol)
                         {
                             win = false;
                             break;
                         }
                     }
-                    if (win) return true;
+                    if (win) return symbol == "@" ? 1 : 2;
                 }
 
-                if (col - WinLength + 1 >= 0 && row + WinLength - 1 <= Board.Length) // diagonal down-left 
+                // Diagonal down-left
+                if (col - WinLength + 1 >= 0 && row + WinLength <= Board.Length)
                 {
                     bool win = true;
                     for (int i = 0; i < WinLength; i++)
                     {
-                        if (Board[row + i][col - i] != symbol)
+                        if (Board[row + i][col - i] == null || Board[row + i][col - i].Symbol != symbol)
                         {
                             win = false;
                             break;
                         }
                     }
-                    if (win) return true;
+                    if (win) return symbol == "@" ? 1 : 2;
                 }
             }
         }
-        return false;
-
+        return 0; // can be null too
     }
 }
 
