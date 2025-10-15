@@ -91,89 +91,98 @@ public class Grid
     }
 
     // requires Orientation parameter
-    public void ApplyGravity(Orientation orientation)
+    public void ApplyGravity()
     {
+        int rows = Board.Length;
+        int cols = Board[0].Length;
+
         if (orientation == Orientation.North)
         {
-            for (int col = 0; col < GridWidth; col++)
+            // gravity down
+            for (int col = 0; col < cols; col++)
             {
-                List<int> discs = new List<int>();
-                for (int row = 0; row < GridHeight; row++)
+                List<Disc> discs = new List<Disc>();
+                
+                for (int row = 0; row < rows; row++)
                 {
-                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    if (Board[row][col] != null)
                     {
-                        discs.Add(Board[row][col]); // store the symbol (@ or #)
-                        Board[row][col] = 0;   // clear the cell?
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
                     }
                 }
-
-                int placementIndex = 0;
-                for (int row = GridHeight - 1; row >= 0 && placementIndex < discs.Count; row--)
+                
+                int startRow = rows - discs.Count;
+                for (int i = 0; i < discs.Count; i++)
                 {
-                    Board[row][col] = discs[placementIndex++];
+                    Board[startRow + i][col] = discs[i];
                 }
             }
         }
         else if (orientation == Orientation.East)
         {
-            for (int row = GridHeight - 1; row >= 0; row--)
+            // gravity left
+            for (int row = 0; row < rows; row++)
             {
-                List<int> discs = new List<int>();
-                for (int col = 0; col < GridWidth; col++)
+                List<Disc> discs = new List<Disc>();
+                
+                for (int col = cols - 1; col >= 0; col--)
                 {
-                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    if (Board[row][col] != null)
                     {
-                        discs.Add(Board[row][col]); 
-                        Board[row][col] = 0;   
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
                     }
                 }
 
-                int placementIndex = 0;
-                for (int col = GridWidth - 1; col >= 0 && placementIndex < discs.Count; col--)
+                for (int i = 0; i < discs.Count; i++)
                 {
-                    Board[row][col] = discs[placementIndex++];
+                    Board[row][i] = discs[i];
                 }
             }
         }
         else if (orientation == Orientation.South)
         {
-            for (int col = GridWidth - 1; col >= 0; col--)
+            // gravity up
+            for (int col = 0; col < cols; col++)
             {
-                List<int> discs = new List<int>();
-                for (int row = 0; row < GridHeight; row++)
+                List<Disc> discs = new List<Disc>();
+                
+                for (int row = rows - 1; row >= 0; row--)
                 {
-                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    if (Board[row][col] != null)
                     {
                         discs.Add(Board[row][col]);
-                        Board[row][col] = 0;
+                        Board[row][col] = null;
                     }
                 }
-
-                int placementIndex = 0;
-                for (int row = 0; row < GridHeight && placementIndex < discs.Count; row++)
+                
+                for (int i = 0; i < discs.Count; i++)
                 {
-                    Board[row][col] = discs[placementIndex++];
+                    Board[i][col] = discs[i];
                 }
             }
         }
         else if (orientation == Orientation.West)
         {
-            for (int row = 0; row < GridHeight; row++)
+            // gravity left
+            for (int row = 0; row < rows; row++)
             {
-                List<int> discs = new List<int>();
-                for (int col = 0; col < GridWidth; col++)
+                List<Disc> discs = new List<Disc>();
+                
+                for (int col = 0; col < cols; col++)
                 {
-                    if (Board[row][col] == '@' || Board[row][col] == '#')
+                    if (Board[row][col] != null)
                     {
                         discs.Add(Board[row][col]);
-                        Board[row][col] = 0;
+                        Board[row][col] = null;
                     }
                 }
-
-                int placementIndex = 0;
-                for (int col = 0; col < GridWidth && placementIndex < discs.Count; col++)
+                
+                int startCol = cols - discs.Count;
+                for (int i = 0; i < discs.Count; i++)
                 {
-                    Board[row][col] = discs[placementIndex++];
+                    Board[row][startCol + i] = discs[i];
                 }
             }
         }
