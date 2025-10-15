@@ -3,18 +3,16 @@
 using System.ComponentModel;
 using System.Dynamic;
 
-public class Disc
+public abstract class Disc
 {
 	public string Symbol { get; protected set; }
 	public bool IsPlayerOne { get; protected set; }
-	
-	public Disc(string symbol_)
-    {
-		Symbol = symbol_;
-    }
 
-	public virtual void ApplyEffects(Disc[][] Board, int lane)
+	public Disc(string symbol_)
 	{
-		Console.WriteLine("[Run]\tDisc, ApplyEffects");
+		Symbol = symbol_;
 	}
+
+	// This will return true for any disc that has special effects.
+	public abstract bool ApplyEffects(Disc[][] Board, int lane);
 }

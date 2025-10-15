@@ -6,7 +6,7 @@ public class ExplodingDisc : Disc
     {
     }
 
-    public override void ApplyEffects(Disc?[][] Board, int lane)
+    public override bool ApplyEffects(Disc?[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t ExplodingDisc, ApplyEffects");
 		// Loop through played lane from the top
@@ -29,7 +29,7 @@ public class ExplodingDisc : Disc
 				Board[i - 1][lane + 1] = null;
 			}
 		}
-		
-		// Return (?)
+
+		return true;
 	}
 }

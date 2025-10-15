@@ -6,7 +6,7 @@ public class BoringDisc : Disc
     {
     }
 
-    public override void ApplyEffects(Disc?[][] Board, int lane)
+    public override bool ApplyEffects(Disc?[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
 		string PlayerDiscSymbol = (IsPlayerOne) ? "@" : "#";
@@ -33,7 +33,7 @@ public class BoringDisc : Disc
 				// ...
 			}
 		}
-		
-		// Return (?)
+
+		return true;
 	}
 }

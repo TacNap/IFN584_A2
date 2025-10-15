@@ -6,7 +6,7 @@ public class MagneticDisc : Disc
     {
     }
 
-    public override void ApplyEffects(Disc[][] Board, int lane)
+    public override bool ApplyEffects(Disc[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t MagneticDisc, ApplyEffects");
 		string PlayerDiscSymbol = (IsPlayerOne) ? "@" : "#";
@@ -36,7 +36,7 @@ public class MagneticDisc : Disc
 				Board[i][lane] = new OrdinaryDisc(PlayerDiscSymbol);
 			}
 		}
-		
-		// Return (?)
+
+		return true;
 	}
 }

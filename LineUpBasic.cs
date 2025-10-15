@@ -70,29 +70,25 @@ public class LineUpBasic : Game {
             {
                 io.PrintError("No Disc of that type remaining");
             }
-            // if (!player.HasDiscRemaining(disc))
-            // {
-            //     io.PrintError("No disc of that type remaining");
-            // }
 
             // // At this point, we have a disc and know its within balance.
             // // Try to add the disc. If it fails, its because the lane is full.
-            // if(!Grid.AddDisc(disc, lane))
-            // {
-            //     //Move fails
-            //     io.PrintError("Error: Lane is full");
-            //     return false;
-            // } else
-            // {
-            //     // Successful move
-            //     player.WithdrawDisc(disc);
-            //     Grid.ApplyGravity();
-            //     if (disc.ApplyEffects(Grid.Board, lane))
-            //     {
-            //         Grid.ApplyGravity();
-            //         Grid.DrawGrid();
-            //     }
-            // }
+            if(!Grid.AddDisc(disc, lane))
+            {
+                //Move fails
+                io.PrintError("Error: Lane is full");
+                return false;
+            } else
+            {
+                // Successful move
+                player.WithdrawDisc(disc);
+                Grid.ApplyGravity();
+                if (disc.ApplyEffects(Grid.Board, lane))
+                {
+                    Grid.ApplyGravity();
+                    Grid.DrawGrid();
+                }
+            }
         }
     }
     public override bool PlayTurn(Computer player)
