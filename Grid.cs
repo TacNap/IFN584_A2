@@ -104,8 +104,8 @@ public class Grid
         int pre_cols = Board[0].Length;
         Disc[][] newBoard = new Disc[pre_cols][];
 
-        for (int new_col = 0; new_col < pre_cols; new_col++)
-            newBoard[new_col] = new Disc[pre_rows];
+        for (int i = 0; i < pre_cols; i++)
+            newBoard[i] = new Disc[pre_rows];
             
         for (int new_row = 0; new_row < pre_rows; new_row++)
         {
