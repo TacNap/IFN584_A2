@@ -16,17 +16,18 @@ public abstract class Game
     public abstract void GameLoop();
     public virtual Disc CreateDisc(string discType, bool isPlayerOne)
     {
-        Disc disc = discType.ToLower() switch
-        {
-            "ordinary" => new OrdinaryDisc(),
-            "boring" => new BoringDisc(),
-            "exploding" or "explosive" => new ExplodingDisc(),
-            "magnetic" => new MagneticDisc(),
-            _ => throw new ArgumentException($"Invalid disc type: {discType}")
-        };
+        // Disc disc = discType.ToLower() switch
+        // {
+        //     "ordinary" => new OrdinaryDisc(),
+        //     "boring" => new BoringDisc(),
+        //     "exploding" or "explosive" => new ExplodingDisc(),
+        //     "magnetic" => new MagneticDisc(),
+        //     _ => throw new ArgumentException($"Invalid disc type: {discType}")
+        // };
         // Get symbol based on player
 
-        return disc;
+        // return disc;
+        return null;
     }
 
     public virtual void ResetGame()
