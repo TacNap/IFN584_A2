@@ -196,7 +196,7 @@ public class Grid
 
         for (int i = 0; i < pre_cols; i++)
             newBoard[i] = new Disc[pre_rows];
-            
+
         for (int new_row = 0; new_row < pre_rows; new_row++)
         {
             for (int col = 0; col < pre_cols; col++)
@@ -208,64 +208,96 @@ public class Grid
         return;
     }
 
-    // requires Orientation parameter
+    /// <summary>
+    /// DrawGrid renders the board and its contents to the console.
+    /// Orientation defines the rotation of the board.
+    /// </summary>
     public void DrawGrid()
     {
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
-        switch(orientation)
 
+        // Print Column Numbers
+        switch(orientation)
         {
             case Orientation.North:
-                for (int row = 0; row < pre_rows; row++) 
+            case Orientation.South:
+                Console.Write(" ");
+                for (int col = 1; col <= pre_cols; col++)
                 {
-                    for (int col = 0; col < pre_cols; col++) 
-                    
-                    if (Board[row][col] != null)
-                    {
-                        Console.Write(Board[row][col].Symbol);
-                    }
-                        Console.WriteLine();
+                    Console.Write($"{col, 4}");
                 }
+                Console.WriteLine();
                 break;
 
+            case Orientation.East:
+            case Orientation.West:
+                Console.Write(" ");
+                for (int row = 1; row <= pre_rows; row++)
+                {
+                    Console.Write($"{row, 4}");
+                }
+                Console.WriteLine();
+                break;
+        }
+        
+        // Print Board contents and Barriers
+        switch(orientation)
+        {
+            // 0 Degrees
+            case Orientation.North:
+                for (int row = 0; row < pre_rows; row++)
+                {
+                    Console.Write($"{pre_rows - row, 2}"); // Print row numbers
+                    for (int col = 0; col < pre_cols; col++)
+                    {
+                        string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
+                        Console.Write($"| {symbol} ");
+                    }
+                        Console.WriteLine("|");
+                }
+                break;
+            // 90 Degrees Clockwise
             case Orientation.East:
                 
                 for (int col = 0; col < pre_cols; col++)
                 {
+                    Console.Write($"{pre_cols - col, 2}"); // Print row numbers
                     for (int row = pre_rows - 1; row >= 0; row--)
-
-                    if (Board[row][col] != null)
                     {
-                        Console.Write(Board[row][col].Symbol);
+                        string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
+                        Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine();
+                        Console.WriteLine("|");
+                    
                 }
                 break;
-        
+
+            // 180 Degrees Clockwise
             case Orientation.South:
                 for (int row = pre_rows - 1; row >= 0; row--)
                 {
+                    Console.Write($"{row + 1, 2}"); // Print row numbers
                     for (int col = pre_cols - 1; col >= 0; col--)
-
-                    if (Board[row][col] != null)
                     {
-                        Console.Write(Board[row][col].Symbol);
+                        string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
+                        Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine();
+                        Console.WriteLine("|");
                 }
                 break;
             
+            // 270 Degrees Clockwise
             case Orientation.West:
                 for (int col = pre_cols - 1; col >= 0; col--)
                 {
+                    Console.Write($"{col + 1, 2}"); // Print row numbers
                     for (int row = 0; row < pre_rows; row++)
-
-                    if (Board[row][col] != null)
                     {
-                        Console.Write(Board[row][col].Symbol);
+                        string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
+                        Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine();
+                        Console.WriteLine("|");
                 }
                 break;
 	    }
