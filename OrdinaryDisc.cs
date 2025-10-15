@@ -2,12 +2,14 @@
 
 public class OrdinaryDisc : Disc
 {
-    public OrdinaryDisc(string symbol_) : base(symbol_)
+    public OrdinaryDisc(bool isPlayerOne_)
     {
+        IsPlayerOne = isPlayerOne_;
+        Symbol = IsPlayerOne ? "@" : "#";
     }
 
-    public override void ApplyEffects(Disc[][] Board, int lane)
+    public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
-		Console.WriteLine("[Run]\tOrdinaryDisc, ApplyEffects");
+        return false;
 	}
 }
