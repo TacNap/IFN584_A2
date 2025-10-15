@@ -88,7 +88,7 @@ public class LineUpBasic : Game {
     {
         while(IsGameActive)
         {
-            // DrawGrid
+            Grid.DrawGrid();
             Console.WriteLine("< Grid should be drawn here >");
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
