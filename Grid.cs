@@ -93,7 +93,7 @@ public class Grid
     // requires Orientation parameter
     public void ApplyGravity(Orientation orientation)
     {
-        if (orientation == Orientation.Degree0)
+        if (orientation == Orientation.North)
         {
             for (int col = 0; col < GridWidth; col++)
             {
@@ -114,7 +114,7 @@ public class Grid
                 }
             }
         }
-        else if (orientation == Orientation.Degree90)
+        else if (orientation == Orientation.East)
         {
             for (int row = GridHeight - 1; row >= 0; row--)
             {
@@ -135,7 +135,7 @@ public class Grid
                 }
             }
         }
-        else if (orientation == Orientation.Degree180)
+        else if (orientation == Orientation.South)
         {
             for (int col = GridWidth - 1; col >= 0; col--)
             {
@@ -156,7 +156,7 @@ public class Grid
                 }
             }
         }
-        else if (orientation == Orientation.Degree270)
+        else if (orientation == Orientation.West)
         {
             for (int row = 0; row < GridHeight; row++)
             {
