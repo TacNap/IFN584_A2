@@ -1,20 +1,29 @@
 public class LineUpClassic : Game {
-    
+
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
     {
         Grid = new Grid(GridHeight, GridWidth);
-        int discBalance = (GridHeight * GridWidth / 2) + 4; 
+        int discBalance = (GridHeight * GridWidth / 2) + 4;
         PlayerOne = new Human(discBalance);
         if (HvH)
         {
             PlayerTwo = new Human(discBalance);
-        } else
+        }
+        else
         {
             PlayerTwo = new Computer(discBalance);
         }
         io = new IOController();
         file = new FileController();
-        MoveSequence = string.Empty;        
+        MoveSequence = string.Empty;
+    }
+    public override bool PlayTurn(Human player)
+    {
+        throw new NotImplementedException();
+    }
+    public override bool PlayTurn(Computer player)
+    {
+        throw new NotImplementedException();
     }
 
     public override void GameLoop()
