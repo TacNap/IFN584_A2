@@ -1,0 +1,52 @@
+@startuml
+title Sequence: Line Up Game - Human vs Computer
+
+actor User as Human
+participant GameController
+participant IOController
+participant LineUpClassic as Game
+participant Grid
+participant HumanPlayer as PlayerOne
+participant Computer as PlayerTwo
+
+== Game Initialization ==
+
+Human -> GameController : Start()
+GameController -> IOController : PrintMenu()
+IOController -> GameController : GetInputMenu()
+GameController -> IOController : GetInputNewGame()
+IOController -> GameController : return GameConfig(PlayerMode.HvC)
+
+GameController -> GameController : GameFactory(config)
+GameController -> Game : New LineUpClassic(config)
+Game -> Grid : initialize Grid()
+
+== Game Loop ==
+
+loop while not over
+
+    alt Turn: Human
+        Game -> PlayerOne : PlayTurn()
+        PlayerOne -> IOController : promptMove()
+        IOController -> PlayerOne : return lane
+        PlayerOne -> Grid : AddDisc(lane)
+        Grid -> Grid : IncrementTurnCounter()
+        Grid -> Grid : CheckWinCondition()
+    end
+
+    alt Turn: Computer
+        Game -> PlayerTwo : PlayTurn()
+        PlayerTwo -> Grid : analyze board
+        PlayerTwo -> Grid : AddDisc(chosenLane)
+        Grid -> Grid : IncrementTurnCounter()
+        Grid -> Grid : CheckWinCondition()
+    end
+
+end
+
+== Game Over ==
+
+Grid --> Game : win or tie
+Game -> IOController : PrintWinner(P1, P2)
+
+@enduml
