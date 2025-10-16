@@ -56,7 +56,20 @@ public static class IOController
     
     public static void PrintWinner(bool P1, bool P2)
     {
-        Console.WriteLine("[Run]\t IOController | PrintWinner");
+        if (P1 && P2)
+        {
+            PrintGreen("It's a tie!");
+        }
+        else if (P1)
+        {
+            PrintGreen("Player One Wins");
+        }
+        else
+        {
+            PrintGreen("Player Two Wins");
+        }
+
+        Console.Read();
     }
 
     public static int GetInputMenu()
