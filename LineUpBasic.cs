@@ -53,6 +53,7 @@ public class LineUpBasic : Game {
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
             bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
+            // ! Board currently renders twice by accident after a move is played.. Will fix later. 
 
             if (successfulMove)
             {
