@@ -346,11 +346,29 @@ public class Grid
             }
         }
         
-        else if (orientation == Orientation.South)
+        else if (orientation == Orientation.West)
         {
-            
+            for (int row = 0; row < pre_rows; row++)
+            {
+                List<Disc> discs = new List<Disc>();
+
+                for (int col = pre_cols - 1; col >= 0; col--)
+                {
+                    if (Board[row][col] != null)
+                    {
+                        discs.Add(Board[row][col]);
+                        Board[row][col] = null;
+                    }
+                }
+
+                int placementIndex = 0;
+                for (int col = 0; col < pre_cols && placementIndex < discs.Count; col++)
+                {
+                    Board[row][col] = discs[placementIndex++];
+                }
+            }
         }
-}
+    }
 
     public void Spin()
     {
