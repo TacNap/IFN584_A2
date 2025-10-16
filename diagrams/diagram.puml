@@ -7,16 +7,12 @@
 ''' GameController '''
 class GameController {
     IsMenuActive : bool
-    io : IOController
     RunCommand(string input) : void
     GameFactory(GameConfig config) : Game
     Start() : void
     NewGame() : void
     LoadGame() : void
 }
-note left of GameController::GameFactory
-    This creates Game objects
-end note
 
 ''' Game '''
 abstract class Game {
@@ -24,29 +20,34 @@ abstract class Game {
     PlayerOne : Player
     PlayerTwo: Player
     IsGameActive : bool
-    MoveSequence : string
-    io : IOController
+    MoveSequence : list<string>
     file : FileController
+    GetInputGame : string
+    DocumentMove(string move) : void
+    UndoMove() : bool
+    RedoMove() : bool
+    PlayMoveSequence() : void
+    TryHandleCommand(string input) : bool
+    {abstract} TryParseMove(string input, out int lane) : bool
     {abstract} GameLoop() : void
-    CreateDisc() : Disc
-    ' ResetGame() : void
-    ' May not need the above method
+    PlayTurn(Human player) : bool
+    {abstract} PlayTurn(Computer player) : bool
+    {abstract} CreateDisc() : Disc
 }
-note left of Game::CreateDisc
-    Unsure exactly where this disc should be created.
-    May belong in another class
-end note
 
 ' Game Subclasses
 class LineUpClassic {
+    PlayTurn(Computer player) : bool
     GameLoop() : void
 }
 
 class LineUpBasic {
+    PlayTurn(Computer player) : bool
     GameLoop() : void
 }
 
 class LineUpSpin {
+    PlayTurn(Computer player) : bool
     GameLoop() : void
 }
 
@@ -67,6 +68,7 @@ class Grid {
     Spin() : void
     DrawGrid() : void
     CheckWinCondition() : bool
+    Reset() : void    
 
 }
 
@@ -82,38 +84,44 @@ abstract class Disc {
     Symbol : string
     IsPlayerOne : bool
     {abstract} ApplyEffects(Disc[][] Board, int lane) : void
+    {abstract} HasDiscRemaining(Player player) : bool
+    {abstract} WithdrawDisc(Player player) : void
 }
 
 class OrdinaryDisc {
     ApplyEffects(Disc[][] Board, int lane) : void
+    HasDiscRemaining(Player player) : bool
+    WithdrawDisc(Player player) : void
 }
 
 class BoringDisc {
     ApplyEffects(Disc[][] Board, int lane) : void
+    HasDiscRemaining(Player player) : bool
+    WithdrawDisc(Player player) : void
 }
 
 class ExplosiveDisc {
     ApplyEffects(Disc[][] Board, int lane) : void
+    HasDiscRemaining(Player player) : bool
+    WithdrawDisc(Player player) : void
 }
 
 class MagneticDisc {
     ApplyEffects(Disc[][] Board, int lane) : void
+    HasDiscRemaining(Player player) : bool
+    WithdrawDisc(Player player) : void
 }
 
 ''' Player '''
 abstract class Player {
     DiscBalance : Dictionary<string, int>
-    HasDiscRemaining() : bool
-    WithdrawDisc(Disc disc) : void
-    {abstract} PlayTurn() : void
+    HasDiscBalanceRemaining() : bool
 }
 
 class Human {
-    PlayTurn() : void
 }
 
 class Computer {
-    PlayTurn() : void
 }
 
 ''' IOController '''

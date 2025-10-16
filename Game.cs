@@ -1,5 +1,3 @@
-using System.Security;
-
 public abstract class Game
 {
     // Core Components
@@ -41,6 +39,12 @@ public abstract class Game
         return false;
     }
 
+        private bool Redo()
+    {
+        return false;
+    }
+
+
     /// <summary>
     /// Responsible for replaying moves during Undo / Redo 
     /// And testing mode, if implemented.
@@ -50,12 +54,6 @@ public abstract class Game
         // Iterate through MoveSequence, ParseMove, AddDisc, ApplyEffects
         Console.WriteLine("Not implemented yet!");
     }
-
-    private bool Redo()
-    {
-        return false;
-    }
-
     public bool TryHandleCommand(string input)
     {
         if(!input.StartsWith("/"))
@@ -207,13 +205,5 @@ public abstract class Game
         Console.WriteLine("--------------");
         Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
         Console.WriteLine($"Discs: {player.DiscBalance["Ordinary"]}");
-    }
-
-    public virtual void ResetGame()
-    {
-        // Grid.ResetGrid();
-        // PlayerOne.ResetPlayer();
-        // PlayerTwo.ResetPlayer();
-        
     }
 }
