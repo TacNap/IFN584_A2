@@ -8,7 +8,7 @@ public class MagneticDisc : Disc
         Symbol = IsPlayerOne ? "M" : "m";
     }
 
-    public override bool ApplyEffects(ref Disc?[][] Board, int lane)
+	public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t MagneticDisc, ApplyEffects");
 
@@ -33,7 +33,7 @@ public class MagneticDisc : Disc
 						break;
 					}
 				}
-				
+
 				// Convert special disc into ordinary
 				Board[i][lane] = new OrdinaryDisc(IsPlayerOne);
 			}
@@ -41,4 +41,14 @@ public class MagneticDisc : Disc
 
 		return true;
 	}
+
+	public override bool HasDiscRemaining(Player player)
+	{
+		return player.DiscBalance["Magnetic"] > 0;
+	}
+	
+	public override void WithdrawDisc(Player player)
+    {
+		player.DiscBalance["Magnetic"]--;
+    }
 }

@@ -36,6 +36,7 @@ public class LineUpBasic : Game {
     {
         while(IsGameActive)
         {
+            PrintPlayerData();
             Grid.DrawGrid();
 
             // Check if both players have discs remaining

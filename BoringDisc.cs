@@ -8,7 +8,7 @@ public class BoringDisc : Disc
         Symbol = IsPlayerOne ? "B" : "b";
     }
 
-    public override bool ApplyEffects(ref Disc?[][] Board, int lane)
+	public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
 		Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
 		int DiscCount1 = 0;
@@ -28,7 +28,7 @@ public class BoringDisc : Disc
 		{
 			Board[i][lane] = null;
 		}
-		
+
 		// Convert Boring to Ordinary at the bottom of the lane
 		Board[0][lane] = new OrdinaryDisc(IsPlayerOne);
 
@@ -37,4 +37,14 @@ public class BoringDisc : Disc
 
 		return true;
 	}
+
+	public override bool HasDiscRemaining(Player player)
+	{
+		return player.DiscBalance["Boring"] > 0;
+	}
+	
+	public override void WithdrawDisc(Player player)
+    {
+		player.DiscBalance["Boring"]--;
+    }
 }

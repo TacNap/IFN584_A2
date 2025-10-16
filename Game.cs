@@ -1,3 +1,5 @@
+using System.Security;
+
 public abstract class Game
 {
     // Core Components
@@ -79,6 +81,9 @@ public abstract class Game
                     io.PrintGreen("Quit!\n");
                     IsGameActive = false;
                     break;
+                default:
+                    io.PrintError("Error: Unrecognised command");
+                    break;
             }
             return true;
         }
@@ -149,7 +154,7 @@ public abstract class Game
 
             // At this point, its valid input
             Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
-            if (!player.HasDiscRemaining(disc))
+            if (!disc.HasDiscRemaining(player))
             {
                 io.PrintError("No Disc of that type remaining");
                 continue;
@@ -167,7 +172,7 @@ public abstract class Game
             {
                 // Successful move
                 // DocumentMove
-                player.WithdrawDisc(disc);
+                disc.WithdrawDisc(player);
                 Grid.DrawGrid();
                 if (disc.ApplyEffects(ref Grid.Board, lane))
                 {
@@ -195,6 +200,13 @@ public abstract class Game
         };
 
         return disc;
+    }
+
+    public virtual void PrintPlayerData()
+    {
+        Console.WriteLine("--------------");
+        Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+        Console.WriteLine($"Discs: {player.DiscBalance["Ordinary"]}");
     }
 
     public virtual void ResetGame()

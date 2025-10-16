@@ -80,7 +80,7 @@ public class Grid
     // Not implemented yet
     public bool IsTieGame(Player p1, Player p2)
     {
-        return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
+        return !p1.HasDiscBalanceRemaining() && !p2.HasDiscBalanceRemaining();
     }
 
     /// <summary>
