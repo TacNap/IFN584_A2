@@ -10,7 +10,7 @@ public abstract class Game
     public bool IsGameActive { get; set; }
 
     public List<string> MoveSequence { get; set; }
-    public IOController io { get; set; }
+
     public FileController file { get; set; }
 
     public string GetInputGame()
@@ -32,7 +32,7 @@ public abstract class Game
         // attempt to undo 2 moves. If turn counter < 3 : fail?
         if (Grid.TurnCounter <= 2)
         {
-            io.PrintError("You have no move to undo yet!");
+            IOController.PrintError("You have no move to undo yet!");
             return false;
         }
 
@@ -66,23 +66,23 @@ public abstract class Game
             switch (input)
             {
                 case "/undo":
-                    io.PrintGreen("Undo!\n");
+                    IOController.PrintGreen("Undo!\n");
                     break;
                 case "/redo":
-                    io.PrintGreen("Redo!\n");
+                    IOController.PrintGreen("Redo!\n");
                     break;
                 case "/save":
-                    io.PrintGreen("Save!\n");
+                    IOController.PrintGreen("Save!\n");
                     break;
                 case "/help":
-                    io.PrintGreen("Help!\n");
+                    IOController.PrintGreen("Help!\n");
                     break;
                 case "/quit":
-                    io.PrintGreen("Quit!\n");
+                    IOController.PrintGreen("Quit!\n");
                     IsGameActive = false;
                     break;
                 default:
-                    io.PrintError("Error: Unrecognised command");
+                    IOController.PrintError("Error: Unrecognised command");
                     break;
             }
             return true;
@@ -104,27 +104,27 @@ public abstract class Game
         lane = 0; // Must be instantited before continuing
         if (input[0] != 'o')
         {
-            io.PrintError("Invalid disc type");
+            IOController.PrintError("Invalid disc type");
             return false;
         }
 
         if (input.Length > 2)
         {
-            io.PrintError("Invalid lane");
+            IOController.PrintError("Invalid lane");
             return false;
         }
 
         if (!int.TryParse(input.Substring(1), out lane))
         {
             // Parse failed
-            io.PrintError("Invalid Lane - Must be a number");
+            IOController.PrintError("Invalid Lane - Must be a number");
             return false;
         }
         else
         {
             if (lane < 1 || lane > Grid.Board[1].Length)
             {
-                io.PrintError("Invalid lane");
+                IOController.PrintError("Invalid lane");
                 return false;
             }
 
@@ -141,7 +141,7 @@ public abstract class Game
             string input = GetInputGame();
             if (string.IsNullOrEmpty(input))
             {
-                io.PrintError("Please enter a valid move or command.");
+                IOController.PrintError("Please enter a valid move or command.");
                 continue;
             }
 
@@ -156,7 +156,7 @@ public abstract class Game
             Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
             if (!disc.HasDiscRemaining(player))
             {
-                io.PrintError("No Disc of that type remaining");
+                IOController.PrintError("No Disc of that type remaining");
                 continue;
             }
 
@@ -165,7 +165,7 @@ public abstract class Game
             if (!Grid.AddDisc(disc, lane))
             {
                 //Move fails
-                io.PrintError("Error: Lane is full");
+                IOController.PrintError("Error: Lane is full");
                 continue;
             }
             else

@@ -17,7 +17,6 @@ public class LineUpSpin : Game {
         }
         Grid = new Grid(fixedRows, fixedCols);
         IsGameActive = true;
-        io = new IOController();
         file = new FileController();
         MoveSequence = [];
     }
@@ -41,7 +40,7 @@ public class LineUpSpin : Game {
             // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
-                io.PrintWinner(true, true);
+                IOController.PrintWinner(true, true);
                 IsGameActive = false;
                 break;
             }
@@ -58,7 +57,7 @@ public class LineUpSpin : Game {
                 Computer c => PlayTurn(c),
                 _ => throw new ArgumentException("Unknown player type")
             };
-            
+
             Spin();
             if (success)
             {

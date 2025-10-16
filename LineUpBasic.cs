@@ -22,7 +22,6 @@ public class LineUpBasic : Game {
 
         IsGameActive = true;
         MoveSequence = [];
-        io = new IOController();
         file = new FileController();
     }
 
@@ -42,7 +41,7 @@ public class LineUpBasic : Game {
             // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
-                io.PrintWinner(true, true);
+                IOController.PrintWinner(true, true);
                 IsGameActive = false;
                 break;
             }
