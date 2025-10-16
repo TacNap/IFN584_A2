@@ -14,12 +14,13 @@ public class Player
 	// Currently returns true if the Player has ANY discs remaining
 	public bool HasDiscBalanceRemaining()
 	{
-		// Change this to iterate through the dictionary, regardless of contents.
-		return (
-			DiscBalance["Ordinary"] > 0 ||
-			DiscBalance["Boring"] > 0 ||
-			DiscBalance["Exploding"] > 0 ||
-			DiscBalance["Magnetic"] > 0
-			);
+		foreach (var (type, balance) in DiscBalance)
+		{
+			if (balance < 1)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

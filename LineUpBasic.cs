@@ -46,6 +46,7 @@ public class LineUpBasic : Game {
             }
 
             // Holds a reference to the current player, based on turn number
+            // Just for less repeated code :)
             Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
             // NOT IDEAL
