@@ -1,36 +1,42 @@
-﻿using System.Reflection.Metadata;
-
-Testing test = new Testing();
-test.TestGrid();
-//test.TestGameController();
+﻿Testing test = new Testing();
+// test.TestGrid();
+test.TestGameController();
 
 public class Testing()
 {
     public void TestGrid()
     {
-        Grid grid = new Grid(7, 8);
+        Grid grid = new Grid(8, 9);
         OrdinaryDisc od = new OrdinaryDisc(true);
         OrdinaryDisc od2 = new OrdinaryDisc(false);
         ExplodingDisc ed = new ExplodingDisc(true);
         ExplodingDisc ed2 = new ExplodingDisc(false);
-        grid.Board[0][0] = od;
-        grid.Board[0][1] = od2;
-        grid.Board[0][2] = ed;
-        grid.Board[0][3] = ed2;
-        Console.WriteLine("0 Degrees");
+        // 0 Degrees
+        grid.AddDisc(od, 0);
+        grid.AddDisc(ed, 0);
+        grid.AddDisc(od2, 0);
+        grid.AddDisc(ed2, 0);
         grid.DrawGrid();
 
+        // 90 Degrees
         Console.WriteLine("90 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
 
+        // 180 Degrees
         Console.WriteLine("180 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
 
+        // 270 Degrees
         Console.WriteLine("270 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
+        
+        
     }
 
     public void TestGameController()

@@ -1,5 +1,4 @@
-using System.ComponentModel;
-using System.Data;
+using System.Reflection.Metadata;
 
 public class Grid
 {
@@ -29,7 +28,7 @@ public class Grid
 
         this.orientation = Orientation.North;
         this.WinLength = (int)Math.Floor(GridHeight * GridWidth * 0.1);
-        this.TurnCounter = 0;
+        this.TurnCounter = 1;
     }
     // Methods
 
@@ -84,26 +83,121 @@ public class Grid
         return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
+    /// <summary>
+    /// Attempts to add the given disc to a provided lane - based on current Orientation.
+    /// </summary>
+    /// <param name="disc"></param>
+    /// <param name="lane"></param>
+    /// <returns>True if the disc is successfully placed.</returns>
     public bool AddDisc(Disc disc, int lane)
     {
-        Console.WriteLine("This method isn't implemented yet");
+        lane--; // User input must be reduced by 1 to match array indexing
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
+
+        switch (orientation)
+        {
+            case Orientation.North:
+                // Check if the lane is full
+                if (Board[0][lane] != null)
+                    return false;
+
+                // Find the lowest disc in the lane
+                for (int row = 1; row < pre_rows; row++)
+                {
+                    if (Board[row][lane] == null)
+                        continue;
+                    else
+                    {
+                        Board[row - 1][lane] = disc;
+                        return true;
+                    }
+                }
+
+                // If column is empty, add disc to the bottom
+                Board[pre_rows - 1][lane] = disc;
+                return true;
+
+            case Orientation.East:
+                lane = pre_rows - 1 - lane;
+                if (lane < 0 || lane >= pre_rows)
+                    return false;
+
+                if (Board[lane][0] != null)
+                    return false;
+
+                for (int col = 1; col < pre_cols; col++)
+                {
+                    if (Board[lane][col] != null)
+                    {
+                        Board[lane][col - 1] = disc;
+                        return true;
+                    }
+                }
+
+                Board[lane][pre_cols - 1] = disc;
+                return true;
+
+            case Orientation.South:
+                lane = pre_cols - 1 - lane;
+                // Check if the lane is full
+                if (Board[pre_rows - 1][lane] != null)
+                    return false;
+
+                // Find the lowest disc in the lane
+                for (int row = pre_rows - 1; row >= 0; row--)
+                {
+                    if (Board[row][lane] == null)
+                        continue;
+                    else
+                    {
+                        Board[row + 1][lane] = disc;
+                        return true;
+                    }
+                }
+
+                // If column is empty, add disc to the bottom
+                Board[0][lane] = disc;
+                return true;
+
+            case Orientation.West:
+                if (lane < 0 || lane >= pre_rows)
+                    return false;
+
+                if (Board[lane][pre_cols - 1] != null)
+                    return false;
+
+                for (int col = pre_cols - 1; col >= 0; col--)
+                {
+                    if (Board[lane][col] != null)
+                    {
+                        Board[lane][col + 1] = disc;
+                        return true;
+                    }
+                }
+
+                Board[lane][0] = disc;
+                return true;
+        }
         return false;
     }
 
-    // requires Orientation parameter
+    /// <summary>
+    /// ApplyGravity across the entire board, based on the current Orientation.
+    /// It works one column at a time. 
+    /// This method works by iterating over each column, and placing discs into a list.
+    /// Then, placing the discs back on the board in the correct order. 
+    /// </summary>
     public void ApplyGravity()
     {
-        int rows = Board.Length;
-        int cols = Board[0].Length;
-
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
         if (orientation == Orientation.North)
         {
-            // gravity down
-            for (int col = 0; col < cols; col++)
+            for (int col = 0; col < pre_cols; col++)
             {
                 List<Disc> discs = new List<Disc>();
-                
-                for (int row = 0; row < rows; row++)
+                for (int row = 0; row < pre_rows; row++)
                 {
                     if (Board[row][col] != null)
                     {
@@ -111,22 +205,20 @@ public class Grid
                         Board[row][col] = null;
                     }
                 }
-                
-                int startRow = rows - discs.Count;
-                for (int i = 0; i < discs.Count; i++)
+
+                int placementIndex = 0;
+                for (int row = pre_rows - 1; row >= 0 && placementIndex < discs.Count; row--)
                 {
-                    Board[startRow + i][col] = discs[i];
+                    Board[row][col] = discs[placementIndex++];
                 }
             }
         }
         else if (orientation == Orientation.East)
         {
-            // gravity left
-            for (int row = 0; row < rows; row++)
+            for (int row = pre_rows - 1; row >= 0; row--)
             {
                 List<Disc> discs = new List<Disc>();
-                
-                for (int col = cols - 1; col >= 0; col--)
+                for (int col = 0; col < pre_cols; col++)
                 {
                     if (Board[row][col] != null)
                     {
@@ -135,20 +227,19 @@ public class Grid
                     }
                 }
 
-                for (int i = 0; i < discs.Count; i++)
+                int placementIndex = 0;
+                for (int col = pre_cols - 1; col >= 0 && placementIndex < discs.Count; col--)
                 {
-                    Board[row][i] = discs[i];
+                    Board[row][col] = discs[placementIndex++];
                 }
             }
         }
         else if (orientation == Orientation.South)
         {
-            // gravity up
-            for (int col = 0; col < cols; col++)
+            for (int col = pre_cols - 1; col >= 0; col--)
             {
                 List<Disc> discs = new List<Disc>();
-                
-                for (int row = rows - 1; row >= 0; row--)
+                for (int row = 0; row < pre_rows; row++)
                 {
                     if (Board[row][col] != null)
                     {
@@ -156,21 +247,22 @@ public class Grid
                         Board[row][col] = null;
                     }
                 }
-                
-                for (int i = 0; i < discs.Count; i++)
+
+                int placementIndex = 0;
+                for (int row = 0; row < pre_rows && placementIndex < discs.Count; row++)
                 {
-                    Board[i][col] = discs[i];
+                    Board[row][col] = discs[placementIndex++];
                 }
             }
         }
+
         else if (orientation == Orientation.West)
         {
-            // gravity left
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < pre_rows; row++)
             {
                 List<Disc> discs = new List<Disc>();
-                
-                for (int col = 0; col < cols; col++)
+
+                for (int col = pre_cols - 1; col >= 0; col--)
                 {
                     if (Board[row][col] != null)
                     {
@@ -178,11 +270,11 @@ public class Grid
                         Board[row][col] = null;
                     }
                 }
-                
-                int startCol = cols - discs.Count;
-                for (int i = 0; i < discs.Count; i++)
+
+                int placementIndex = 0;
+                for (int col = 0; col < pre_cols && placementIndex < discs.Count; col++)
                 {
-                    Board[row][startCol + i] = discs[i];
+                    Board[row][col] = discs[placementIndex++];
                 }
             }
         }
@@ -190,22 +282,9 @@ public class Grid
 
     public void Spin()
     {
-        int pre_rows = Board.Length;
-        int pre_cols = Board[0].Length;
-        Disc[][] newBoard = new Disc[pre_cols][];
-
-        for (int i = 0; i < pre_cols; i++)
-            newBoard[i] = new Disc[pre_rows];
-
-        for (int new_row = 0; new_row < pre_rows; new_row++)
-        {
-            for (int col = 0; col < pre_cols; col++)
-            {
-                newBoard[col][pre_rows - 1 - new_row] = Board[new_row][col];
-            }
-        }
-        Board = newBoard;
-        return;
+        IncrementOrientation();
+        ApplyGravity();
+        //CheckWinCondition();
     }
 
     /// <summary>
@@ -214,18 +293,19 @@ public class Grid
     /// </summary>
     public void DrawGrid()
     {
+        Console.WriteLine($"Turn: {TurnCounter}");
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
 
         // Print Column Numbers
-        switch(orientation)
+        switch (orientation)
         {
             case Orientation.North:
             case Orientation.South:
                 Console.Write(" ");
                 for (int col = 1; col <= pre_cols; col++)
                 {
-                    Console.Write($"{col, 4}");
+                    Console.Write($"{col,4}");
                 }
                 Console.WriteLine();
                 break;
@@ -235,41 +315,41 @@ public class Grid
                 Console.Write(" ");
                 for (int row = 1; row <= pre_rows; row++)
                 {
-                    Console.Write($"{row, 4}");
+                    Console.Write($"{row,4}");
                 }
                 Console.WriteLine();
                 break;
         }
-        
+
         // Print Board contents and Barriers
-        switch(orientation)
+        switch (orientation)
         {
             // 0 Degrees
             case Orientation.North:
                 for (int row = 0; row < pre_rows; row++)
                 {
-                    Console.Write($"{pre_rows - row, 2}"); // Print row numbers
+                    Console.Write($"{pre_rows - row,2}"); // Print row numbers
                     for (int col = 0; col < pre_cols; col++)
                     {
                         string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
                         Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine("|");
+                    Console.WriteLine("|");
                 }
                 break;
             // 90 Degrees Clockwise
             case Orientation.East:
-                
+
                 for (int col = 0; col < pre_cols; col++)
                 {
-                    Console.Write($"{pre_cols - col, 2}"); // Print row numbers
+                    Console.Write($"{pre_cols - col,2}"); // Print row numbers
                     for (int row = pre_rows - 1; row >= 0; row--)
                     {
                         string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
                         Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine("|");
-                    
+                    Console.WriteLine("|");
+
                 }
                 break;
 
@@ -277,34 +357,76 @@ public class Grid
             case Orientation.South:
                 for (int row = pre_rows - 1; row >= 0; row--)
                 {
-                    Console.Write($"{row + 1, 2}"); // Print row numbers
+                    Console.Write($"{row + 1,2}"); // Print row numbers
                     for (int col = pre_cols - 1; col >= 0; col--)
                     {
                         string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
                         Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine("|");
+                    Console.WriteLine("|");
                 }
                 break;
-            
+
             // 270 Degrees Clockwise
             case Orientation.West:
                 for (int col = pre_cols - 1; col >= 0; col--)
                 {
-                    Console.Write($"{col + 1, 2}"); // Print row numbers
+                    Console.Write($"{col + 1,2}"); // Print row numbers
                     for (int row = 0; row < pre_rows; row++)
                     {
                         string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
                         Console.Write($"| {symbol} ");
                     }
-                        Console.WriteLine("|");
+                    Console.WriteLine("|");
                 }
                 break;
-	    }
+        }
+    }
+
+    public void DrawGridBaseline()
+    {
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
+
+        Console.Write(" ");
+        for (int col = 1; col <= pre_cols; col++)
+        {
+            Console.Write($"{col,4}");
+        }
+        Console.WriteLine();
+        for (int row = 0; row < pre_rows; row++)
+        {
+            Console.Write($"{pre_rows - row,2}"); // Print row numbers
+            for (int col = 0; col < pre_cols; col++)
+            {
+                string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
+                Console.Write($"| {symbol} ");
+            }
+            Console.WriteLine("|");
+        }
     }
 
     public bool CheckWinCondition()
     {
         return false;
+    }
+
+    public void Reset()
+    {
+        // Reset the board
+        int GridHeight = Board.Length;
+        int GridWidth = Board[0].Length;
+
+        this.Board = new Disc[GridHeight][];
+        for (int col = 0; col < GridHeight; col++)
+        {
+            Board[col] = new Disc[GridWidth];
+        }
+
+        // Reset turn counter
+        SetTurnCounter(1);
+
+        // Reset orientation
+        orientation = Orientation.North;
     }
 }

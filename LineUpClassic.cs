@@ -15,13 +15,8 @@ public class LineUpClassic : Game {
         }
         io = new IOController();
         file = new FileController();
-        MoveSequence = string.Empty;
+        MoveSequence = [];
     }
-    public override string GetInputGame()
-    {
-        throw new NotImplementedException();
-    }
-
     public override bool TryParseMove(string input, out int lane)
     {
         lane = 0;
