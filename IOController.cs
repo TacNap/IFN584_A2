@@ -69,7 +69,7 @@ public static class IOController
             PrintGreen("Player Two Wins");
         }
 
-        Console.Read();
+        Console.ReadLine();
     }
 
     public static int GetInputMenu()

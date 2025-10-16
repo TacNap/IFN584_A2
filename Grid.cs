@@ -1,6 +1,3 @@
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-
 public class Grid
 {
     public Disc?[][] Board; // need to change privacy. May need to add 'get' and 'set' methods for disc.ApplyEffects
@@ -381,29 +378,6 @@ public class Grid
                     Console.WriteLine("|");
                 }
                 break;
-        }
-    }
-
-    public void DrawGridBaseline()
-    {
-        int pre_rows = Board.Length;
-        int pre_cols = Board[0].Length;
-
-        Console.Write(" ");
-        for (int col = 1; col <= pre_cols; col++)
-        {
-            Console.Write($"{col,4}");
-        }
-        Console.WriteLine();
-        for (int row = 0; row < pre_rows; row++)
-        {
-            Console.Write($"{pre_rows - row,2}"); // Print row numbers
-            for (int col = 0; col < pre_cols; col++)
-            {
-                string symbol = Board[row][col] == null ? " " : Board[row][col].Symbol;
-                Console.Write($"| {symbol} ");
-            }
-            Console.WriteLine("|");
         }
     }
 

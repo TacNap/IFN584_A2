@@ -15,7 +15,6 @@ public class Player
 	}
 
 	// Currently returns true if the Player has ANY discs remaining
-	// Will need to create overrides for this, taking specific Disc Types as parameters
 	public bool HasDiscBalanceRemaining()
 	{
 		return (
