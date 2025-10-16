@@ -3,10 +3,13 @@ public class GameController
     // Properties
     private bool IsMenuActive { get; set; }
 
+    private FileController file { get; set; }
+
     // Constructor
     public GameController()
     {
         IsMenuActive = true;
+        file = new FileController();
     }
     
     // Methods
@@ -80,6 +83,9 @@ public class GameController
     
     public void LoadGame()
     {
-        Console.WriteLine("[Run]\t GameController | LoadGame");
+        IOController.PrintSaveFiles(file.GetSaves());
+        //IOController.GetInputLoad();
+        //Game = GameDeserialization(filePath);
+        //Game.GameLoop();
     }
 }

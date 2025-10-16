@@ -53,6 +53,11 @@ public static class IOController
         PrintGreen("║                New Game               ║\n");
         PrintGreen("╚═══════════════════════════════════════╝\n");
     }
+
+    public static void PrintSaveFiles(string?[]? saveFiles)
+    {
+        
+    }
     
     public static void PrintWinner(bool P1, bool P2)
     {

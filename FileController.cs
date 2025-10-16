@@ -49,6 +49,36 @@ public class FileController
         }
     }
 
+    /// <summary>
+    /// Responsible only for retrieving an array of save file names, if they exist. 
+    /// </summary>
+    /// <returns></returns>
+    public string?[]? GetSaves()
+    {
+        string[] saveFiles;
+        try
+        {
+            saveFiles = Directory.GetFiles("Saves");
+            if (saveFiles.Length == 0)
+            {
+                IOController.PrintError("Error: No files found in Saves folder!");
+                return null;
+            }
+        }
+        catch (DirectoryNotFoundException e)
+        {
+            IOController.PrintError($"You're missing a Saves folder! {e.Message}");
+            return null;
+        }
+        catch (Exception e)
+        {
+            IOController.PrintError($"Error: {e.Message}");
+            return null;
+        }
+
+        return saveFiles;
+    }
+
     public Game GameDeserialization(string filePath) // Currently doesn't perform any validation of filePath
     {
         string json = File.ReadAllText(filePath);
