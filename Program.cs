@@ -1,6 +1,6 @@
 ﻿Testing test = new Testing();
-// test.TestGrid();
-// test.TestWin();
+ //test.TestGrid();
+//test.TestWin();
 test.TestGameController();
 
 public class Testing()
@@ -17,27 +17,29 @@ public class Testing()
         grid.AddDisc(ed, 1);
         grid.AddDisc(od2, 1);
         grid.AddDisc(ed2, 1);
+        grid.AddDisc(ed2, 2);
+        grid.AddDisc(od2, 2);
+        grid.AddDisc(ed, 2);
+        grid.AddDisc(od, 2);
         grid.DrawGrid();
 
         // 90 Degrees
         Console.WriteLine("90 Degrees");
         grid.IncrementOrientation();
         grid.ApplyGravity();
-        grid.DrawGridBaseline();
+        grid.DrawGrid();
 
         // 180 Degrees
         Console.WriteLine("180 Degrees");
         grid.IncrementOrientation();
         grid.ApplyGravity();
-        grid.DrawGridBaseline();
+        grid.DrawGrid();
 
         // 270 Degrees
         Console.WriteLine("270 Degrees");
         grid.IncrementOrientation();
         grid.ApplyGravity();
-        grid.DrawGridBaseline();
-
-
+        grid.DrawGrid();
     }
     
     public void TestWin()

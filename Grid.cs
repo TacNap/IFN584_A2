@@ -204,6 +204,7 @@ public class Grid
                     }
                 }
 
+                discs.Reverse();
                 int placementIndex = 0;
                 for (int row = pre_rows - 1; row >= 0 && placementIndex < discs.Count; row--)
                 {
@@ -225,6 +226,7 @@ public class Grid
                     }
                 }
 
+                discs.Reverse();
                 int placementIndex = 0;
                 for (int col = pre_cols - 1; col >= 0 && placementIndex < discs.Count; col--)
                 {
@@ -269,6 +271,7 @@ public class Grid
                     }
                 }
 
+                discs.Reverse();
                 int placementIndex = 0;
                 for (int col = 0; col < pre_cols && placementIndex < discs.Count; col++)
                 {
