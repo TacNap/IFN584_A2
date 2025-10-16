@@ -25,11 +25,6 @@ public class LineUpBasic : Game {
         file = new FileController();
     }
 
-    public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
-
     public override void GameLoop()
     {
         while(IsGameActive)
@@ -52,7 +47,7 @@ public class LineUpBasic : Game {
             // NOT IDEAL
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
+            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn();
             // ! Board currently renders twice by accident after a move is played.. Will fix later. 
 
             if (successfulMove)

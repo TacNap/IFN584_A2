@@ -32,11 +32,7 @@ public class LineUpSpin : Game {
         if (Grid.TurnCounter % 5 == 0)
             Grid.Spin();
     }
-    
-        public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
+
 
     public override void GameLoop()
     {
@@ -59,7 +55,7 @@ public class LineUpSpin : Game {
             // NOT IDEAL
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
+            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn();
 
             CheckSpin();
             if (successfulMove)

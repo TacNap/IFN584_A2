@@ -182,8 +182,33 @@ public abstract class Game
         }
     }
 
-    // Might become a template method later 
-    public abstract bool ComputerTurn(Player player);
+    public bool FindWinningMove(out Disc? disc, out int lane)
+    {
+        disc = null;
+        lane = 0;
+        return false;
+    }
+
+    public void FindRandomMove(out Disc? disc, out int lane)
+    {
+        // PlayerTwo.DisBalance.Length
+        disc = null;
+        lane = 0;
+    }
+    
+    // Might be worth implementing a 'Move' little struct
+    public bool ComputerTurn()
+    {
+        if (!FindWinningMove(out Disc? disc, out int lane))
+        {
+            FindRandomMove(out disc, out lane);
+        }
+            Grid.AddDisc(disc, lane);
+            disc.ApplyEffects(ref Grid.Board, lane);
+            // Maybe draw grid
+            return true;
+    }
+   
 
     public abstract void GameLoop();
 

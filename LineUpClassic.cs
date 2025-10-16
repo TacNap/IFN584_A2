@@ -21,10 +21,6 @@ public class LineUpClassic : Game {
         file = new FileController();
     }
 
-    public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
     public override bool TryParseMove(string input, out int lane)
     {
         lane = 0;
