@@ -3,13 +3,10 @@ public class GameController
     // Properties
     private bool IsMenuActive { get; set; }
 
-    public IOController io; // needs to be added to class diagram, or made static
-
     // Constructor
     public GameController()
     {
         IsMenuActive = true;
-        io = new IOController();
     }
     
     // Methods
@@ -31,7 +28,7 @@ public class GameController
                 IsMenuActive = false;
                 break;    
             default:
-                io.PrintError("Error: Unknown Command");
+                IOController.PrintError("Error: Unknown Command");
                 break;
         }
     }
@@ -55,7 +52,7 @@ public class GameController
                     config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
                 );
         }
-        io.PrintError("Error: Unrecognised GameMode");
+        IOController.PrintError("Error: Unrecognised GameMode");
         return null;
     }
 
@@ -64,8 +61,8 @@ public class GameController
     {
         while (IsMenuActive) // may need to place a variable here later
         {
-            io.PrintMenu();
-            int input = io.GetInputMenu();
+            IOController.PrintMenu();
+            int input = IOController.GetInputMenu();
             RunCommand(input);
         }
     }
@@ -76,7 +73,7 @@ public class GameController
     /// </summary>
     public void NewGame()
     {
-        GameConfig config = io.GetInputNewGame();
+        GameConfig config = IOController.GetInputNewGame();
         Game game = GameFactory(config);
         game.GameLoop();
     }

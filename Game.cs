@@ -1,3 +1,5 @@
+using System.Security;
+
 public abstract class Game
 {
     // Core Components
@@ -8,7 +10,7 @@ public abstract class Game
     public bool IsGameActive { get; set; }
 
     public List<string> MoveSequence { get; set; }
-    public IOController io { get; set; }
+
     public FileController file { get; set; }
 
     public string GetInputGame()
@@ -30,7 +32,7 @@ public abstract class Game
         // attempt to undo 2 moves. If turn counter < 3 : fail?
         if (Grid.TurnCounter <= 2)
         {
-            io.PrintError("You have no move to undo yet!");
+            IOController.PrintError("You have no move to undo yet!");
             return false;
         }
 
@@ -56,12 +58,35 @@ public abstract class Game
 
     public bool TryHandleCommand(string input)
     {
-        //check if starts with "/"
-        // if not, return false
-        // otherwise try to run command against a switch statement
-        // return true regardless of outcome - attempted to run command
-        // Errors printed here
-        return false;
+        if(!input.StartsWith("/"))
+        {
+            return false;
+        } else
+        {
+            switch (input)
+            {
+                case "/undo":
+                    IOController.PrintGreen("Undo!\n");
+                    break;
+                case "/redo":
+                    IOController.PrintGreen("Redo!\n");
+                    break;
+                case "/save":
+                    IOController.PrintGreen("Save!\n");
+                    break;
+                case "/help":
+                    IOController.PrintGreen("Help!\n");
+                    break;
+                case "/quit":
+                    IOController.PrintGreen("Quit!\n");
+                    IsGameActive = false;
+                    break;
+                default:
+                    IOController.PrintError("Error: Unrecognised command");
+                    break;
+            }
+            return true;
+        }
     }
 
     /// <summary>
@@ -79,27 +104,27 @@ public abstract class Game
         lane = 0; // Must be instantited before continuing
         if (input[0] != 'o')
         {
-            io.PrintError("Invalid disc type");
+            IOController.PrintError("Invalid disc type");
             return false;
         }
 
         if (input.Length > 2)
         {
-            io.PrintError("Invalid lane");
+            IOController.PrintError("Invalid lane");
             return false;
         }
 
         if (!int.TryParse(input.Substring(1), out lane))
         {
             // Parse failed
-            io.PrintError("Invalid Lane - Must be a number");
+            IOController.PrintError("Invalid Lane - Must be a number");
             return false;
         }
         else
         {
             if (lane < 1 || lane > Grid.Board[1].Length)
             {
-                io.PrintError("Invalid lane");
+                IOController.PrintError("Invalid lane");
                 return false;
             }
 
@@ -116,7 +141,7 @@ public abstract class Game
             string input = GetInputGame();
             if (string.IsNullOrEmpty(input))
             {
-                io.PrintError("Please enter a valid move or command.");
+                IOController.PrintError("Please enter a valid move or command.");
                 continue;
             }
 
@@ -129,9 +154,9 @@ public abstract class Game
 
             // At this point, its valid input
             Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
-            if (!player.HasDiscRemaining(disc))
+            if (!disc.HasDiscRemaining(player))
             {
-                io.PrintError("No Disc of that type remaining");
+                IOController.PrintError("No Disc of that type remaining");
                 continue;
             }
 
@@ -140,14 +165,14 @@ public abstract class Game
             if (!Grid.AddDisc(disc, lane))
             {
                 //Move fails
-                io.PrintError("Error: Lane is full");
+                IOController.PrintError("Error: Lane is full");
                 continue;
             }
             else
             {
                 // Successful move
                 // DocumentMove
-                player.WithdrawDisc(disc);
+                disc.WithdrawDisc(player);
                 Grid.DrawGrid();
                 if (disc.ApplyEffects(ref Grid.Board, lane))
                 {
@@ -175,6 +200,13 @@ public abstract class Game
         };
 
         return disc;
+    }
+
+    public virtual void PrintPlayerData()
+    {
+        Console.WriteLine("--------------");
+        Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+        Console.WriteLine($"Discs: {player.DiscBalance["Ordinary"]}");
     }
 
     public virtual void ResetGame()

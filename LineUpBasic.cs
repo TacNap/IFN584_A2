@@ -22,7 +22,6 @@ public class LineUpBasic : Game {
 
         IsGameActive = true;
         MoveSequence = [];
-        io = new IOController();
         file = new FileController();
     }
 
@@ -36,12 +35,13 @@ public class LineUpBasic : Game {
     {
         while(IsGameActive)
         {
+            PrintPlayerData();
             Grid.DrawGrid();
 
             // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
-                io.PrintWinner(true, true);
+                IOController.PrintWinner(true, true);
                 IsGameActive = false;
                 break;
             }
@@ -59,10 +59,15 @@ public class LineUpBasic : Game {
                 _ => throw new ArgumentException("Unknown player type")
             };
 
-            // > Check Win Condition Here
-
             if (success)
+            {
+                if(Grid.CheckWinCondition())
+                {
+                    IsGameActive = false;
+                    break;
+                }
                 Grid.IncrementTurnCounter();
+            }
         }
     }
 }

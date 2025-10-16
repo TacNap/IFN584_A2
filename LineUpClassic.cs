@@ -13,7 +13,6 @@ public class LineUpClassic : Game {
         {
             PlayerTwo = new Computer(discBalance);
         }
-        io = new IOController();
         file = new FileController();
         MoveSequence = [];
     }

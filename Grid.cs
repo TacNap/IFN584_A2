@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 
 public class Grid
 {
@@ -80,7 +81,7 @@ public class Grid
     // Not implemented yet
     public bool IsTieGame(Player p1, Player p2)
     {
-        return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
+        return !p1.HasDiscBalanceRemaining() && !p2.HasDiscBalanceRemaining();
     }
 
     /// <summary>
@@ -408,6 +409,217 @@ public class Grid
 
     public bool CheckWinCondition()
     {
+        int P1Counter;
+        int P2Counter;
+        bool P1Win = false;
+        bool P2Win = false;
+        int GridHeight = Board.Length;
+        int GridWidth = Board[0].Length;
+
+        // Check Horizontal
+        for (int row = 0; row < GridHeight; row++)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int col = 0; col < GridWidth; col++)
+            {
+                if (Board[row][col]?.IsPlayerOne == true) // If this disc belongs to Player One
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[row][col]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else // If this space is empty, reset both counters
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+
+
+        // Check Vertical
+        for (int col = 0; col < GridWidth; col++)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int row = 0; row < GridHeight; row++)
+            {
+                if (Board[row][col]?.IsPlayerOne == true)
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[row][col]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+        
+
+        // Check Diagonal - North-Eastern, left half
+        for (int row = WinLength - 1; row < GridHeight; row++)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int delta = 0; row - delta >= 0 && delta < GridWidth; delta++)
+            {
+                if (Board[row - delta][delta]?.IsPlayerOne == true)
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[row - delta][delta]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+
+        // Check Diagonal - North-Eastern, right half
+        for (int col = 1; col < GridWidth; col++)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int delta = 0; GridHeight - 1 - delta >= 0 && col + delta < GridWidth; delta++) 
+            {
+                if (Board[GridHeight - 1 - delta][col + delta]?.IsPlayerOne == true)
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[GridHeight - 1 - delta][col + delta]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+
+        // Check Diagonal - North-Western, right half 
+        for (int row = WinLength - 1; row < GridHeight; row++)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int delta = 0; row - delta >= 0 && GridWidth - 1 - delta >= 0; delta++) 
+            {
+                if (Board[row - delta][GridWidth - 1 - delta]?.IsPlayerOne == true)
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[row - delta][GridWidth - 1 - delta]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+
+        // Check Diagonal - North-Western, left half
+        for (int col = GridWidth - 2; col >= 0; col--)
+        {
+            P1Counter = 0;
+            P2Counter = 0;
+            for (int delta = 0; GridHeight - 1 - delta >= 0 && col - delta >= 0; delta++)
+            {
+                if (Board[GridHeight - 1 - delta][col - delta]?.IsPlayerOne == true)
+                {
+                    P1Counter++;
+                    P2Counter = 0;
+                }
+                else if (Board[GridHeight - 1 - delta][col - delta]?.IsPlayerOne == false)
+                {
+                    P1Counter = 0;
+                    P2Counter++;
+                }
+                else
+                {
+                    P1Counter = 0;
+                    P2Counter = 0;
+                }
+                if (P1Counter == WinLength)
+                {
+                    P1Win = true;
+                }
+                if (P2Counter == WinLength)
+                {
+                    P2Win = true;
+                }
+            }
+        }
+        if (P1Win || P2Win)
+        {
+            IOController.PrintWinner(P1Win, P2Win);
+            return true;
+        }
         return false;
     }
 
