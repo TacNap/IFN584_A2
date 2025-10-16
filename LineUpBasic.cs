@@ -108,7 +108,10 @@ public class LineUpBasic : Game {
                 Computer c => PlayTurn(c),
                 _ => throw new ArgumentException("Unknown player type")
             };
-                // PlayTurn(PlayerOne);
+            // PlayTurn(PlayerOne);
+
+            if (success)
+                Grid.IncrementTurnCounter();
 
         }
     }

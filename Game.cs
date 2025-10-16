@@ -47,7 +47,7 @@ public abstract class Game
                 return false;
 
             // // At this point, its valid input
-            Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 0 ? false : true);
+            Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
             if (!player.HasDiscRemaining(disc))
             {
                 io.PrintError("No Disc of that type remaining");
