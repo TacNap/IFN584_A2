@@ -47,7 +47,7 @@ public class LineUpBasic : Game {
     /// <returns></returns>
     public override bool TryParseMove(string input, out int lane)
     {
-        lane = 0;
+        lane = 0; // Must be instantited before continuing
         if (input[0] != 'o')
         {
             io.PrintError("Invalid disc type");
@@ -71,6 +71,7 @@ public class LineUpBasic : Game {
             if (lane < 1 || lane > Grid.Board[1].Length)
             {
                 io.PrintError("Invalid lane");
+                return false;
             }
 
             // Valid Input
@@ -89,6 +90,8 @@ public class LineUpBasic : Game {
         while(IsGameActive)
         {
             Grid.DrawGrid();
+
+            // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
                 io.PrintWinner(true, true);
@@ -96,7 +99,7 @@ public class LineUpBasic : Game {
                 break;
             }
 
-            // Holds the current player, based on turn number
+            // Holds a reference to the current player, based on turn number
             Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
             // NOT IDEAL
@@ -108,11 +111,11 @@ public class LineUpBasic : Game {
                 Computer c => PlayTurn(c),
                 _ => throw new ArgumentException("Unknown player type")
             };
-            // PlayTurn(PlayerOne);
+
+            // > Check Win Condition Here
 
             if (success)
                 Grid.IncrementTurnCounter();
-
         }
     }
 }

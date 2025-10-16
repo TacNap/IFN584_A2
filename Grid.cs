@@ -85,9 +85,15 @@ public class Grid
         return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
-    // Needs to consider Orientation
+    /// <summary>
+    /// Attempts to add the given disc to a provided lane - based on current Orientation.
+    /// </summary>
+    /// <param name="disc"></param>
+    /// <param name="lane"></param>
+    /// <returns>True if the disc is successfully placed.</returns>
     public bool AddDisc(Disc disc, int lane)
     {
+        lane--; // User input must be reduced by 1 to match array indexing
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
 
@@ -278,22 +284,9 @@ public class Grid
 
     public void Spin()
     {
-        int pre_rows = Board.Length;
-        int pre_cols = Board[0].Length;
-        Disc[][] newBoard = new Disc[pre_cols][];
-
-        for (int i = 0; i < pre_cols; i++)
-            newBoard[i] = new Disc[pre_rows];
-
-        for (int new_row = 0; new_row < pre_rows; new_row++)
-        {
-            for (int col = 0; col < pre_cols; col++)
-            {
-                newBoard[col][pre_rows - 1 - new_row] = Board[new_row][col];
-            }
-        }
-        Board = newBoard;
-        return;
+        IncrementOrientation();
+        ApplyGravity();
+        //CheckWinCondition();
     }
 
     /// <summary>
@@ -302,6 +295,7 @@ public class Grid
     /// </summary>
     public void DrawGrid()
     {
+        Console.WriteLine($"Turn: {TurnCounter}");
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
 
