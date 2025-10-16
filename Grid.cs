@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 
@@ -84,9 +85,53 @@ public class Grid
         return !p1.HasDiscRemaining() && !p2.HasDiscRemaining();
     }
 
+    // Needs to consider Orientation
     public bool AddDisc(Disc disc, int lane)
     {
-        Console.WriteLine("This method isn't implemented yet");
+        int pre_rows = Board.Length;
+        int pre_cols = Board[0].Length;
+
+        switch (orientation)
+        {
+            case Orientation.North:
+                // Check if the lane is full
+                if (Board[0][lane] != null)
+                    return false;
+
+                // Find the lowest disc in the lane
+                for (int row = 1; row < pre_rows; row++)
+                {
+                    if (Board[row][lane] == null)
+                        continue;
+                    else
+                    {
+                        Board[row - 1][lane] = disc;
+                        return true;
+                    }
+                }
+
+                // If column is empty, add disc to the bottom
+                Board[pre_rows - 1][lane] = disc;
+                return true;
+
+            case Orientation.East:
+                if (Board[lane][0] != null)
+                    return false;
+
+                for (int col = 1; col < pre_rows; col++)
+                {
+                    if (Board[lane][col] == null)
+                        continue;
+                    else
+                    {
+                        Board[lane][col] = disc;
+                        return true;
+                    }
+                }
+
+                Board[lane][lane] = disc;
+                return true;
+        }
         return false;
     }
 

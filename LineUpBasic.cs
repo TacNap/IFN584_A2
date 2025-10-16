@@ -54,9 +54,9 @@ public class LineUpBasic : Game {
             return false;
         }
 
-        if (input.Length == 0 || input.Length > 2)
+        if (input.Length > 2)
         {
-            io.PrintError("Invalid input");
+            io.PrintError("Invalid lane");
             return false;
         }
 
@@ -89,7 +89,6 @@ public class LineUpBasic : Game {
         while(IsGameActive)
         {
             Grid.DrawGrid();
-            Console.WriteLine("< Grid should be drawn here >");
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
                 io.PrintWinner(true, true);
@@ -103,7 +102,7 @@ public class LineUpBasic : Game {
             // NOT IDEAL
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
-            bool success = PlayerOne switch
+            bool success = activePlayer switch
             {
                 Human h => PlayTurn(h),
                 Computer c => PlayTurn(c),
