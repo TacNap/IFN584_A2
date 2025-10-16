@@ -115,45 +115,64 @@ public class Grid
                 return true;
 
             case Orientation.East:
-                int placementRow = pre_rows - 1 - lane;
-                if (placementRow < 0 || placementRow >= pre_rows)
+                lane = pre_rows - 1 - lane;
+                if (lane < 0 || lane >= pre_rows)
                     return false;
 
-                if (Board[placementRow][0] != null)
+                if (Board[lane][0] != null)
                     return false;
 
                 for (int col = 1; col < pre_cols; col++)
                 {
-                    if (Board[placementRow][col] != null)
+                    if (Board[lane][col] != null)
                     {
-                        Board[placementRow][col - 1] = disc;
+                        Board[lane][col - 1] = disc;
                         return true;
                     }
                 }
 
-                Board[placementRow][pre_cols - 1] = disc;
+                Board[lane][pre_cols - 1] = disc;
                 return true;
 
             case Orientation.South:
-                int placementCol = pre_cols - 1 - lane;
+                lane = pre_cols - 1 - lane;
                 // Check if the lane is full
-                if (Board[pre_rows - 1][placementCol] != null)
+                if (Board[pre_rows - 1][lane] != null)
                     return false;
 
                 // Find the lowest disc in the lane
                 for (int row = pre_rows - 1; row >= 0; row--)
                 {
-                    if (Board[row][placementCol] == null)
+                    if (Board[row][lane] == null)
                         continue;
                     else
                     {
-                        Board[row + 1][placementCol] = disc;
+                        Board[row + 1][lane] = disc;
                         return true;
                     }
                 }
 
                 // If column is empty, add disc to the bottom
-                Board[0][placementCol] = disc;
+                Board[0][lane] = disc;
+                return true;
+
+            case Orientation.West:
+                if (lane < 0 || lane >= pre_rows)
+                    return false;
+
+                if (Board[lane][pre_cols-1] != null)
+                    return false;
+
+                for (int col = pre_cols - 1; col >= 0; col--)
+                {
+                    if (Board[lane][col] != null)
+                    {
+                        Board[lane][col + 1] = disc;
+                        return true;
+                    }
+                }
+
+                Board[lane][0] = disc;
                 return true;
         }
         return false;
