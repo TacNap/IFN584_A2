@@ -7,7 +7,6 @@
 ''' GameController '''
 class GameController {
     IsMenuActive : bool
-    io : IOController
     RunCommand(string input) : void
     GameFactory(GameConfig config) : Game
     Start() : void
@@ -24,12 +23,19 @@ abstract class Game {
     PlayerOne : Player
     PlayerTwo: Player
     IsGameActive : bool
-    MoveSequence : string
-    io : IOController
+    MoveSequence : list<string>
     file : FileController
+    GetInputGame : string
+    DocumentMove(string move) : void
+    UndoMove : bool
+    RedoMove : bool
+    PlayMoveSequence : void
+    TryHandleCommand(string input) : bool
+    {abstract} TryParseMove(string input, out int lane) : bool
     {abstract} GameLoop() : void
-    CreateDisc() : Disc
-    ' ResetGame() : void
+    PlayTurn(Human player) : bool
+    {abstract} PlayTurn(Computer player) : bool
+    {abstract} CreateDisc() : Disc
     ' May not need the above method
 }
 note left of Game::CreateDisc
