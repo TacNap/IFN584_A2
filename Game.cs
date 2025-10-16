@@ -132,7 +132,7 @@ public abstract class Game
     }
 
     // Template Method
-    public bool PlayTurn(Human player)
+    public bool PlayerTurn(Player player)
     {
         while (true)
         {
@@ -151,7 +151,7 @@ public abstract class Game
                 return false;
 
             // At this point, its valid input
-            Disc disc = CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
+            Disc disc = Disc.CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
             if (!disc.HasDiscRemaining(player))
             {
                 IOController.PrintError("No Disc of that type remaining");
@@ -182,23 +182,10 @@ public abstract class Game
         }
     }
 
-    // Will become a template method later 
-    public abstract bool PlayTurn(Computer player);
+    // Might become a template method later 
+    public abstract bool ComputerTurn(Player player);
 
     public abstract void GameLoop();
-    public virtual Disc CreateDisc(char discType, bool isPlayerOne)
-    {
-        Disc disc = char.ToLower(discType) switch
-        {
-            'o' => new OrdinaryDisc(isPlayerOne),
-            'b' => new BoringDisc(isPlayerOne),
-            'e' => new ExplodingDisc(isPlayerOne),
-            'm' => new MagneticDisc(isPlayerOne),
-            _ => throw new ArgumentException($"Invalid disc type: {discType}")
-        };
-
-        return disc;
-    }
 
     public virtual void PrintPlayerData()
     {

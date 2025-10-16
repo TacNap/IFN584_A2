@@ -3,18 +3,27 @@ public class LineUpClassic : Game {
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
     {
         Grid = new Grid(GridHeight, GridWidth);
-        int discBalance = (GridHeight * GridWidth / 2) + 4;
-        PlayerOne = new Human(discBalance);
-        if (HvH)
+
+        // Define disc amounts
+        int ordinaryBalance = GridHeight * GridWidth / 2;
+        Dictionary<string, int> discBalance = new Dictionary<string, int>
         {
-            PlayerTwo = new Human(discBalance);
-        }
-        else
-        {
-            PlayerTwo = new Computer(discBalance);
-        }
-        file = new FileController();
+            ["Ordinary"] = ordinaryBalance,
+            ["Boring"] = 2,
+            ["Exploding"] = 2,
+            ["Magnetic"] = 2
+        };
+
+        PlayerOne = new Player(discBalance);
+        PlayerTwo = new Player(discBalance, HvH);
+        IsGameActive = true;
         MoveSequence = [];
+        file = new FileController();
+    }
+
+    public override bool ComputerTurn(Player player)
+    {
+        throw new NotImplementedException();
     }
     public override bool TryParseMove(string input, out int lane)
     {
@@ -26,15 +35,11 @@ public class LineUpClassic : Game {
         // print errors as necessary
         return false;
     }
-
-    public override bool PlayTurn(Computer player)
-    {
-        throw new NotImplementedException();
-    }
-
     public override void GameLoop()
     {
         Console.WriteLine("< Core Loop starts here! >");
         Console.ReadLine();
     }
+
+    
 }

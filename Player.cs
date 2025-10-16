@@ -1,33 +1,26 @@
-
 public class Player
 {
 	public Dictionary<string, int> DiscBalance { get; protected set; }
 
-	protected Player(int discBalance)
+	public bool IsHuman { get; set; }
+
+	public Player(Dictionary<string, int> discBalance, bool isHuman = true)
 	{
-		DiscBalance = new Dictionary<string, int>
-		{
-			["Ordinary"] = discBalance,
-			["Boring"] = 2,
-			["Exploding"] = 2,
-			["Magnetic"] = 2
-		};
+		// Change this to accept a dictionary. 
+		this.DiscBalance = discBalance;
+		IsHuman = isHuman;
 	}
 
 	// Currently returns true if the Player has ANY discs remaining
 	public bool HasDiscBalanceRemaining()
 	{
-		return (
-			DiscBalance["Ordinary"] > 0 ||
-			DiscBalance["Boring"] > 0 ||
-			DiscBalance["Exploding"] > 0 ||
-			DiscBalance["Magnetic"] > 0
-			);
-	}
-	
-	public virtual void PlayTurn()
-	{
-		Console.WriteLine("> get input from player");
-		Console.ReadLine();
+		foreach (var (type, balance) in DiscBalance)
+		{
+			if (balance < 1)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

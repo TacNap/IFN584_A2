@@ -3,38 +3,46 @@ public class LineUpSpin : Game {
     // Constructor
     public LineUpSpin(bool HvH = true)
     {
+        // ! may want to move this to the factory method in gamecontroller??
         int fixedRows = 8;
         int fixedCols = 9;
-        int discBalance = (fixedRows * fixedCols / 2) + 4;
-        PlayerOne = new Human(discBalance);
-        if (HvH)
-        {
-            PlayerTwo = new Human(discBalance);
-        }
-        else
-        {
-            PlayerTwo = new Computer(discBalance);
-        }
+        // Create the grid
         Grid = new Grid(fixedRows, fixedCols);
+
+        // Define the number of starting discs
+        int ordinaryBalance = fixedRows * fixedCols / 2;
+        Dictionary<string, int> discBalance = new Dictionary<string, int>
+        {
+            ["Ordinary"] = ordinaryBalance,
+        };
+
+        // Create the player objects
+        PlayerOne = new Player(discBalance);
+        PlayerTwo = new Player(discBalance, HvH);
         IsGameActive = true;
-        file = new FileController();
         MoveSequence = [];
+        file = new FileController();
     }
 
-    public override bool PlayTurn(Computer player)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Spin()
+    /// <summary>
+    /// Checks if the game should be spun, based on turn counter
+    /// </summary>
+    private void CheckSpin()
     {
         if (Grid.TurnCounter % 5 == 0)
             Grid.Spin();
     }
+    
+        public override bool ComputerTurn(Player player)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void GameLoop()
     {
         while(IsGameActive)
         {
+            PrintPlayerData();
             Grid.DrawGrid();
 
             // Check if both players have discs remaining
@@ -51,17 +59,12 @@ public class LineUpSpin : Game {
             // NOT IDEAL
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
-            bool success = activePlayer switch
-            {
-                Human h => PlayTurn(h),
-                Computer c => PlayTurn(c),
-                _ => throw new ArgumentException("Unknown player type")
-            };
+            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
 
-            Spin();
-            if (success)
+            CheckSpin();
+            if (successfulMove)
             {
-                if(Grid.CheckWinCondition())
+                if (Grid.CheckWinCondition())
                 {
                     IsGameActive = false;
                     break;
@@ -70,4 +73,6 @@ public class LineUpSpin : Game {
             }
         }
     }
+
+
 }
