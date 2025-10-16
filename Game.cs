@@ -70,7 +70,7 @@ public abstract class Game
                     IOController.PrintGreen("Redo!\n");
                     break;
                 case "/save":
-                    IOController.PrintGreen("Save!\n");
+                    file.GameSerialization(this);
                     break;
                 case "/help":
                     IOController.PrintGreen("Help!\n");

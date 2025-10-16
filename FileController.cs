@@ -9,7 +9,7 @@ public class FileController
     /// 
     /// </summary>
     /// <param name="game"></param>
-    public void GridSerialization(Game game)
+    public void GameSerialization(Game game)
     {
         // Check if directory exists
         string saveDirectory = "Saves";
@@ -49,7 +49,7 @@ public class FileController
         }
     }
 
-    public Game GridDeserialization(string filePath) // Currently doesn't perform any validation of filePath
+    public Game GameDeserialization(string filePath) // Currently doesn't perform any validation of filePath
     {
         string json = File.ReadAllText(filePath);
         return JsonConvert.DeserializeObject<Game>(json, new JsonSerializerSettings
