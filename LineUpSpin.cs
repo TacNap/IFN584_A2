@@ -58,11 +58,17 @@ public class LineUpSpin : Game {
                 Computer c => PlayTurn(c),
                 _ => throw new ArgumentException("Unknown player type")
             };
-
-            // > Check Win Condition Here
+            
             Spin();
             if (success)
+            {
+                if(Grid.CheckWinCondition())
+                {
+                    IsGameActive = false;
+                    break;
+                }
                 Grid.IncrementTurnCounter();
+            }
         }
     }
 }

@@ -60,10 +60,15 @@ public class LineUpBasic : Game {
                 _ => throw new ArgumentException("Unknown player type")
             };
 
-            // > Check Win Condition Here
-
             if (success)
+            {
+                if(Grid.CheckWinCondition())
+                {
+                    IsGameActive = false;
+                    break;
+                }
                 Grid.IncrementTurnCounter();
+            }
         }
     }
 }
