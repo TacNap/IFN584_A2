@@ -1,33 +1,32 @@
 public class LineUpBasic : Game {
 
     // Constructor
+    // ! This could be made the base, then override for Classic?
     public LineUpBasic(bool HvH = true)
     {
+        // ! may want to move this to the factory method in gamecontroller??
         int fixedRows = 8;
         int fixedCols = 9;
         // Create the grid
         Grid = new Grid(fixedRows, fixedCols);
-        // Define the number of starting discs
-        int discBalance = (fixedRows * fixedCols / 2) + 4;
-        // Create the player objects
-        PlayerOne = new Human(discBalance);
-        if (HvH)
-        {
-            PlayerTwo = new Human(discBalance);
-        }
-        else
-        {
-            PlayerTwo = new Computer(discBalance);
-        }
 
+        // Define the number of starting discs
+        int ordinaryBalance = fixedRows * fixedCols / 2;
+        Dictionary<string, int> discBalance = new Dictionary<string, int>
+        {
+            ["Ordinary"] = ordinaryBalance,
+        };
+
+        // Create the player objects
+        PlayerOne = new Player(discBalance);
+        PlayerTwo = new Player(discBalance, HvH);
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
     }
 
-    public override bool PlayTurn(Computer player)
+    public override bool ComputerTurn(Player player)
     {
-        // Disc = FindWinningMove
         throw new NotImplementedException();
     }
 
@@ -52,14 +51,9 @@ public class LineUpBasic : Game {
             // NOT IDEAL
             // For true polymorphism, PlayTurn needs to exist on the Player object. 
             // Which would mean the entire Game object also needs to be passed in...
-            bool success = activePlayer switch
-            {
-                Human h => PlayTurn(h),
-                Computer c => PlayTurn(c),
-                _ => throw new ArgumentException("Unknown player type")
-            };
+            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
 
-            if (success)
+            if (successfulMove)
             {
                 if(Grid.CheckWinCondition())
                 {
