@@ -49,8 +49,12 @@ public class FileController
         }
     }
 
-    public void GridDeserialization()
+    public Game GridDeserialization(string filePath) // Currently doesn't perform any validation of filePath
     {
-        Console.WriteLine("[Run]\t FileController | GridDeserialization");
+        string json = File.ReadAllText(filePath);
+        return JsonConvert.DeserializeObject<Game>(json, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
     }
 }
