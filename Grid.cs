@@ -115,21 +115,45 @@ public class Grid
                 return true;
 
             case Orientation.East:
-                if (Board[lane][0] != null)
+                int placementRow = pre_rows - 1 - lane;
+                if (placementRow < 0 || placementRow >= pre_rows)
                     return false;
 
-                for (int col = 1; col < pre_rows; col++)
+                if (Board[placementRow][0] != null)
+                    return false;
+
+                for (int col = 1; col < pre_cols; col++)
                 {
-                    if (Board[lane][col] == null)
-                        continue;
-                    else
+                    if (Board[placementRow][col] != null)
                     {
-                        Board[lane][col] = disc;
+                        Board[placementRow][col - 1] = disc;
                         return true;
                     }
                 }
 
-                Board[lane][lane] = disc;
+                Board[placementRow][pre_cols - 1] = disc;
+                return true;
+
+            case Orientation.South:
+                int placementCol = pre_cols - 1 - lane;
+                // Check if the lane is full
+                if (Board[pre_rows - 1][placementCol] != null)
+                    return false;
+
+                // Find the lowest disc in the lane
+                for (int row = pre_rows - 1; row >= 0; row--)
+                {
+                    if (Board[row][placementCol] == null)
+                        continue;
+                    else
+                    {
+                        Board[row + 1][placementCol] = disc;
+                        return true;
+                    }
+                }
+
+                // If column is empty, add disc to the bottom
+                Board[0][placementCol] = disc;
                 return true;
         }
         return false;

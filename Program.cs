@@ -30,9 +30,13 @@ public class Testing()
         grid.AddDisc(od, 2);
         grid.DrawGrid();
 
-        // Console.WriteLine("180 Degrees");
-        // grid.IncrementOrientation();
-        // grid.DrawGrid();
+        Console.WriteLine("180 Degrees");
+        grid.IncrementOrientation();
+        grid.DrawGrid();
+        Console.WriteLine("Add Discs 3rd lane");
+        grid.AddDisc(od, 2);
+        grid.AddDisc(od, 2);
+        grid.DrawGrid();
 
         // Console.WriteLine("270 Degrees");
         // grid.IncrementOrientation();
