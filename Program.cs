@@ -1,8 +1,6 @@
-﻿using System.Reflection.Metadata;
-
-Testing test = new Testing();
-test.TestGrid();
-//test.TestGameController();
+﻿Testing test = new Testing();
+// test.TestGrid();
+test.TestGameController();
 
 public class Testing()
 {
