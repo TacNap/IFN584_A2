@@ -16,26 +16,11 @@ public class LineUpSpin : Game {
             PlayerTwo = new Computer(discBalance);
         }
         Grid = new Grid(fixedRows, fixedCols);
+        IsGameActive = true;
         io = new IOController();
         file = new FileController();
-        MoveSequence = string.Empty;
+        MoveSequence = [];
     }
-    public override string GetInputGame()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override bool TryParseMove(string input, out int lane)
-    {
-        lane = 0;
-        // check if the input is valid for a move
-        // check if the type is allowed
-        // check if lane numbers are within reason. use orientation
-        // extract and IntParse lane.
-        // print errors as necessary
-        return false;
-    }
-
 
     public override bool PlayTurn(Computer player)
     {

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
+using System.Reflection.Metadata;
 
 public class Grid
 {
@@ -30,7 +28,7 @@ public class Grid
 
         this.orientation = Orientation.North;
         this.WinLength = (int)Math.Floor(GridHeight * GridWidth * 0.1);
-        this.TurnCounter = 0;
+        this.TurnCounter = 1;
     }
     // Methods
 
@@ -384,7 +382,7 @@ public class Grid
                 break;
         }
     }
-    
+
     public void DrawGridBaseline()
     {
         int pre_rows = Board.Length;
@@ -411,5 +409,24 @@ public class Grid
     public bool CheckWinCondition()
     {
         return false;
+    }
+
+    public void Reset()
+    {
+        // Reset the board
+        int GridHeight = Board.Length;
+        int GridWidth = Board[0].Length;
+
+        this.Board = new Disc[GridHeight][];
+        for (int col = 0; col < GridHeight; col++)
+        {
+            Board[col] = new Disc[GridWidth];
+        }
+
+        // Reset turn counter
+        SetTurnCounter(1);
+
+        // Reset orientation
+        orientation = Orientation.North;
     }
 }
