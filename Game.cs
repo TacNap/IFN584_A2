@@ -56,12 +56,32 @@ public abstract class Game
 
     public bool TryHandleCommand(string input)
     {
-        //check if starts with "/"
-        // if not, return false
-        // otherwise try to run command against a switch statement
-        // return true regardless of outcome - attempted to run command
-        // Errors printed here
-        return false;
+        if(!input.StartsWith("/"))
+        {
+            return false;
+        } else
+        {
+            switch (input)
+            {
+                case "/undo":
+                    io.PrintGreen("Undo!\n");
+                    break;
+                case "/redo":
+                    io.PrintGreen("Redo!\n");
+                    break;
+                case "/save":
+                    io.PrintGreen("Save!\n");
+                    break;
+                case "/help":
+                    io.PrintGreen("Help!\n");
+                    break;
+                case "/quit":
+                    io.PrintGreen("Quit!\n");
+                    IsGameActive = false;
+                    break;
+            }
+            return true;
+        }
     }
 
     /// <summary>
