@@ -13,38 +13,32 @@ public class Testing()
         OrdinaryDisc od2 = new OrdinaryDisc(false);
         ExplodingDisc ed = new ExplodingDisc(true);
         ExplodingDisc ed2 = new ExplodingDisc(false);
-        grid.Board[7][0] = od;
-        grid.Board[7][1] = od2;
-        grid.Board[7][2] = ed;
-        grid.Board[7][3] = ed2;
-        Console.WriteLine("0 Degrees");
+        // 0 Degrees
+        grid.AddDisc(od, 0);
+        grid.AddDisc(ed, 0);
+        grid.AddDisc(od2, 0);
+        grid.AddDisc(ed2, 0);
         grid.DrawGrid();
-        // Console.WriteLine("Add Disc 1st lane");
-        // grid.AddDisc(od, 0);
-        // grid.DrawGrid();
 
+        // 90 Degrees
         Console.WriteLine("90 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
-        Console.WriteLine("Add Disc 3rd lane");
-        grid.AddDisc(od, 2);
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
 
+        // 180 Degrees
         Console.WriteLine("180 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
-        Console.WriteLine("Add Discs 3rd lane");
-        grid.AddDisc(od, 2);
-        grid.AddDisc(od, 2);
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
 
+        // 270 Degrees
         Console.WriteLine("270 Degrees");
         grid.IncrementOrientation();
-        grid.DrawGrid();
-        Console.WriteLine("Add Discs 3rd lane");
-        grid.AddDisc(od, 2);
-        grid.AddDisc(od, 2);
-        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGridBaseline();
+        
+        
     }
 
     public void TestGameController()
