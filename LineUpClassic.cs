@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
 
-public class LineUpClassic : Game {
-
+public class LineUpClassic : Game
+{
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
     {
         Grid = new Grid(GridHeight, GridWidth);
 
-        // Define disc amounts
         int ordinaryBalance = GridHeight * GridWidth / 2;
         Dictionary<string, int> discBalance = new Dictionary<string, int>
         {
@@ -21,28 +20,29 @@ public class LineUpClassic : Game {
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
+        
+        // ADD THIS: Initialize computer strategy
+        computerStrategy = new BasicComputerStrategy();
     }
 
-    // Constructor used when loading from file
     [JsonConstructor]
     public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
+        // Strategy is initialized in base constructor
     }
 
-    public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
+    // REMOVE THIS - now implemented in Game.cs
+    // public override bool ComputerTurn(Player player)
+    // {
+    //     throw new NotImplementedException();
+    // }
     
-    // * Revisit meee. Make me a template method or something 
-    // Do I even account for grid length = 10?
-    // do i even account for spin???
     public override bool TryParseMove(string input, out int lane)
     {
-        lane = 0; // Must be instantited before continuing
+        lane = 0;
         string validChar = "obem";
-        if (!validChar.Contains(input[0])) // This should reference some dictionary of moves on the game subclass
+        if (!validChar.Contains(input[0]))
         {
             IOController.PrintError("Invalid disc type");
             return false;
@@ -56,22 +56,21 @@ public class LineUpClassic : Game {
 
         if (!int.TryParse(input.Substring(1), out lane))
         {
-            // Parse failed
             IOController.PrintError("Invalid Lane - Must be a number");
             return false;
         }
         else
         {
-            if (lane < 1 || lane > Grid.Board[1].Length)
+            if (lane < 1 || lane > Grid.Board[0].Length)  // FIXED: was Board[1]
             {
                 IOController.PrintError("Invalid lane");
                 return false;
             }
 
-            // Valid Input
             return true;
         }
     }
+
     public override void GameLoop()
     {
         while(IsGameActive)
@@ -79,7 +78,6 @@ public class LineUpClassic : Game {
             PrintPlayerData();
             Grid.DrawGrid();
 
-            // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
                 IOController.PrintWinner(true, true);
@@ -87,15 +85,9 @@ public class LineUpClassic : Game {
                 break;
             }
 
-            // Holds a reference to the current player, based on turn number
-            // Just for less repeated code :)
             Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
-            // NOT IDEAL
-            // For true polymorphism, PlayTurn needs to exist on the Player object. 
-            // Which would mean the entire Game object also needs to be passed in...
             bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-            // ! Board currently renders twice by accident after a move is played.. Will fix later. 
 
             if (successfulMove)
             {
@@ -109,7 +101,14 @@ public class LineUpClassic : Game {
         }
     }
 
-    
-
-    
+    public override void PrintPlayerData()
+    {
+        Console.WriteLine("--------------");
+        Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+        Console.WriteLine($"Player {(Grid.TurnCounter % 2 == 1 ? "One" : "Two")} Discs:");
+        Console.WriteLine($"  Ordinary: {player.DiscBalance["Ordinary"]}");
+        Console.WriteLine($"  Boring: {player.DiscBalance["Boring"]}");
+        Console.WriteLine($"  Exploding: {player.DiscBalance["Exploding"]}");
+        Console.WriteLine($"  Magnetic: {player.DiscBalance["Magnetic"]}");
+    }
 }

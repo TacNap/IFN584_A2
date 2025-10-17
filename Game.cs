@@ -10,6 +10,7 @@ public abstract class Game
     public List<string> MoveSequence { get; set; }
 
     public FileController file { get; set; }
+    protected IComputerStrategy computerStrategy;
 
     // Empty constructor is required to differentiate from JSON constructor
     protected Game()
@@ -25,6 +26,7 @@ public abstract class Game
         IsGameActive = isGameActive;
         MoveSequence = moveSequence ?? [];
         file = fileController ?? new FileController();
+        computerStrategy = new BasicComputerStrategy();
     }
 
     public string GetInputGame()
@@ -222,7 +224,54 @@ public abstract class Game
     }
 
     // Might become a template method later 
-    public abstract bool ComputerTurn(Player player);
+// ADD THIS: Template Method for computer player
+    public bool ComputerTurn(Player player)
+    {
+        Console.WriteLine("Computer is thinking...");
+        
+        // Use the strategy to select a move
+        Move move = computerStrategy.SelectMove(Grid, player);
+
+        // Execute the move
+        if (!Grid.AddDisc(move.Disc, move.Lane))
+        {
+            IOController.PrintError("Error: Computer selected invalid move");
+            return false;
+        }
+
+        // Document the move
+        char discChar = GetDiscCharFromDisc(move.Disc);
+        DocumentMove($"{discChar}{move.Lane}");
+
+        // Withdraw the disc from player's balance
+        move.Disc.WithdrawDisc(player);
+
+        Console.WriteLine($"Computer plays {move.Disc.Symbol} in lane {move.Lane}");
+        Grid.DrawGrid();
+
+        // Apply effects
+        if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
+        {
+            Grid.ApplyGravity();
+            Grid.DrawGrid();
+        }
+
+        return true;
+    }
+
+    // ADD THIS: Helper method to get disc character
+    private char GetDiscCharFromDisc(Disc disc)
+    {
+        string symbol = disc.Symbol.ToLower();
+        return symbol switch
+        {
+            "@" or "#" => 'o',
+            "b" => 'b',
+            "e" => 'e',
+            "m" => 'm',
+            _ => 'o'
+        };
+    }
 
     public abstract void GameLoop();
 
