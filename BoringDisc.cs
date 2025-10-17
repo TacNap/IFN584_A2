@@ -14,11 +14,13 @@ public class BoringDisc : Disc
 		int DiscCount1 = 0;
 		int DiscCount2 = 0;
 
+		int laneIndex = lane - 1;
+
 		// Count discs of each player
 		for (int i = 0; i < Board.Length; i++)
 		{
-			if (Board[i][lane] == null) continue;
-			Disc? d = Board[i][lane];
+			if (Board[i][laneIndex] == null) continue;
+			Disc? d = Board[i][laneIndex];
 			if (d.IsPlayerOne) DiscCount1 += 1;
 			else DiscCount2 += 1;
 		}
@@ -26,11 +28,11 @@ public class BoringDisc : Disc
 		// Drill the lane
 		for (int i = 1; i < Board.Length; i++)
 		{
-			Board[i][lane] = null;
+			Board[i][laneIndex] = null;
 		}
 
 		// Convert Boring to Ordinary at the bottom of the lane
-		Board[0][lane] = new OrdinaryDisc(IsPlayerOne);
+		Board[^1][laneIndex] = new OrdinaryDisc(IsPlayerOne);
 
 		// TODO: Return all disk to hands of respective players
 		// ...
