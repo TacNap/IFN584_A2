@@ -21,7 +21,7 @@ public class GameController
                 NewGame();
                 break;
             case 2:
-                Console.WriteLine("Load Game");
+                LoadGame();
                 break;
             case 3:
                 Console.WriteLine("Help");
@@ -83,9 +83,14 @@ public class GameController
     
     public void LoadGame()
     {
-        IOController.PrintSaveFiles(file.GetSaves());
-        //IOController.GetInputLoad();
-        //Game = GameDeserialization(filePath);
-        //Game.GameLoop();
+        string?[]? saveFiles = file.GetSaves();
+        if (saveFiles == null)
+            return;
+        IOController.PrintSaveFiles(saveFiles);
+        string filePath = IOController.GetInputLoad(saveFiles);
+        if (filePath == null)
+            return;
+        Game Game = file.GameDeserialization(filePath);
+        Game.GameLoop();
     }
 }

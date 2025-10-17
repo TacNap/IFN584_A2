@@ -79,7 +79,7 @@ public class FileController
         return saveFiles;
     }
 
-    public Game GameDeserialization(string filePath) // Currently doesn't perform any validation of filePath
+    public Game GameDeserialization(string filePath)
     {
         string json = File.ReadAllText(filePath);
         return JsonConvert.DeserializeObject<Game>(json, new JsonSerializerSettings

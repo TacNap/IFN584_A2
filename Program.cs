@@ -1,5 +1,5 @@
 ﻿Testing test = new Testing();
- //test.TestGrid();
+//test.TestGrid();
 //test.TestWin();
 test.TestGameController();
 
@@ -41,7 +41,7 @@ public class Testing()
         grid.ApplyGravity();
         grid.DrawGrid();
     }
-    
+
     public void TestWin()
     {
         Grid grid = new Grid(8, 9);
