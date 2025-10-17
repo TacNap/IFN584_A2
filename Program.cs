@@ -1,7 +1,7 @@
 ﻿Testing test = new Testing();
 //test.TestGrid();
 //test.TestWin();
-//test.TestGameController();
+test.TestGameController();
 test.TestComputerAI();
 
 public class Testing()
