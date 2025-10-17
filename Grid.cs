@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class Grid
 {
     public Disc?[][] Board; // need to change privacy. May need to add 'get' and 'set' methods for disc.ApplyEffects
@@ -14,6 +16,19 @@ public class Grid
     public int WinLength { get; }
 
     public int TurnCounter { get; private set; }
+
+    [JsonConstructor]
+    public Grid(
+        [JsonProperty("Board")] Disc?[][] board,
+        [JsonProperty("orientation")] Orientation orientation,
+        [JsonProperty("WinLength")] int winLength,
+        [JsonProperty("TurnCounter")] int turnCounter)
+    {
+        Board = board;
+        this.orientation = orientation;
+        WinLength = winLength;
+        TurnCounter = turnCounter;
+    }
 
     // Constructor
     public Grid(int GridHeight, int GridWidth)

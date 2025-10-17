@@ -82,6 +82,7 @@ public class FileController
     public Game GameDeserialization(string filePath)
     {
         string json = File.ReadAllText(filePath);
+        
         return JsonConvert.DeserializeObject<Game>(json, new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All
