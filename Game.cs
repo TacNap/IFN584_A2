@@ -11,6 +11,9 @@ public abstract class Game
 
     public FileController file { get; set; }
 
+    // Strategy for computer AI
+    protected IComputerStrategy computerStrategy;
+
     public string GetInputGame()
     {
         Console.WriteLine("Enter move/command");
@@ -19,7 +22,6 @@ public abstract class Game
         return input.Trim().ToLower();
     }
 
-    // Not convinced yet that these methods should exist on Game
     private void DocumentMove(string move)
     {
         MoveSequence.Add(move);
@@ -27,7 +29,6 @@ public abstract class Game
 
     private bool Undo()
     {
-        // attempt to undo 2 moves. If turn counter < 3 : fail?
         if (Grid.TurnCounter <= 2)
         {
             IOController.PrintError("You have no move to undo yet!");
@@ -39,27 +40,23 @@ public abstract class Game
         return false;
     }
 
-        private bool Redo()
+    private bool Redo()
     {
         return false;
     }
 
-
-    /// <summary>
-    /// Responsible for replaying moves during Undo / Redo 
-    /// And testing mode, if implemented.
-    /// </summary>
     public virtual void PlayMoveSequence()
     {
-        // Iterate through MoveSequence, ParseMove, AddDisc, ApplyEffects
         Console.WriteLine("Not implemented yet!");
     }
+
     public bool TryHandleCommand(string input)
     {
         if(!input.StartsWith("/"))
         {
             return false;
-        } else
+        }
+        else
         {
             switch (input)
             {
@@ -87,19 +84,9 @@ public abstract class Game
         }
     }
 
-    /// <summary>
-    /// Check if the input describes a valid move for this game mode:
-    /// Check input format
-    /// Check disc type
-    /// Check lane number
-    /// Extract lane number
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="lane"></param>
-    /// <returns></returns>
     public virtual bool TryParseMove(string input, out int lane)
     {
-        lane = 0; // Must be instantited before continuing
+        lane = 0;
         if (input[0] != 'o')
         {
             IOController.PrintError("Invalid disc type");
@@ -114,24 +101,22 @@ public abstract class Game
 
         if (!int.TryParse(input.Substring(1), out lane))
         {
-            // Parse failed
             IOController.PrintError("Invalid Lane - Must be a number");
             return false;
         }
         else
         {
-            if (lane < 1 || lane > Grid.Board[1].Length)
+            if (lane < 1 || lane > Grid.Board[0].Length)
             {
                 IOController.PrintError("Invalid lane");
                 return false;
             }
 
-            // Valid Input
             return true;
         }
     }
 
-    // Template Method
+    // Template Method for human player
     public bool PlayerTurn(Player player)
     {
         while (true)
@@ -146,30 +131,25 @@ public abstract class Game
             if (TryHandleCommand(input))
                 return false;
 
-
             if (!TryParseMove(input, out int lane))
-                return false;
+                continue;
 
-            // At this point, its valid input
-            Disc disc = Disc.CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
+            Disc disc = Disc.CreateDisc(input[0], Grid.TurnCounter % 2 == 1);
             if (!disc.HasDiscRemaining(player))
             {
                 IOController.PrintError("No Disc of that type remaining");
                 continue;
             }
 
-            // At this point, we have a disc and know its within balance.
-            // Try to add the disc. If it fails, its because the lane is full.
             if (!Grid.AddDisc(disc, lane))
             {
-                //Move fails
                 IOController.PrintError("Error: Lane is full");
                 continue;
             }
             else
             {
                 // Successful move
-                // DocumentMove
+                DocumentMove(input);
                 disc.WithdrawDisc(player);
                 Grid.DrawGrid();
                 if (disc.ApplyEffects(ref Grid.Board, lane))
@@ -182,33 +162,56 @@ public abstract class Game
         }
     }
 
-    public bool FindWinningMove(out Disc? disc, out int lane)
+    // Template Method for computer player - uses Strategy Pattern
+    public bool ComputerTurn(Player player)
     {
-        disc = null;
-        lane = 0;
-        return false;
+        Console.WriteLine("Computer is thinking...");
+        
+        // Use the strategy to select a move
+        Move move = computerStrategy.SelectMove(Grid, player);
+
+        // Execute the move
+        if (!Grid.AddDisc(move.Disc, move.Lane))
+        {
+            IOController.PrintError("Error: Computer selected invalid move");
+            return false;
+        }
+
+        // Document the move
+        char discChar = GetDiscCharFromDisc(move.Disc);
+        DocumentMove($"{discChar}{move.Lane}");
+
+        // Withdraw the disc from player's balance
+        move.Disc.WithdrawDisc(player);
+
+        Console.WriteLine($"Computer plays {move.Disc.Symbol} in lane {move.Lane}");
+        Grid.DrawGrid();
+
+        // Apply effects
+        if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
+        {
+            Grid.ApplyGravity();
+            Grid.DrawGrid();
+        }
+
+        return true;
     }
 
-    public void FindRandomMove(out Disc? disc, out int lane)
+    /// <summary>
+    /// Helper method to get the disc character for move documentation
+    /// </summary>
+    private char GetDiscCharFromDisc(Disc disc)
     {
-        // PlayerTwo.DisBalance.Length
-        disc = null;
-        lane = 0;
-    }
-    
-    // Might be worth implementing a 'Move' little struct
-    public bool ComputerTurn()
-    {
-        if (!FindWinningMove(out Disc? disc, out int lane))
+        string symbol = disc.Symbol.ToLower();
+        return symbol switch
         {
-            FindRandomMove(out disc, out lane);
-        }
-            Grid.AddDisc(disc, lane);
-            disc.ApplyEffects(ref Grid.Board, lane);
-            // Maybe draw grid
-            return true;
+            "@" or "#" => 'o',
+            "b" => 'b',
+            "e" => 'e',
+            "m" => 'm',
+            _ => 'o'
+        };
     }
-   
 
     public abstract void GameLoop();
 
