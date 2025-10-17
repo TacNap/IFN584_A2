@@ -20,8 +20,7 @@ public class LineUpClassic : Game
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
-        
-        // ADD THIS: Initialize computer strategy
+    
         computerStrategy = new BasicComputerStrategy();
     }
 
@@ -32,12 +31,6 @@ public class LineUpClassic : Game
         // Strategy is initialized in base constructor
     }
 
-    // REMOVE THIS - now implemented in Game.cs
-    // public override bool ComputerTurn(Player player)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    
     public override bool TryParseMove(string input, out int lane)
     {
         lane = 0;
@@ -61,7 +54,7 @@ public class LineUpClassic : Game
         }
         else
         {
-            if (lane < 1 || lane > Grid.Board[0].Length)  // FIXED: was Board[1]
+            if (lane < 1 || lane > Grid.Board[1].Length)  
             {
                 IOController.PrintError("Invalid lane");
                 return false;

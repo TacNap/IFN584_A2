@@ -20,7 +20,6 @@ public class LineUpSpin : Game
         MoveSequence = [];
         file = new FileController();
         
-        // ADD THIS: Initialize computer strategy
         computerStrategy = new BasicComputerStrategy();
     }
     
@@ -39,12 +38,6 @@ public class LineUpSpin : Game
             Grid.Spin();
         }
     }
-    
-    // REMOVE THIS - now implemented in Game.cs
-    // public override bool ComputerTurn(Player player)
-    // {
-    //     throw new NotImplementedException();
-    // }
 
     public override void GameLoop()
     {
@@ -72,7 +65,7 @@ public class LineUpSpin : Game
                     break;
                 }
                 Grid.IncrementTurnCounter();
-                CheckSpin();  // Check spin AFTER incrementing turn
+                CheckSpin(); 
             }
         }
     }

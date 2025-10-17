@@ -20,7 +20,6 @@ public class LineUpBasic : Game
         MoveSequence = [];
         file = new FileController();
         
-        // ADD THIS: Initialize computer strategy
         computerStrategy = new BasicComputerStrategy();
     }
 
@@ -30,12 +29,6 @@ public class LineUpBasic : Game
     {
         // Strategy is initialized in base constructor
     }
-
-    // REMOVE THIS - now implemented in Game.cs
-    // public override bool ComputerTurn(Player player)
-    // {
-    //     throw new NotImplementedException();
-    // }
 
     public override void GameLoop()
     {

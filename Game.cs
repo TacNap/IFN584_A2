@@ -223,8 +223,8 @@ public abstract class Game
         }
     }
 
-    // Might become a template method later 
-// ADD THIS: Template Method for computer player
+    // Might become a template method later
+    // Template Method for computer player
     public bool ComputerTurn(Player player)
     {
         Console.WriteLine("Computer is thinking...");
@@ -259,7 +259,7 @@ public abstract class Game
         return true;
     }
 
-    // ADD THIS: Helper method to get disc character
+    // Helper method to get disc character
     private char GetDiscCharFromDisc(Disc disc)
     {
         string symbol = disc.Symbol.ToLower();
