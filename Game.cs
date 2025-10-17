@@ -91,10 +91,11 @@ public abstract class Game
     }
     public bool TryHandleCommand(string input)
     {
-        if(!input.StartsWith("/"))
+        if (!input.StartsWith("/"))
         {
             return false;
-        } else
+        }
+        else
         {
             switch (input)
             {
@@ -122,6 +123,9 @@ public abstract class Game
         }
     }
 
+    // **** Revisit meee. Make me a template method or something 
+    // Do I even account for grid length = 10?
+    // do i even account for spin???
     /// <summary>
     /// Check if the input describes a valid move for this game mode:
     /// Check input format
@@ -135,7 +139,7 @@ public abstract class Game
     public virtual bool TryParseMove(string input, out int lane)
     {
         lane = 0; // Must be instantited before continuing
-        if (input[0] != 'o')
+        if (input[0] != 'o') // This should reference some dictionary of moves on the game subclass
         {
             IOController.PrintError("Invalid disc type");
             return false;

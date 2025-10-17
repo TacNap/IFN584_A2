@@ -16,11 +16,11 @@ public class Player
 	{
 		foreach (var (type, balance) in DiscBalance)
 		{
-			if (balance < 1)
+			if (balance > 0)
 			{
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 }
