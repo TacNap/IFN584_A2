@@ -38,7 +38,8 @@ public abstract class Game
     // Not convinced yet that these methods should exist on Game
     private void DocumentMove(string move)
     {
-        MoveSequence.Add(move);
+        if (Grid.TurnCounter - 1 < MoveSequence.Count) MoveSequence[Grid.TurnCounter] = move;
+        else MoveSequence.Add(move);
     }
 
     private bool Undo()
@@ -247,6 +248,31 @@ public abstract class Game
                     Grid.ApplyGravity();
                     Grid.DrawGrid();
                 }
+                // TODO: (Remove) from this
+                // Note: Temp code to test Undo/Redo
+                string move = "";
+                switch(disc.Symbol)
+                {
+                    case "@":
+                    case "#":
+                        move = "o";
+                        break;
+                    case "B":
+                    case "b":
+                        move = "b";
+                        break;
+                    case "M":
+                    case "m":
+                        move = "m";
+                        break;
+                    case "E":
+                    case "e":
+                        move = "e";
+                        break;
+                }
+                move += $"{lane}";
+                DocumentMove(move);
+                // TODO: (Remove) to this
                 return true;
             }
         }
