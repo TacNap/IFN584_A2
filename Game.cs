@@ -11,6 +11,22 @@ public abstract class Game
 
     public FileController file { get; set; }
 
+    // Empty constructor is required to differentiate from JSON constructor
+    protected Game()
+    {
+    }
+
+    // Inherited by JSON Constructors
+    protected Game(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController fileController)
+    {
+        Grid = grid;
+        PlayerOne = playerOne;
+        PlayerTwo = playerTwo;
+        IsGameActive = isGameActive;
+        MoveSequence = moveSequence ?? [];
+        file = fileController ?? new FileController();
+    }
+
     public string GetInputGame()
     {
         Console.WriteLine("Enter move/command");
@@ -70,7 +86,7 @@ public abstract class Game
                     IOController.PrintGreen("Redo!\n");
                     break;
                 case "/save":
-                    IOController.PrintGreen("Save!\n");
+                    file.GameSerialization(this);
                     break;
                 case "/help":
                     IOController.PrintGreen("Help!\n");

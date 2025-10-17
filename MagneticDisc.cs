@@ -1,10 +1,11 @@
-
+using Newtonsoft.Json;
 
 public class MagneticDisc : Disc
 {
-    public MagneticDisc(bool isPlayerOne_)
+    [JsonConstructor]
+    public MagneticDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
     {
-        IsPlayerOne = isPlayerOne_;
+        IsPlayerOne = isPlayerOne;
         Symbol = IsPlayerOne ? "M" : "m";
     }
 

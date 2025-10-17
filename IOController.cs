@@ -53,6 +53,17 @@ public static class IOController
         PrintGreen("║                New Game               ║\n");
         PrintGreen("╚═══════════════════════════════════════╝\n");
     }
+
+    public static void PrintSaveFiles(string[] saveFiles)
+    {
+        Console.WriteLine("- Load Banner -");
+        Console.WriteLine("Please input the number of the file you'd like to load:");
+        for (int i = 0; i < saveFiles.Length; i++)
+        {
+            PrintGreen($"[{i + 1}] ");
+            Console.WriteLine($"{Path.GetFileName(saveFiles[i])}");
+        }
+    }
     
     public static void PrintWinner(bool P1, bool P2)
     {
@@ -97,6 +108,26 @@ public static class IOController
                 PrintError("Must be a number!");
             }
 
+        }
+    }
+
+    public static string? GetInputLoad(string[] saveFiles)
+    {
+        Console.Write("> ");
+        string input = Console.ReadLine();
+        try
+        {
+            int num = int.Parse(input);
+            if (num < 1 || num > saveFiles.Length)
+            {
+                PrintError($"Error: Input must be between 1 and {saveFiles.Length}\n");
+                return null;
+            }
+            return saveFiles[num - 1];
+        } catch (Exception e)
+        {
+            PrintError($"Error: {e.Message}\n");
+            return null;
         }
     }
     

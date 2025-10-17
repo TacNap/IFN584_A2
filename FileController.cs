@@ -1,12 +1,91 @@
+using Newtonsoft.Json;
 public class FileController
 {
-    public void GridSerialization()
+    /// Uses the NewtonSoft JSON package to perform Serialization / Deserialization.
+    /// https://www.newtonsoft.com/json
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="game"></param>
+    public void GameSerialization(Game game)
     {
-        Console.WriteLine("[Run]\t FileController | GridSerialization");
+        // Check if directory exists
+        string saveDirectory = "Saves";
+        if (!Path.Exists(saveDirectory))
+        {
+            try
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+            catch (Exception e)
+            {
+                IOController.PrintError($"Error: unable to create Saves directory, {e.Message}");
+                return;
+            }
+        }
+
+        // Create filename
+        string timestamp = DateTime.Now.ToString("yyyMMdd_HHmmss");
+        string fileName = $"Game_{timestamp}.json";
+        string filePath = Path.Combine(saveDirectory, fileName);
+
+        // Content to write to file
+        string json = JsonConvert.SerializeObject(game, Formatting.Indented, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
+
+        try
+        {
+            // Write to file
+            File.WriteAllText(filePath, json);
+            IOController.PrintSuccess($"Game saved to {filePath}");
+        }
+        catch (Exception e)
+        {
+            IOController.PrintError($"Error: Unable to write to save directory, {e.Message}");
+        }
     }
-    
-    public void GridDeserialization()
+
+    /// <summary>
+    /// Responsible only for retrieving an array of save file names, if they exist. 
+    /// </summary>
+    /// <returns></returns>
+    public string?[]? GetSaves()
     {
-        Console.WriteLine("[Run]\t FileController | GridDeserialization");
+        string[] saveFiles;
+        try
+        {
+            saveFiles = Directory.GetFiles("Saves");
+            if (saveFiles.Length == 0)
+            {
+                IOController.PrintError("Error: No files found in Saves folder!");
+                return null;
+            }
+        }
+        catch (DirectoryNotFoundException e)
+        {
+            IOController.PrintError($"You're missing a Saves folder! {e.Message}");
+            return null;
+        }
+        catch (Exception e)
+        {
+            IOController.PrintError($"Error: {e.Message}");
+            return null;
+        }
+
+        return saveFiles;
+    }
+
+    public Game GameDeserialization(string filePath)
+    {
+        string json = File.ReadAllText(filePath);
+        
+        return JsonConvert.DeserializeObject<Game>(json, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
     }
 }

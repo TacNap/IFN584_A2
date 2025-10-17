@@ -1,10 +1,11 @@
-
+using Newtonsoft.Json;
 
 public class BoringDisc : Disc
 {
-    public BoringDisc(bool isPlayerOne_)
+    [JsonConstructor]
+    public BoringDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
     {
-        IsPlayerOne = isPlayerOne_;
+        IsPlayerOne = isPlayerOne;
         Symbol = IsPlayerOne ? "B" : "b";
     }
 

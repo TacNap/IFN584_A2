@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class LineUpBasic : Game {
 
     // Constructor
@@ -23,6 +25,13 @@ public class LineUpBasic : Game {
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
+    }
+
+    // Constructor used when loading from file
+    [JsonConstructor]
+    public LineUpBasic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+    {
     }
 
     public override bool ComputerTurn(Player player)
