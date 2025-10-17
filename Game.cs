@@ -50,14 +50,40 @@ public abstract class Game
             return false;
         }
 
-        Grid.Reset();
+        // Decrement TurnCounter
+        for (int _ = 0; _ < 2; _++)
+        {
+            Grid.DecrementTurnCounter();
+        }
+    
+        // Run Moves with new TurnCounter
+        Console.WriteLine($"\t\t Undo | TurnCounter: {Grid.TurnCounter}");
+        Grid.Reset(true);
         PlayMoveSequence();
-        return false;
+        Grid.DrawGrid();
+
+        // TODO: Change Disc count
+        
+        return true;
     }
 
     private bool Redo()
     {
-        return false;
+        // Decrement TurnCounter
+        for (int _ = 0; _ < 2; _++)
+        {
+            Grid.IncrementTurnCounter();
+        }
+
+        // Run Moves with new TurnCounter
+        Console.WriteLine($"\t\t Redo | TurnCounter: {Grid.TurnCounter}");
+        Grid.Reset(true);
+        PlayMoveSequence();
+        Grid.DrawGrid();
+
+        // TODO: Change Disc count
+
+        return true;
     }
 
 
@@ -68,11 +94,15 @@ public abstract class Game
     public virtual void PlayMoveSequence()
     {
         // TODO: Test the logic
-        
-        // Iterate through MoveSequence
-        for (int i = 0; i < MoveSequence.Count; i++)
+
+        // Iterate through MoveSequence based on TurnCounter
+        Console.WriteLine($"\t\t Grid.TurnCounter: {Grid.TurnCounter}");
+        Console.WriteLine($"\t\t MoveSquence length: {MoveSequence.Count}");
+        for (int i = 0; i < Grid.TurnCounter-1; i++)
         {
+            Console.WriteLine($"\t\t MoveSequence index: {i}");
             string input = MoveSequence[i];
+            Console.WriteLine($"\t\t MoveSequence[{i}]: {input}");
             // ParseMove
             if (!TryParseMove(input, out int lane))
             {
@@ -81,14 +111,17 @@ public abstract class Game
             }
 
             // AddDisc
-            bool IsPlayerOne = (Grid.TurnCounter % 2 == 1) ? true : false;
+            bool IsPlayerOne = (i+1) % 2 == 1;
             Disc disc = Disc.CreateDisc(input[0], IsPlayerOne);
             Grid.AddDisc(disc, lane);
-
+            Grid.ApplyGravity();
             // ApplyEffects
-            disc.ApplyEffects(ref Grid.Board, lane);
+            if (disc.ApplyEffects(ref Grid.Board, lane)) Grid.ApplyGravity();
+
+            // CheckBoard();
         }
     }
+    
     public bool TryHandleCommand(string input)
     {
         if(!input.StartsWith("/"))
@@ -100,9 +133,11 @@ public abstract class Game
             {
                 case "/undo":
                     IOController.PrintGreen("Undo!\n");
+                    Undo();
                     break;
                 case "/redo":
                     IOController.PrintGreen("Redo!\n");
+                    Redo();
                     break;
                 case "/save":
                     file.GameSerialization(this);
