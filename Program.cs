@@ -1,12 +1,18 @@
-﻿
+
+﻿using System.Text.Json.Nodes;
 
 Testing test = new Testing();
-test.TestBoring();
-test.TestMagnetic();
-test.TestExploding();
+//test.TestGrid();
+//test.TestWin();
+test.TestGameController();
+
+//test.TestBoring();
+//test.TestMagnetic();
+//test.TestExploding();
 
 public class Testing()
 {
+
     public void TestGrid()
     {
         Grid grid = new Grid(8, 9);
@@ -43,7 +49,7 @@ public class Testing()
         grid.ApplyGravity();
         grid.DrawGrid();
     }
-    
+
     public void TestWin()
     {
         Grid grid = new Grid(8, 9);

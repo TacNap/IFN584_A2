@@ -1,10 +1,11 @@
-
+using Newtonsoft.Json;
 
 public class ExplodingDisc : Disc
 {
-    public ExplodingDisc(bool isPlayerOne_)
+    [JsonConstructor]
+    public ExplodingDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
     {
-        IsPlayerOne = isPlayerOne_;
+        IsPlayerOne = isPlayerOne;
         Symbol = IsPlayerOne ? "E" : "e";
     }
 

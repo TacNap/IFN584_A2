@@ -3,10 +3,13 @@ public class GameController
     // Properties
     private bool IsMenuActive { get; set; }
 
+    private FileController file { get; set; }
+
     // Constructor
     public GameController()
     {
         IsMenuActive = true;
+        file = new FileController();
     }
     
     // Methods
@@ -18,7 +21,7 @@ public class GameController
                 NewGame();
                 break;
             case 2:
-                Console.WriteLine("Load Game");
+                LoadGame();
                 break;
             case 3:
                 Console.WriteLine("Help");
@@ -80,6 +83,14 @@ public class GameController
     
     public void LoadGame()
     {
-        Console.WriteLine("[Run]\t GameController | LoadGame");
+        string?[]? saveFiles = file.GetSaves();
+        if (saveFiles == null)
+            return;
+        IOController.PrintSaveFiles(saveFiles);
+        string filePath = IOController.GetInputLoad(saveFiles);
+        if (filePath == null)
+            return;
+        Game Game = file.GameDeserialization(filePath);
+        Game.GameLoop();
     }
 }
