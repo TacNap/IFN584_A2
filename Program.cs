@@ -1,7 +1,9 @@
-﻿Testing test = new Testing();
- //test.TestGrid();
-//test.TestWin();
-test.TestGameController();
+﻿
+
+Testing test = new Testing();
+test.TestBoring();
+test.TestMagnetic();
+test.TestExploding();
 
 public class Testing()
 {
@@ -110,6 +112,162 @@ public class Testing()
     {
         GameController gc = new GameController();
         gc.Start();
+    }
+
+    public void TestBoring()
+    {
+        Grid grid = new Grid(8, 9);
+        Disc OD = new OrdinaryDisc(true);
+        Disc od = new OrdinaryDisc(false);
+        Disc BD = new BoringDisc(true);
+        Disc bd = new BoringDisc(false);
+
+        Console.WriteLine("\n\t Boring Test");
+        
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.DrawGrid();
+
+        // Boring
+        grid.AddDisc(BD, 1);
+        grid.DrawGrid();
+        BD.ApplyEffects(ref grid.Board, 1);
+        grid.DrawGrid();
+    }
+
+    public void TestMagnetic()
+    {
+        Grid grid = new Grid(8, 9);
+        Disc OD = new OrdinaryDisc(true);
+        Disc od = new OrdinaryDisc(false);
+        Disc MD = new MagneticDisc(true);
+        Disc md = new MagneticDisc(false);
+
+        Console.WriteLine("\n\t Magnetic Test");
+        
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.DrawGrid();
+
+        // Magnetic
+        grid.AddDisc(MD, 2);
+        grid.DrawGrid();
+        MD.ApplyEffects(ref grid.Board, 2);
+        grid.DrawGrid();
+    }
+
+    public void TestExploding()
+    {
+        Grid grid = new Grid(8, 9);
+        Disc OD = new OrdinaryDisc(true);
+        Disc od = new OrdinaryDisc(false);
+        Disc ED = new ExplodingDisc(true);
+        Disc ed = new ExplodingDisc(false);
+
+        Console.WriteLine("\n\t Exploding Test");
+        
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        grid.AddDisc(OD, 1);
+        grid.AddDisc(od, 1);
+        
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        grid.AddDisc(OD, 2);
+        grid.AddDisc(od, 2);
+        
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        grid.AddDisc(OD, 3);
+        grid.AddDisc(od, 3);
+        
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        grid.AddDisc(OD, 4);
+        grid.AddDisc(od, 4);
+        
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.AddDisc(OD, 5);
+        grid.AddDisc(od, 5);
+        grid.DrawGrid();
+
+
+        // Exploding
+        grid.AddDisc(ED, 4);
+        grid.DrawGrid();
+        ED.ApplyEffects(ref grid.Board, 4);
+        grid.DrawGrid();
+        grid.ApplyGravity();
+        grid.DrawGrid();
     }
 }
 
