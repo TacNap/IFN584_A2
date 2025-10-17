@@ -615,7 +615,7 @@ public class Grid
         return false;
     }
 
-    public void Reset()
+    public void Reset(bool re_undo=false)
     {
         // Reset the board
         int GridHeight = Board.Length;
@@ -628,7 +628,7 @@ public class Grid
         }
 
         // Reset turn counter
-        SetTurnCounter(1);
+        if (!re_undo) SetTurnCounter(1);
 
         // Reset orientation
         orientation = Orientation.North;
