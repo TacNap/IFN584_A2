@@ -55,7 +55,7 @@ public abstract class Game
         return false;
     }
 
-        private bool Redo()
+    private bool Redo()
     {
         return false;
     }
@@ -67,8 +67,27 @@ public abstract class Game
     /// </summary>
     public virtual void PlayMoveSequence()
     {
-        // Iterate through MoveSequence, ParseMove, AddDisc, ApplyEffects
-        Console.WriteLine("Not implemented yet!");
+        // TODO: Test the logic
+        
+        // Iterate through MoveSequence
+        for (int i = 0; i < MoveSequence.Count; i++)
+        {
+            string input = MoveSequence[i];
+            // ParseMove
+            if (!TryParseMove(input, out int lane))
+            {
+                // ?
+                break;
+            }
+
+            // AddDisc
+            bool IsPlayerOne = (Grid.TurnCounter % 2 == 1) ? true : false;
+            Disc disc = Disc.CreateDisc(input[0], IsPlayerOne);
+            Grid.AddDisc(disc, lane);
+
+            // ApplyEffects
+            disc.ApplyEffects(ref Grid.Board, lane);
+        }
     }
     public bool TryHandleCommand(string input)
     {
