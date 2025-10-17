@@ -24,7 +24,7 @@ public class GameController
                 LoadGame();
                 break;
             case 3:
-                Console.WriteLine("Help");
+                IOController.PrintHelp();
                 break;
             case 4:
                 Console.WriteLine("Bye Bye!");
