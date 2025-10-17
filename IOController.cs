@@ -93,7 +93,7 @@ public static class IOController
         // Game Modes
         PrintCyan("═══ GAME MODES ═══\n");
         PrintYellow("Classic Mode:\n");
-        Console.WriteLine("  • Customizable grid size (1-10 rows, 1-10 columns)");
+        Console.WriteLine("  • Customizable grid size");
         Console.WriteLine("  • Multiple disc types with special abilities");
         Console.WriteLine("  • Win by connecting discs in a line\n");
 
