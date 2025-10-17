@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class LineUpClassic : Game {
 
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
@@ -21,6 +23,13 @@ public class LineUpClassic : Game {
         file = new FileController();
     }
 
+    // Constructor used when loading from file
+    [JsonConstructor]
+    public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+    {
+    }
+
     public override bool ComputerTurn(Player player)
     {
         throw new NotImplementedException();
@@ -40,6 +49,8 @@ public class LineUpClassic : Game {
         Console.WriteLine("< Core Loop starts here! >");
         Console.ReadLine();
     }
+
+    
 
     
 }

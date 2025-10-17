@@ -1,5 +1,5 @@
 {
-  "$type": "LineUpBasic, IFN584_A2",
+  "$type": "LineUpSpin, IFN584_A2",
   "Grid": {
     "$type": "Grid, IFN584_A2",
     "Board": {
@@ -100,12 +100,21 @@
             null,
             null,
             null,
-            null
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false
+            }
           ]
         },
         {
           "$type": "Disc[], IFN584_A2",
           "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
             {
               "$type": "OrdinaryDisc, IFN584_A2",
               "Symbol": "@",
@@ -116,26 +125,29 @@
               "Symbol": "#",
               "IsPlayerOne": false
             },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true
+            },
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true
+            }
           ]
         }
       ]
     },
-    "orientation": 0,
+    "orientation": 1,
     "WinLength": 7,
-    "TurnCounter": 3
+    "TurnCounter": 6
   },
   "PlayerOne": {
     "$type": "Player, IFN584_A2",
     "DiscBalance": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
-      "Ordinary": 34
+      "Ordinary": 31
     },
     "IsHuman": true
   },
@@ -143,7 +155,7 @@
     "$type": "Player, IFN584_A2",
     "DiscBalance": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
-      "Ordinary": 34
+      "Ordinary": 31
     },
     "IsHuman": true
   },

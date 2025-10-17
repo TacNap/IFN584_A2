@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class LineUpSpin : Game {
 
     // Constructor
@@ -23,6 +25,13 @@ public class LineUpSpin : Game {
         MoveSequence = [];
         file = new FileController();
     }
+    
+    // Constructor used when loading from file 
+    [JsonConstructor]
+    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+    {
+    }
 
     /// <summary>
     /// Checks if the game should be spun, based on turn counter
@@ -40,7 +49,7 @@ public class LineUpSpin : Game {
 
     public override void GameLoop()
     {
-        while(IsGameActive)
+        while (IsGameActive)
         {
             PrintPlayerData();
             Grid.DrawGrid();
@@ -73,6 +82,7 @@ public class LineUpSpin : Game {
             }
         }
     }
+
 
 
 }
