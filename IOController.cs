@@ -198,7 +198,7 @@ namespace LineUp2
         {
             Console.Clear();
             PrintGreen("╔═══════════════════════════════════════╗\n");
-            PrintGreen("║           QUICK HELP                  ║\n");
+            PrintGreen("║             QUICK HELP                ║\n");
             PrintGreen("╚═══════════════════════════════════════╝\n\n");
 
             PrintCyan("MOVE FORMAT: [disc][lane]\n");
@@ -218,6 +218,7 @@ namespace LineUp2
 
             PrintGreen("Press ENTER to continue...\n");
             Console.ReadLine();
+            Console.Clear();
         }
 
 
