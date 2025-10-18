@@ -13,7 +13,6 @@ participant Human
 participant Disc
 participant Computer
 participant IComputerStrategy as "AI Strategy"
-participant FileController
 
 == Game Initialisation ==
 
