@@ -224,7 +224,9 @@ namespace LineUp2
 
         public static void PrintSaveFiles(string[] saveFiles)
         {
-            Console.WriteLine("- Load Banner -");
+            PrintGreen("╔═══════════════════════════════════════╗\n");
+            PrintGreen("║             Load Game                 ║\n");
+            PrintGreen("╚═══════════════════════════════════════╝\n");
             Console.WriteLine("Please input the number of the file you'd like to load:");
             for (int i = 0; i < saveFiles.Length; i++)
             {
@@ -237,15 +239,21 @@ namespace LineUp2
         {
             if (P1 && P2)
             {
-                PrintGreen("It's a tie!");
+                PrintCyan("╔═══════════════════════════════════════╗\n");
+                PrintCyan("║             It's a Tie!               ║\n");
+                PrintCyan("╚═══════════════════════════════════════╝\n\n");
             }
             else if (P1)
             {
-                PrintGreen("Player One Wins");
+                PrintGreen("╔═══════════════════════════════════════╗\n");
+                PrintGreen("║             Player One Wins!          ║\n");
+                PrintGreen("╚═══════════════════════════════════════╝\n\n");
             }
             else
             {
-                PrintGreen("Player Two Wins");
+                PrintGreen("╔═══════════════════════════════════════╗\n");
+                PrintGreen("║             Player Two Wins!          ║\n");
+                PrintGreen("╚═══════════════════════════════════════╝\n\n");
             }
 
             Console.ReadLine();
