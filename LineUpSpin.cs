@@ -33,55 +33,31 @@ public class LineUpSpin : Game {
     {
     }
 
-    /// <summary>
-    /// Checks if the game should be spun, based on turn counter
-    /// </summary>
-    private void CheckSpin()
-    {
-        if (Grid.TurnCounter % 5 == 0)
-            Grid.Spin();
-    }
-    
-        public override bool ComputerTurn(Player player)
+    public override bool ComputerTurn(Player player)
     {
         throw new NotImplementedException();
     }
-
-    public override void GameLoop()
+    
+    public override void CheckBoard()
     {
-        while (IsGameActive)
+        if (Grid.CheckWinCondition())
         {
-            PrintPlayerData();
-            Grid.DrawGrid();
-
-            // Check if both players have discs remaining
-            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+            IsGameActive = false;
+            return;
+        }
+        // Spin behaviour
+        if (Grid.TurnCounter % 5 == 0)
+        {
+            Grid.Spin(); 
+            if (Grid.CheckWinCondition())
             {
-                IOController.PrintWinner(true, true);
                 IsGameActive = false;
-                break;
-            }
-
-            // Holds a reference to the current player, based on turn number
-            Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-
-            // NOT IDEAL
-            // For true polymorphism, PlayTurn needs to exist on the Player object. 
-            // Which would mean the entire Game object also needs to be passed in...
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-
-            CheckSpin();
-            if (successfulMove)
-            {
-                if (Grid.CheckWinCondition())
-                {
-                    IsGameActive = false;
-                    break;
-                }
-                Grid.IncrementTurnCounter();
+                return;
             }
         }
+        Grid.IncrementTurnCounter();
     }
+
 
 
 

@@ -368,7 +368,39 @@ public abstract class Game
     // Might become a template method later 
     public abstract bool ComputerTurn(Player player);
 
-    public abstract void GameLoop();
+    public abstract void CheckBoard();
+
+    public void GameLoop()
+    {
+        while(IsGameActive)
+        {
+            PrintPlayerData();
+            Grid.DrawGrid();
+
+            // Check if both players have discs remaining
+            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+            {
+                IOController.PrintWinner(true, true);
+                IsGameActive = false;
+                break;
+            }
+
+            // Holds a reference to the current player, based on turn number
+            // Just for less repeated code :)
+            Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+
+            // NOT IDEAL
+            // For true polymorphism, PlayTurn needs to exist on the Player object. 
+            // Which would mean the entire Game object also needs to be passed in...
+            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
+            // ! Board currently renders twice by accident after a move is played.. Will fix later. 
+
+            if (successfulMove)
+            {
+                CheckBoard();
+            }
+        }
+    }
 
     public virtual void PrintPlayerData()
     {
