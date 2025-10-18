@@ -37,7 +37,7 @@ public abstract class Game
     }
 
     // Not convinced yet that these methods should exist on Game
-    private void DocumentMove(string move)
+    private void DocumentMove(Move move)
     {
         if (Grid.TurnCounter - 1 < MoveSequence.Count) MoveSequence[Grid.TurnCounter] = move;
         else MoveSequence.Add(move);
@@ -61,6 +61,7 @@ public abstract class Game
         // Run Moves with new TurnCounter
         Console.WriteLine($"\t\t Undo | TurnCounter: {Grid.TurnCounter}");
         Grid.Reset(true);
+        Reset();
         PlayMoveSequence();
         Grid.DrawGrid();
 
@@ -351,7 +352,7 @@ public abstract class Game
 
     public void GameLoop()
     {
-        while(IsGameActive)
+        while (IsGameActive)
         {
             PrintPlayerData();
             Grid.DrawGrid();
@@ -380,6 +381,50 @@ public abstract class Game
             }
         }
     }
+    
+    public void Reset()
+    {
+        Grid.Reset(true);
+        int OrdinaryDiscCount = Grid.Board.Length * Grid.Board[0].Length / 2;
+        Dictionary<string, int> P1Discs = new Dictionary<string, int>
+        {
+            ["Ordinary"] = OrdinaryDiscCount,
+            ["Boring"] = 2,
+            ["Exploding"] = 2,
+            ["Magnetic"] = 2
+        };
+        Dictionary<string, int> P2Discs = new Dictionary<string, int>(P1Discs);
+
+        PlayerOne.ResetDiscBalance(P1Discs);
+        PlayerTwo.ResetDiscBalance(P2Discs);
+
+    }
+    public bool Test()
+    {
+        // reset player disc counts somewhere
+        for (int turn = 1; turn < Grid.TurnCounter; turn++)
+        {
+            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+            {
+                IOController.PrintWinner(true, true);
+                return true;
+            }
+
+            Move move = MoveSequence[turn - 1];
+            Player player = turn % 2 == 1 ? PlayerOne : PlayerTwo;
+            if (!move.Disc.HasDiscRemaining(player))
+            {
+                IOController.PrintError("Error: Corrupted move sequence");
+                return false;
+            }
+
+            Grid.AddDisc(move);
+            if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane)) Grid.ApplyGravity();
+            move.Disc.WithdrawDisc(player);
+            CheckBoard();
+        }
+        return false;
+    }
 
     public virtual void PrintPlayerData()
     {
@@ -388,3 +433,4 @@ public abstract class Game
         Console.WriteLine($"Discs: {player.DiscBalance["Ordinary"]}");
     }
 }
+
