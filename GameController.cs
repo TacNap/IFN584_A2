@@ -23,8 +23,6 @@ public class GameController
             case 2:
                 LoadGame();
                 break;
-            // Test mode (temp)
-            // TODO: touch up
             case 3:
                 TestMode();
                 break;
@@ -99,8 +97,6 @@ public class GameController
         Game.GameLoop();
     }
     
-    // Test mode (temp)
-    // TODO: touch up
     public void TestMode()
     {
         GameConfig config = IOController.GetInputNewGame();

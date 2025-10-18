@@ -18,7 +18,7 @@ public abstract class Game
     {
     }
 
-    // Inherited by JSON Constructors
+    // Inherited by JSON Constructors - Required for Deserialization
     protected Game(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController fileController)
     {
         Grid = grid;
@@ -61,15 +61,19 @@ public abstract class Game
 
     private bool Undo()
     {
-        if (MoveSequence.Count == 0)
+        if (MoveSequence.Count < 2)
         {
-            IOController.PrintError("You have no move to undo yet!");
+            IOController.PrintError("You need at least two moves recorded to undo.");
             return false;
         }
 
-        int lastIndex = MoveSequence.Count - 1;
-        redoStack.Push(MoveSequence[lastIndex]);
-        MoveSequence.RemoveAt(lastIndex);
+        for (int i = 0; i < 2; i++)
+        {
+            int lastIndex = MoveSequence.Count - 1;
+            Move removedMove = MoveSequence[lastIndex];
+            MoveSequence.RemoveAt(lastIndex);
+            redoStack.Push(removedMove);
+        }
 
         bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
         IsGameActive = !sequenceEnded;
@@ -79,13 +83,22 @@ public abstract class Game
 
     private bool Redo()
     {
-        if (redoStack.Count == 0)
+        if (redoStack.Count < 2)
         {
             IOController.PrintError("You have no move to redo yet!");
             return false;
         }
 
-        MoveSequence.Add(redoStack.Pop());
+        List<Move> movesToRestore = new List<Move>(2);
+        for (int i = 0; i < 2; i++)
+        {
+            movesToRestore.Add(redoStack.Pop());
+        }
+        foreach (Move move in movesToRestore)
+        {
+            MoveSequence.Add(move);
+        }
+
         bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
         IsGameActive = !sequenceEnded;
 
@@ -94,14 +107,7 @@ public abstract class Game
 
     private bool PlayMoveSequence(int moveCount)
     {
-        if (moveCount < 0)
-        {
-            moveCount = 0;
-        }
-
-        moveCount = Math.Min(moveCount, MoveSequence.Count);
         Reset();
-        //IsGameActive = true;
 
         for (int turn = 1; turn <= moveCount; turn++)
         {
