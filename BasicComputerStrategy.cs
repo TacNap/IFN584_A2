@@ -27,25 +27,27 @@ public class BasicComputerStrategy : IComputerStrategy
     /// </summary>
     private Move? FindWinningMove(Grid grid, Player player)
     {
-        int rows = grid.Board.Length;
+        int rows = grid.Board.Length; // unused - can be removed?
         int cols = grid.Board[0].Length;
         bool isPlayerOne = grid.TurnCounter % 2 == 1;
 
         // Try each disc type the player has
         foreach (var discType in player.DiscBalance)
         {
-            if (discType.Value <= 0) continue;
+            // Retrieve the disc type
+            char discChar = char.ToLower(discType.Key[0]);
 
-            char discChar = GetDiscChar(discType.Key);
-            
+            // Create a test disc
+            Disc testDisc = Disc.CreateDisc(discChar, isPlayerOne);
+
+            // Make sure the player has a disc of this type remaining
+            if (testDisc.HasDiscRemaining(player)) continue;
+
             // Try each lane
             for (int lane = 1; lane <= cols; lane++)
             {
                 // Check if lane is not full
                 if (grid.Board[0][lane - 1] != null) continue;
-
-                // Create a test disc
-                Disc testDisc = Disc.CreateDisc(discChar, isPlayerOne);
 
                 // Simulate adding the disc
                 if (TrySimulateMove(grid, testDisc, lane, out Grid simulatedGrid))
@@ -95,7 +97,7 @@ public class BasicComputerStrategy : IComputerStrategy
         string selectedDiscType = availableDiscs[random.Next(availableDiscs.Count)];
         int selectedLane = availableLanes[random.Next(availableLanes.Count)];
 
-        char discChar = GetDiscChar(selectedDiscType);
+        char discChar = char.ToLower(selectedDiscType[0]);
         Disc selectedDisc = Disc.CreateDisc(discChar, isPlayerOne);
 
         return new Move(selectedDisc, selectedLane);
@@ -151,21 +153,6 @@ public class BasicComputerStrategy : IComputerStrategy
         copy.SetTurnCounter(original.TurnCounter);
 
         return copy;
-    }
-
-    /// <summary>
-    /// Maps disc type name to character
-    /// </summary>
-    private char GetDiscChar(string discType)
-    {
-        return discType.ToLower() switch
-        {
-            "ordinary" => 'o',
-            "boring" => 'b',
-            "exploding" => 'e',
-            "magnetic" => 'm',
-            _ => 'o'
-        };
     }
 
     /// <summary>
