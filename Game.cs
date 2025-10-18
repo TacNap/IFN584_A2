@@ -7,7 +7,7 @@ public abstract class Game
 
     public bool IsGameActive { get; set; }
 
-    public List<string> MoveSequence { get; set; }
+    public List<Move> MoveSequence { get; set; }
 
     public FileController file { get; set; }
 
