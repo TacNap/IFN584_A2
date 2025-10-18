@@ -43,8 +43,9 @@ public static class IOController
         PrintGreen("Please enter one of the following commands:\n");
         PrintGreen("[1] New Game\n");
         PrintGreen("[2] Load Game\n");
-        PrintGreen("[3] Help\n");
-        PrintGreen("[4] Quit\n");
+        PrintGreen("[3] Test mode\n");
+        PrintGreen("[4] Help\n");
+        PrintGreen("[5] Quit\n");
     }
 
     public static void PrintBannerNewGame()
@@ -93,7 +94,7 @@ public static class IOController
             bool success = int.TryParse(input, out num);
             if (success)
             {
-                if (num > 0 && num < 5)
+                if (num > 0 && num < 6)
                 {
                     return num;
                 }
