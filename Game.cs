@@ -227,7 +227,6 @@ public abstract class Game
     // Template Method for computer player
     public bool ComputerTurn(Player player)
     {
-        Console.WriteLine("Computer is thinking...");
         
         // Use the strategy to select a move
         Move move = computerStrategy.SelectMove(Grid, player);
