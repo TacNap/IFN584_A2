@@ -288,7 +288,7 @@ namespace LineUp2
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
-                    IOController.PrintError("Please enter a valid move or command.");
+                    IOController.PrintError("Please enter a valid move or command. Type /help for a list of commands.");
                     continue;
                 }
 
