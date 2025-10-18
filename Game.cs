@@ -295,6 +295,15 @@ public abstract class Game
                 Grid.DrawGrid();
                 if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
                 {
+                    // Tyler: return disc to hand for special (boring only)
+                    if (disc.DiscReturn != null)
+                    {
+                        foreach (Dictionary<string, int> discDict in disc.DiscReturn)
+                        {
+                            player.ReturnDisc(discDict);
+                        }
+                    }
+                    
                     Grid.ApplyGravity();
                     Grid.DrawGrid();
                 }
