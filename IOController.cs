@@ -13,7 +13,7 @@ namespace LineUp2
         public static void PrintDiscInventory(Dictionary<string, int> discBalance)
         {
             Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
-            
+
             foreach (var disc in discBalance)
             {
                 Console.Write("║ ");
@@ -22,6 +22,57 @@ namespace LineUp2
                 PrintCyan($"{disc.Value,2}");
                 Console.WriteLine(new string(' ', 46) + "║");
             }
+
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
+        }
+        
+        /// <summary>
+        /// Displays current game status information including turn, game mode, player mode, and win condition
+        /// </summary>
+        /// <summary>
+        /// Displays current game status information including turn, game mode, player mode, and win condition
+        /// </summary>
+        public static void PrintGameStatus(Grid grid, int winLength)//Grid grid, GameConfig.PlayerMode playerMode, GameConfig.GameMode gameMode, int winLength
+        {
+            int boxWidth = 63; // Total width of the box
+            
+            Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
+            
+            // Line 1: Turn and win info
+            string currentPlayer = grid.TurnCounter % 2 == 1 ? "Player One" : "Player Two";
+            string line1 = $"Turn: {grid.TurnCounter} | {currentPlayer} | Win: {winLength} in a row";
+            int line1Padding = boxWidth - line1.Length - 3; // -3 for "║ " and " ║"
+            
+            Console.Write("║ ");
+            PrintYellow("Turn: ");
+            Console.Write($"{grid.TurnCounter} | {currentPlayer} | Win: {winLength} in a row");
+            Console.Write(new string(' ', Math.Max(0, line1Padding)));
+            Console.WriteLine("  ║");
+            
+            // // Line 2: Game mode and player mode
+            // string gameModeText = gameMode switch
+            // {
+            //     GameConfig.GameMode.Classic => "Classic",
+            //     GameConfig.GameMode.Basic => "Basic", 
+            //     GameConfig.GameMode.Spin => "Spin",
+            //     _ => "Unknown"
+            // };
+            
+            // string playerModeText = playerMode switch
+            // {
+            //     GameConfig.PlayerMode.HvH => "Human vs Human",
+            //     GameConfig.PlayerMode.HvC => "Human vs Computer",
+            //     _ => "Unknown"
+            // };
+            
+            // string line2 = $"Mode: {gameModeText} | {playerModeText}";
+            // int line2Padding = boxWidth - line2.Length - 3; // -3 for "║ " and " ║"
+            
+            // Console.Write("║ ");
+            // PrintYellow("Mode: ");
+            // Console.Write($"{gameModeText} | {playerModeText}");
+            // Console.Write(new string(' ', Math.Max(0, line2Padding)));
+            // Console.WriteLine("  ║");
             
             Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
         }
