@@ -56,7 +56,7 @@ loop While IsMenuActive == true
             Game -> Grid: AddDisc(disc, lane)
             deactivate Grid
             Game -> Disc: ApplyEffects(Board, lane)
-            alt EffectTriggered
+            opt EffectTriggered
                 activate Grid
                 Disc -> Grid: ApplyGravity()
             end
@@ -106,7 +106,7 @@ loop While IsMenuActive == true
         activate Grid
         Game -> Grid: AddDisc(disc, lane)
         Game -> Disc: ApplyEffects(Board, lane)
-        alt EffectTriggered
+        opt EffectTriggered
             Disc -> Grid: ApplyGravity()
         end
         deactivate Disc
