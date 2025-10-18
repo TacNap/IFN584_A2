@@ -38,14 +38,14 @@ public abstract class Game
         return input.Trim().ToLower();
     }
 
-    // Not convinced yet that these methods should exist on Game
+    /// <summary>
+    /// Adds move to the MoveSequence list, and clears the redoStack.
+    /// Used after a successful move AND during testing mode.
+    /// </summary>
+    /// <param name="move"></param>
     private void DocumentMove(Move move)
     {
         int index = Grid.TurnCounter - 1;
-        if (index < 0)
-        {
-            index = 0;
-        }
 
         if (index < MoveSequence.Count)
         {
@@ -59,12 +59,18 @@ public abstract class Game
         redoStack.Clear();
     }
 
-    private bool Undo()
+    /// <summary>
+    /// Orchestration of move undo.
+    /// Moves the last two moves in MoveSequence to redoStack,
+    /// then calls PlayMoveSequence
+    /// </summary>
+    /// <returns></returns>
+    private void Undo()
     {
         if (MoveSequence.Count < 2)
         {
             IOController.PrintError("You need at least two moves recorded to undo.");
-            return false;
+            return;
         }
 
         for (int i = 0; i < 2; i++)
@@ -75,10 +81,8 @@ public abstract class Game
             redoStack.Push(removedMove);
         }
 
-        bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
-        IsGameActive = !sequenceEnded;
-
-        return !sequenceEnded;
+        PlayMoveSequence(MoveSequence.Count);
+        return;
     }
 
     private bool Redo()
@@ -300,6 +304,11 @@ public abstract class Game
         }
     }
     
+    /// <summary>
+    /// Using in Testing Mode.
+    /// Takes input from terminal and converts into a list of Move objects, which then populates MoveSequence. 
+    /// Then calls PlayMoveSequence
+    /// </summary>
     public void TestLoop()
     {
         Grid.DrawGrid();
@@ -368,6 +377,7 @@ public abstract class Game
         }
     }
     
+    // Need a way to only reset the correct discs based on game mode. 
     public void Reset()
     {
         Grid.Reset();
