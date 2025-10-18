@@ -111,9 +111,10 @@ public class BasicComputerStrategy : IComputerStrategy
     {
         // Create a deep copy of the grid
         simulated = CopyGrid(original);
+        Move move = new Move(disc, lane);
 
         // Try to add the disc
-        if (!simulated.AddDisc(disc, lane))
+        if (!simulated.AddDisc(move))
         {
             return false;
         }

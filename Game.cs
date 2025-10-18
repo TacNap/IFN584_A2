@@ -232,7 +232,7 @@ public abstract class Game
     /// <param name="input"></param>
     /// <param name="lane"></param>
     /// <returns></returns>
-    public virtual bool TryParseMove(string input, out int lane)
+    public bool TryParseMove(string input, out int lane)
     {
         lane = 0; // Must be instantited before continuing
 
@@ -384,13 +384,12 @@ public abstract class Game
         Move move = computerStrategy.SelectMove(Grid, player);
 
         // Execute the move
-        if (!Grid.AddDisc(move.Disc, move.Lane))
+        if (!Grid.AddDisc(move))
         {
             IOController.PrintError("Error: Computer selected invalid move");
             return false;
         }
-        // uncomment after merge
-        //DocumentMove(move);
+        DocumentMove(move);
 
         // Withdraw the disc from player's balance
         move.Disc.WithdrawDisc(player);

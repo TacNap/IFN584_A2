@@ -29,11 +29,6 @@ public class LineUpSpin : Game
     {
         // Strategy is initialized in base constructor
     }
-
-    public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
     
     public override void CheckBoard()
     {
