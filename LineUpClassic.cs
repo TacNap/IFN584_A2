@@ -9,7 +9,14 @@ public class LineUpClassic : Game
 
         Grid = new Grid(GridHeight, GridWidth);
         int ordinaryBalance = GridHeight * GridWidth / 2;
-        Dictionary<string, int> discBalance = new Dictionary<string, int>
+        Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+        {
+            ["Ordinary"] = ordinaryBalance,
+            ["Boring"] = 2,
+            ["Exploding"] = 2,
+            ["Magnetic"] = 2
+        };
+        Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
         {
             ["Ordinary"] = ordinaryBalance,
             ["Boring"] = 2,
@@ -17,8 +24,8 @@ public class LineUpClassic : Game
             ["Magnetic"] = 2
         };
 
-        PlayerOne = new Player(discBalance);
-        PlayerTwo = new Player(discBalance, HvH);
+        PlayerOne = new Player(p1DiscBalance);
+        PlayerTwo = new Player(p2DiscBalance, HvH);
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();

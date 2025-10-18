@@ -317,7 +317,6 @@ public abstract class Game
             else
             {
                 // Successful move
-                // DocumentMove
                 move.Disc.WithdrawDisc(player);
                 Grid.DrawGrid();
                 if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))

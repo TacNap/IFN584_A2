@@ -9,13 +9,17 @@ public class LineUpBasic : Game
         Grid = new Grid(fixedRows, fixedCols);
 
         int ordinaryBalance = fixedRows * fixedCols / 2;
-        Dictionary<string, int> discBalance = new Dictionary<string, int>
+        Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+        {
+            ["Ordinary"] = ordinaryBalance,
+        };
+        Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
         {
             ["Ordinary"] = ordinaryBalance,
         };
 
-        PlayerOne = new Player(discBalance);
-        PlayerTwo = new Player(discBalance, HvH);
+        PlayerOne = new Player(p1DiscBalance);
+        PlayerTwo = new Player(p2DiscBalance, HvH);
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
