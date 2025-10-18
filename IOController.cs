@@ -109,7 +109,7 @@ public static class IOController
 
         // Disc Types
         PrintCyan("═══ DISC TYPES (Classic Mode) ═══\n");
-        
+
         PrintYellow("Ordinary Disc (O/o):\n");
         Console.WriteLine("  Symbol: @ (Player 1), # (Player 2)");
         Console.WriteLine("  • Standard disc with no special effects");
@@ -183,9 +183,38 @@ public static class IOController
         PrintGreen("╔═══════════════════════════════════════════════════════════════════╗\n");
         PrintGreen("║              Press ENTER to return to the main menu               ║\n");
         PrintGreen("╚═══════════════════════════════════════════════════════════════════╝\n");
-        
+
         Console.ReadLine();
         Console.Clear();
+    }
+    
+    /// <summary>
+    /// Displays in-game help (shorter version for quick reference)
+    /// </summary>
+    public static void PrintInGameHelp()
+    {
+        Console.Clear();
+        PrintGreen("╔═══════════════════════════════════════╗\n");
+        PrintGreen("║           QUICK HELP                  ║\n");
+        PrintGreen("╚═══════════════════════════════════════╝\n\n");
+
+        PrintCyan("MOVE FORMAT: [disc][lane]\n");
+        Console.WriteLine("  o3 = ordinary disc, lane 3\n");
+
+        PrintCyan("DISC TYPES:\n");
+        Console.WriteLine("  O - Ordinary (standard disc)");
+        Console.WriteLine("  B - Boring (drills lane)");
+        Console.WriteLine("  E - Exploding (destroys 3x3)");
+        Console.WriteLine("  M - Magnetic (pulls ally disc)\n");
+
+        PrintCyan("COMMANDS:\n");
+        Console.WriteLine("  /save  - Save game");
+        Console.WriteLine("  /undo  - Undo last move");
+        Console.WriteLine("  /quit  - Exit game");
+        Console.WriteLine("  /help  - Show full help\n");
+
+        PrintGreen("Press ENTER to continue...\n");
+        Console.ReadLine();
     }
 
 
