@@ -236,15 +236,11 @@ public abstract class Game
             IOController.PrintError("Error: Computer selected invalid move");
             return false;
         }
-
-        // Document the move
-        char discChar = GetDiscCharFromDisc(move.Disc);
-        DocumentMove($"{discChar}{move.Lane}");
+        // uncomment after merge
+        //DocumentMove(move);
 
         // Withdraw the disc from player's balance
         move.Disc.WithdrawDisc(player);
-
-        Console.WriteLine($"Computer plays {move.Disc.Symbol} in lane {move.Lane}");
         Grid.DrawGrid();
 
         // Apply effects
@@ -253,22 +249,7 @@ public abstract class Game
             Grid.ApplyGravity();
             Grid.DrawGrid();
         }
-
         return true;
-    }
-
-    // Helper method to get disc character
-    private char GetDiscCharFromDisc(Disc disc)
-    {
-        string symbol = disc.Symbol.ToLower();
-        return symbol switch
-        {
-            "@" or "#" => 'o',
-            "b" => 'b',
-            "e" => 'e',
-            "m" => 'm',
-            _ => 'o'
-        };
     }
 
     public abstract void GameLoop();
