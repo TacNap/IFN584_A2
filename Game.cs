@@ -296,50 +296,33 @@ public abstract class Game
     
     public void TestLoop()
     {
-        while (IsGameActive)
+        Grid.DrawGrid();
+        // Get test input sequence
+        string input = GetInputGame(true);
+
+        // Split input into moves
+        string[] moveList = input.Split(",");
+        if (moveList.Length == 0) return;
+        for (int turn = 0; turn < moveList.Length; turn++)
         {
-            Grid.DrawGrid();
-
-            bool invalidMove = false;
-            // Get input
-            string input = GetInputGame(true);
-            // Check if input is command
-            if (TryHandleCommand(input)) break;
-
-            // Split input into moves
-            string[] moveList = input.Split(",");
-            if (moveList.Length == 0) break;
-            MoveSequence.Clear();
-            redoStack.Clear();
-            for (int i = 0; i < moveList.Length; i++)
+            string move = moveList[turn].Trim().ToLower();
+            if (string.IsNullOrWhiteSpace(move))
             {
-                string move = moveList[i].Trim().ToLower();
-                if (string.IsNullOrWhiteSpace(move))
-                {
-                    IOController.PrintError($"Move number {i + 1} is empty. Please enter a new test sequence!");
-                    invalidMove = true;
-                    break;
-                }
-                if (!TryParseMove(move, out int lane))
-                {
-                    IOController.PrintError($"Move number {i + 1} ({move}) is invalid. Please enter a new test sequence!");
-                    invalidMove = true;
-                    break;
-                }
-                bool isPlayerOne = i % 2 == 0;
-                Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
-                MoveSequence.Add(new Move(disc, lane));
+                IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
+                break;
             }
-            if (invalidMove)
+            if (!TryParseMove(move, out int lane))
             {
-                MoveSequence.Clear();
-                continue;
+                IOController.PrintError($"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!");
+                break;
             }
-
-            bool ended = PlayMoveSequence(MoveSequence.Count);
-            IsGameActive = !ended;
+            bool isPlayerOne = turn % 2 == 0;
+            Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
+            MoveSequence.Add(new Move(disc, lane));
         }
-        
+
+        // Play through moves
+        PlayMoveSequence(MoveSequence.Count);
     }
 
     // Might become a template method later 

@@ -106,5 +106,6 @@ public class GameController
         GameConfig config = IOController.GetInputNewGame();
         Game game = GameFactory(config);
         game.TestLoop();
+        game.GameLoop();
     }
 }
