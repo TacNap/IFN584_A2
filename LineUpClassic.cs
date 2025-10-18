@@ -31,7 +31,7 @@ public class LineUpClassic : Game
     }
 
     [JsonConstructor]
-    public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+    public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
         ConfigureAllowedDiscs();
@@ -39,44 +39,52 @@ public class LineUpClassic : Game
         // Strategy is initialized in base constructor
     }
 
-    public override void GameLoop()
+    // * Revisit meee. Make me a template method or something 
+    // Do I even account for grid length = 10?
+    // do i even account for spin???
+    public override bool TryParseMove(string input, out int lane)
     {
-        while(IsGameActive)
+        lane = 0; // Must be instantited before continuing
+        string validChar = "obem";
+        if (!validChar.Contains(input[0])) // This should reference some dictionary of moves on the game subclass
         {
-            PrintPlayerData();
-            Grid.DrawGrid();
+            IOController.PrintError("Invalid disc type");
+            return false;
+        }
 
-            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+        if (input.Length > 2)
+        {
+            IOController.PrintError("Invalid lane");
+            return false;
+        }
+
+        if (!int.TryParse(input.Substring(1), out lane))
+        {
+            // Parse failed
+            IOController.PrintError("Invalid Lane - Must be a number");
+            return false;
+        }
+        else
+        {
+            if (lane < 1 || lane > Grid.Board[1].Length)
             {
-                IOController.PrintWinner(true, true);
-                IsGameActive = false;
-                break;
+                IOController.PrintError("Invalid lane");
+                return false;
             }
 
-            Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-
-            if (successfulMove)
-            {
-                if(Grid.CheckWinCondition())
-                {
-                    IsGameActive = false;
-                    break;
-                }
-                Grid.IncrementTurnCounter();
-            }
+            // Valid Input
+            return true;
         }
     }
-
-    public override void PrintPlayerData()
+    public override void CheckBoard()
     {
-        Console.WriteLine("--------------");
-        Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-        Console.WriteLine($"Player {(Grid.TurnCounter % 2 == 1 ? "One" : "Two")} Discs:");
-        Console.WriteLine($"  Ordinary: {player.DiscBalance["Ordinary"]}");
-        Console.WriteLine($"  Boring: {player.DiscBalance["Boring"]}");
-        Console.WriteLine($"  Exploding: {player.DiscBalance["Exploding"]}");
-        Console.WriteLine($"  Magnetic: {player.DiscBalance["Magnetic"]}");
+        if (Grid.CheckWinCondition())
+        {
+            IsGameActive = false;
+            return;
+        }
+        Grid.IncrementTurnCounter();
     }
+
+    
 }

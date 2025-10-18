@@ -1,52 +1,137 @@
 @startuml
-title Sequence: Line Up Game - Human vs Computer
+skinparam actorStyle awesome
+skinparam titleFontSize 32
+title Sequence Diagram – LineUpClassic Game (Human vs Computer Mode)
 
-actor User as Human
+actor User as "Human Player"
 participant GameController
 participant IOController
+participant GameConfig
 participant LineUpClassic as Game
 participant Grid
-participant HumanPlayer as PlayerOne
-participant Computer as PlayerTwo
+participant Human
+participant Disc
+participant Computer
+participant IComputerStrategy as "AI Strategy"
 
-== Game Initialization ==
+== Game Initialisation ==
 
-Human -> GameController : Start()
-GameController -> IOController : PrintMenu()
-IOController -> GameController : GetInputMenu()
-GameController -> IOController : GetInputNewGame()
-IOController -> GameController : return GameConfig(PlayerMode.HvC)
+User -> GameController: NewGame()
+activate GameController
+loop While IsMenuActive == true
+    activate IOController
+    GameController -> IOController: PrintMenu()
+    IOController -> User: Display game mode options
+    User -> IOController: Select "LineUpClassic"
+    IOController -> GameConfig: GameMode "Classic"
+    IOController -> User: Display player mode options
+    User -> IOController: Select "HvC"
+    IOController -> GameConfig: PlayerMode "HvC"
+    IOController -> User: Change Grid size?
+    User -> IOController: Select "No"
+    IOController -> GameConfig: GetInputNewGame()
+    deactivate IOController
+    GameConfig -> GameController: GameFactory()
+    deactivate GameController
 
-GameController -> GameController : GameFactory(config)
-GameController -> Game : New LineUpClassic(config)
-Game -> Grid : initialize Grid()
+    == Start Game Loop ==
+    activate Game
+    GameController -> Game: GameLoop()
 
-== Game Loop ==
-
-loop while not over
-
-    alt Turn: Human
-        Game -> PlayerOne : PlayTurn()
-        PlayerOne -> IOController : promptMove()
-        IOController -> PlayerOne : return lane
-        PlayerOne -> Grid : AddDisc(lane)
-        Grid -> Grid : IncrementTurnCounter()
-        Grid -> Grid : CheckWinCondition()
+    loop While IsGameActive == true
+    Game -> User: PrintPlayerData()
+    Game -> User: DrawGrid()
+    alt Human Player Turn
+        Game -> User: GetInputGame()
+        User -> Game: Enter move/command
+        Game -> Game: PlayerTurn(PlayerOne)
+        alt Make move
+            Game -> Disc: CreateDisc()
+            activate Disc
+            Game -> Disc: HasDiscRemaining() == true
+            Disc -> Game: disc
+            activate Grid
+            Game -> Grid: AddDisc(disc, lane)
+            deactivate Grid
+            Game -> Disc: ApplyEffects(Board, lane)
+            alt EffectTriggered
+                activate Grid
+                Disc -> Grid: ApplyGravity()
+            end
+                deactivate Disc
+            Game -> Grid: DrawGrid()
+            alt Is Tie Game
+                Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+                activate Grid
+                deactivate Grid
+                Grid -> Game: IsTieGame = true
+                Game -> IOController: PrintWinner(P1)
+                Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
+            else Winner Found
+                Game -> Grid: CheckWinCondition()
+                Grid -> Game: CheckWinCondition(P1) = true
+                Game -> IOController: PrintWinner(P1)
+                Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
+            else Continue Game
+                Game -> Grid: CheckWinCondition()
+                Grid -> Game: CheckWinCondition = false
+                Game -> Grid: IncrementTurnCounter()
+            deactivate Grid
+            end
+            Game -> Game: DocumentMove(move)
+            activate Game
+            deactivate Game
+        else Help/Undo/Redo/Quit command
+            Game -> Game: TryHandleCommand()
+            activate Game
+            deactivate Game
+        end
+    else Computer Player Turn
+        activate IComputerStrategy
+        Game -> IComputerStrategy: SelectMove()
+        IComputerStrategy --> Game: Move{Disc, Lane}
+        deactivate IComputerStrategy
+        activate Disc
+        Game -> Disc: CreateDisc()
+        Disc -> Game: disc
+        activate Grid
+        Game -> Grid: AddDisc(disc, lane)
+        Game -> Disc: ApplyEffects(Board, lane)
+        alt EffectTriggered
+            Disc -> Grid: ApplyGravity()
+        end
+        deactivate Disc
+        alt Is Tie Game
+            Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+            activate Grid
+            deactivate Grid
+            Grid -> Game: IsTieGame = true
+            Game -> IOController: PrintWinner(P2)
+            Game -> Game: IsGameActive = false
+            activate Game
+            deactivate Game
+        else Winner Found
+            Game -> Grid: CheckWinCondition()
+            Grid -> Game: CheckWinCondition(P2) = true
+            Grid -> IOController: PrintWinner(P2)
+            Game -> Game: IsGameActive = false
+            activate Game
+            deactivate Game
+        else Continue Game
+            Game -> Grid: CheckWinCondition()
+            Grid -> Game: CheckWinCondition = false
+            Game -> Grid: IncrementTurnCounter()
+        deactivate Grid
+        end
+        Game -> Game: DocumentMove(move)
+        activate Game
+        deactivate Game
     end
-
-    alt Turn: Computer
-        Game -> PlayerTwo : PlayTurn()
-        PlayerTwo -> Grid : analyze board
-        PlayerTwo -> Grid : AddDisc(chosenLane)
-        Grid -> Grid : IncrementTurnCounter()
-        Grid -> Grid : CheckWinCondition()
-    end
-
+deactivate Game
 end
 
 == Game Over ==
-
-Grid --> Game : win or tie
-Game -> IOController : PrintWinner(P1, P2)
-
-@enduml

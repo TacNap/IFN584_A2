@@ -4,14 +4,14 @@ public class BoringDisc : Disc
 {
     [JsonConstructor]
     public BoringDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
-    {
+	{
+		DiscReturn = new Dictionary<string, int>[2];
         IsPlayerOne = isPlayerOne;
         Symbol = IsPlayerOne ? "B" : "b";
     }
 
 	public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
-		Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
 		int DiscCount1 = 0;
 		int DiscCount2 = 0;
 
@@ -35,8 +35,17 @@ public class BoringDisc : Disc
 		// Convert Boring to Ordinary at the bottom of the lane
 		Board[^1][laneIndex] = new OrdinaryDisc(IsPlayerOne);
 
-		// TODO: Return all disk to hands of respective players
-		// ...
+		// Return all disk to hands of respective players
+		Dictionary<string, int> discDict1 = new()
+        {
+			["Boring"]= DiscCount1
+		};
+		Dictionary<string, int> discDict2 = new()
+		{
+			["Boring"] = DiscCount2
+		};
+		DiscReturn[0] = discDict1;
+		DiscReturn[1] = discDict2;
 
 		return true;
 	}
@@ -50,9 +59,10 @@ public class BoringDisc : Disc
 	{
 		return player.DiscBalance["Boring"] > 0;
 	}
-	
+
 	public override void WithdrawDisc(Player player)
-    {
+	{
 		player.DiscBalance["Boring"]--;
-    }
+	}
+
 }

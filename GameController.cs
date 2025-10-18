@@ -24,9 +24,12 @@ public class GameController
                 LoadGame();
                 break;
             case 3:
-                Console.WriteLine("Help");
+                TestMode();
                 break;
             case 4:
+                IOController.PrintHelp();
+                break;
+            case 5:
                 Console.WriteLine("Bye Bye!");
                 IsMenuActive = false;
                 break;    
@@ -80,7 +83,7 @@ public class GameController
         Game game = GameFactory(config);
         game.GameLoop();
     }
-    
+
     public void LoadGame()
     {
         string?[]? saveFiles = file.GetSaves();
@@ -92,5 +95,13 @@ public class GameController
             return;
         Game Game = file.GameDeserialization(filePath);
         Game.GameLoop();
+    }
+    
+    public void TestMode()
+    {
+        GameConfig config = IOController.GetInputNewGame();
+        Game game = GameFactory(config);
+        game.TestLoop();
+        game.GameLoop();
     }
 }

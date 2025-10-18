@@ -12,6 +12,26 @@ public static class IOController
     }
 
     /// <summary>
+    /// Changes text colour to cyan
+    /// </summary>
+    public static void PrintCyan(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(text);
+        Console.ResetColor();
+    }
+
+    /// <summary>
+    /// Changes text colour to yellow
+    /// </summary>
+    public static void PrintYellow(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write(text);
+        Console.ResetColor();
+    }
+
+    /// <summary>
     /// Prints text with a red background
     /// </summary>
     public static void PrintError(string text)
@@ -43,8 +63,9 @@ public static class IOController
         PrintGreen("Please enter one of the following commands:\n");
         PrintGreen("[1] New Game\n");
         PrintGreen("[2] Load Game\n");
-        PrintGreen("[3] Help\n");
-        PrintGreen("[4] Quit\n");
+        PrintGreen("[3] Test mode\n");
+        PrintGreen("[4] Help\n");
+        PrintGreen("[5] Quit\n");
     }
 
     public static void PrintBannerNewGame()
@@ -53,6 +74,150 @@ public static class IOController
         PrintGreen("║                New Game               ║\n");
         PrintGreen("╚═══════════════════════════════════════╝\n");
     }
+
+    /// <summary>
+    /// Displays comprehensive help information for the game
+    /// </summary>
+    public static void PrintHelp()
+    {
+        Console.Clear();
+        PrintGreen("╔═══════════════════════════════════════════════════════════════════╗\n");
+        PrintGreen("║                         LINEUP - HELP MENU                        ║\n");
+        PrintGreen("╚═══════════════════════════════════════════════════════════════════╝\n\n");
+
+        // Game Overview
+        PrintCyan("═══ GAME OVERVIEW ═══\n");
+        Console.WriteLine("LineUp is a strategic disc-dropping game similar to Connect Four.");
+        Console.WriteLine("Players take turns dropping discs into columns, trying to create");
+        Console.WriteLine("a line of their discs (horizontal, vertical, or diagonal).\n");
+
+        // Game Modes
+        PrintCyan("═══ GAME MODES ═══\n");
+        PrintYellow("Classic Mode:\n");
+        Console.WriteLine("  • Customizable grid size");
+        Console.WriteLine("  • Multiple disc types with special abilities");
+        Console.WriteLine("  • Win by connecting discs in a line\n");
+
+        PrintYellow("Basic Mode:\n");
+        Console.WriteLine("  • Fixed 8x9 grid");
+        Console.WriteLine("  • Only ordinary discs available");
+        Console.WriteLine("  • Classic connect-the-discs gameplay\n");
+
+        PrintYellow("Spin Mode:\n");
+        Console.WriteLine("  • Fixed 8x9 grid");
+        Console.WriteLine("  • Board rotates 90° clockwise every 5 turns");
+        Console.WriteLine("  • Discs fall based on current orientation\n");
+
+        // Disc Types
+        PrintCyan("═══ DISC TYPES (Classic Mode) ═══\n");
+
+        PrintYellow("Ordinary Disc (O/o):\n");
+        Console.WriteLine("  Symbol: @ (Player 1), # (Player 2)");
+        Console.WriteLine("  • Standard disc with no special effects");
+        Console.WriteLine("  • Most abundant disc type\n");
+
+        PrintYellow("Boring Disc (B/b):\n");
+        Console.WriteLine("  Symbol: B (Player 1), b (Player 2)");
+        Console.WriteLine("  • Drills through the entire lane");
+        Console.WriteLine("  • Removes all discs in that column");
+        Console.WriteLine("  • Converts to ordinary disc at the bottom");
+        Console.WriteLine("  • Limited: 2 per player\n");
+
+        PrintYellow("Exploding Disc (E/e):\n");
+        Console.WriteLine("  Symbol: E (Player 1), e (Player 2)");
+        Console.WriteLine("  • Destroys itself and all adjacent discs");
+        Console.WriteLine("  • Affects 3x3 area around the disc");
+        Console.WriteLine("  • Only triggers when matching symbol is played");
+        Console.WriteLine("  • Limited: 2 per player\n");
+
+        PrintYellow("Magnetic Disc (M/m):\n");
+        Console.WriteLine("  Symbol: M (Player 1), m (Player 2)");
+        Console.WriteLine("  • Attracts nearest ally disc in the same lane");
+        Console.WriteLine("  • Pulls that disc one position closer");
+        Console.WriteLine("  • Converts to ordinary disc after effect");
+        Console.WriteLine("  • Limited: 2 per player\n");
+
+        // How to Play
+        PrintCyan("═══ HOW TO PLAY ═══\n");
+        Console.WriteLine("1. Enter your move using the format: [disc type][lane number]");
+        Console.WriteLine("   Examples: o3 (ordinary disc in lane 3)");
+        Console.WriteLine("            b5 (boring disc in lane 5)");
+        Console.WriteLine("            e7 (exploding disc in lane 7)\n");
+
+        Console.WriteLine("2. Lane numbers are shown at the top of the grid");
+        Console.WriteLine("3. Your disc will drop to the lowest available position");
+        Console.WriteLine("4. Win by connecting enough discs in a row (based on grid size)\n");
+
+        // In-Game Commands
+        PrintCyan("═══ IN-GAME COMMANDS ═══\n");
+        PrintYellow("/save\n");
+        Console.WriteLine("  • Saves the current game state to a file");
+        Console.WriteLine("  • Files stored in 'Saves' directory with timestamp\n");
+
+        PrintYellow("/undo\n");
+        Console.WriteLine("  • Undo the last two moves (both players)");
+        Console.WriteLine("  • Must have at least 2 moves played\n");
+
+        PrintYellow("/redo\n");
+        Console.WriteLine("  • Redo previously undone moves\n");
+
+        PrintYellow("/help\n");
+        Console.WriteLine("  • Display this help menu\n");
+
+        PrintYellow("/quit\n");
+        Console.WriteLine("  • Exit the current game and return to main menu\n");
+
+        // Win Condition
+        PrintCyan("═══ WIN CONDITION ═══\n");
+        Console.WriteLine("Connect a line of your discs equal to 10% of the total grid size");
+        Console.WriteLine("(rounded down). Lines can be horizontal, vertical, or diagonal.\n");
+        Console.WriteLine("Example: On a 6x7 grid (42 spaces), win length = 4 discs\n");
+
+        // Tips
+        PrintCyan("═══ STRATEGY TIPS ═══\n");
+        Console.WriteLine("• Plan ahead - consider how your opponent might respond");
+        Console.WriteLine("• Save special discs for critical moments");
+        Console.WriteLine("• In Spin mode, anticipate how the board rotation will affect play");
+        Console.WriteLine("• Use exploding discs to disrupt opponent's formations");
+        Console.WriteLine("• Boring discs can clear troublesome columns\n");
+
+        PrintGreen("╔═══════════════════════════════════════════════════════════════════╗\n");
+        PrintGreen("║              Press ENTER to return to the main menu               ║\n");
+        PrintGreen("╚═══════════════════════════════════════════════════════════════════╝\n");
+
+        Console.ReadLine();
+        Console.Clear();
+    }
+    
+    /// <summary>
+    /// Displays in-game help (shorter version for quick reference)
+    /// </summary>
+    public static void PrintInGameHelp()
+    {
+        Console.Clear();
+        PrintGreen("╔═══════════════════════════════════════╗\n");
+        PrintGreen("║           QUICK HELP                  ║\n");
+        PrintGreen("╚═══════════════════════════════════════╝\n\n");
+
+        PrintCyan("MOVE FORMAT: [disc][lane]\n");
+        Console.WriteLine("  o3 = ordinary disc, lane 3\n");
+
+        PrintCyan("DISC TYPES:\n");
+        Console.WriteLine("  O - Ordinary (standard disc)");
+        Console.WriteLine("  B - Boring (drills lane)");
+        Console.WriteLine("  E - Exploding (destroys 3x3)");
+        Console.WriteLine("  M - Magnetic (pulls ally disc)\n");
+
+        PrintCyan("COMMANDS:\n");
+        Console.WriteLine("  /save  - Save game");
+        Console.WriteLine("  /undo  - Undo last move");
+        Console.WriteLine("  /quit  - Exit game");
+        Console.WriteLine("  /help  - Show full help\n");
+
+        PrintGreen("Press ENTER to continue...\n");
+        Console.ReadLine();
+    }
+
 
     public static void PrintSaveFiles(string[] saveFiles)
     {
@@ -93,7 +258,7 @@ public static class IOController
             bool success = int.TryParse(input, out num);
             if (success)
             {
-                if (num > 0 && num < 5)
+                if (num > 0 && num < 6)
                 {
                     return num;
                 }

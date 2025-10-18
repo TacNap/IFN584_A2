@@ -1,4 +1,3 @@
-// Move struct - simple data container for a move
 public struct Move
 {
     public Disc Disc { get; set; }

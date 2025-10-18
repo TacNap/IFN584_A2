@@ -23,4 +23,20 @@ public class Player
 		}
 		return false;
 	}
+
+	public void ResetDiscBalance(Dictionary<string, int> DiscBalance_)
+    {
+		DiscBalance = DiscBalance_;
+    }
+
+	public void ReturnDisc(Dictionary<string, int> discReturned)
+    {
+		foreach (string key in discReturned.Keys)
+        {
+            if (DiscBalance.TryGetValue(key, out int value))
+            {
+				DiscBalance[key] = value + discReturned[key];
+            }
+        }
+    }
 }

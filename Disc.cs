@@ -4,6 +4,7 @@ public abstract class Disc
 {
 	public string Symbol { get; protected set; }
 	public bool IsPlayerOne { get; protected set; }
+    public Dictionary<string, int>[]? DiscReturn { get; protected set; } 
 
 	public static Disc CreateDisc(char discType, bool isPlayerOne)
     {

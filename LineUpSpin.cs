@@ -24,49 +24,38 @@ public class LineUpSpin : Game
     }
     
     [JsonConstructor]
-    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
         // Strategy is initialized in base constructor
     }
 
-    private void CheckSpin()
+    public override bool ComputerTurn(Player player)
     {
+        throw new NotImplementedException();
+    }
+    
+    public override void CheckBoard()
+    {
+        if (Grid.CheckWinCondition())
+        {
+            IsGameActive = false;
+            return;
+        }
+        // Spin behaviour
         if (Grid.TurnCounter % 5 == 0)
         {
-            Console.WriteLine("\n*** SPIN! The grid rotates 90° clockwise! ***");
-            Grid.Spin();
-        }
-    }
-
-    public override void GameLoop()
-    {
-        while (IsGameActive)
-        {
-            PrintPlayerData();
-            Grid.DrawGrid();
-
-            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+            Grid.Spin(); 
+            if (Grid.CheckWinCondition())
             {
-                IOController.PrintWinner(true, true);
                 IsGameActive = false;
-                break;
-            }
-
-            Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-
-            if (successfulMove)
-            {
-                if (Grid.CheckWinCondition())
-                {
-                    IsGameActive = false;
-                    break;
-                }
-                Grid.IncrementTurnCounter();
-                CheckSpin(); 
+                return;
             }
         }
+        Grid.IncrementTurnCounter();
     }
+
+
+
+
 }
