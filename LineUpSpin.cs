@@ -1,88 +1,92 @@
 using Newtonsoft.Json;
 
-public class LineUpSpin : Game {
-
-    // Constructor
-    public LineUpSpin(bool HvH = true)
+namespace LineUP2
+{
+    public class LineUpSpin : Game
     {
-        // ! may want to move this to the factory method in gamecontroller??
-        int fixedRows = 8;
-        int fixedCols = 9;
-        // Create the grid
-        Grid = new Grid(fixedRows, fixedCols);
 
-        // Define the number of starting discs
-        int ordinaryBalance = fixedRows * fixedCols / 2;
-        Dictionary<string, int> discBalance = new Dictionary<string, int>
+        // Constructor
+        public LineUpSpin(bool HvH = true)
         {
-            ["Ordinary"] = ordinaryBalance,
-        };
+            // ! may want to move this to the factory method in gamecontroller??
+            int fixedRows = 8;
+            int fixedCols = 9;
+            // Create the grid
+            Grid = new Grid(fixedRows, fixedCols);
 
-        // Create the player objects
-        PlayerOne = new Player(discBalance);
-        PlayerTwo = new Player(discBalance, HvH);
-        IsGameActive = true;
-        MoveSequence = [];
-        file = new FileController();
-    }
-    
-    // Constructor used when loading from file 
-    [JsonConstructor]
-    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
-        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
-    {
-    }
+            // Define the number of starting discs
+            int ordinaryBalance = fixedRows * fixedCols / 2;
+            Dictionary<string, int> discBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+            };
 
-    /// <summary>
-    /// Checks if the game should be spun, based on turn counter
-    /// </summary>
-    private void CheckSpin()
-    {
-        if (Grid.TurnCounter % 5 == 0)
-            Grid.Spin();
-    }
-    
+            // Create the player objects
+            PlayerOne = new Player(discBalance);
+            PlayerTwo = new Player(discBalance, HvH);
+            IsGameActive = true;
+            MoveSequence = [];
+            file = new FileController();
+        }
+
+        // Constructor used when loading from file 
+        [JsonConstructor]
+        public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+            : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+        {
+        }
+
+        /// <summary>
+        /// Checks if the game should be spun, based on turn counter
+        /// </summary>
+        private void CheckSpin()
+        {
+            if (Grid.TurnCounter % 5 == 0)
+                Grid.Spin();
+        }
+
         public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void GameLoop()
-    {
-        while (IsGameActive)
         {
-            PrintPlayerData();
-            Grid.DrawGrid();
+            throw new NotImplementedException();
+        }
 
-            // Check if both players have discs remaining
-            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
+        public override void GameLoop()
+        {
+            while (IsGameActive)
             {
-                IOController.PrintWinner(true, true);
-                IsGameActive = false;
-                break;
-            }
+                PrintPlayerData();
+                Grid.DrawGrid();
 
-            // Holds a reference to the current player, based on turn number
-            Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-
-            // NOT IDEAL
-            // For true polymorphism, PlayTurn needs to exist on the Player object. 
-            // Which would mean the entire Game object also needs to be passed in...
-            bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-
-            CheckSpin();
-            if (successfulMove)
-            {
-                if (Grid.CheckWinCondition())
+                // Check if both players have discs remaining
+                if (Grid.IsTieGame(PlayerOne, PlayerTwo))
                 {
+                    IOController.PrintWinner(true, true);
                     IsGameActive = false;
                     break;
                 }
-                Grid.IncrementTurnCounter();
+
+                // Holds a reference to the current player, based on turn number
+                Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+
+                // NOT IDEAL
+                // For true polymorphism, PlayTurn needs to exist on the Player object. 
+                // Which would mean the entire Game object also needs to be passed in...
+                bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
+
+                CheckSpin();
+                if (successfulMove)
+                {
+                    if (Grid.CheckWinCondition())
+                    {
+                        IsGameActive = false;
+                        break;
+                    }
+                    Grid.IncrementTurnCounter();
+                }
             }
         }
+
+
+
     }
-
-
-
 }

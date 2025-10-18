@@ -1,53 +1,59 @@
 using Newtonsoft.Json;
 
-public class BoringDisc : Disc
+
+
+namespace LineUP2
 {
-    [JsonConstructor]
-    public BoringDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
-    {
-        IsPlayerOne = isPlayerOne;
-        Symbol = IsPlayerOne ? "B" : "b";
-    }
-
-	public override bool ApplyEffects(ref Disc?[][] Board, int lane)
+	public class BoringDisc : Disc
 	{
-		Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
-		int DiscCount1 = 0;
-		int DiscCount2 = 0;
-
-		int laneIndex = lane - 1;
-
-		// Count discs of each player
-		for (int i = 0; i < Board.Length; i++)
+		[JsonConstructor]
+		public BoringDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
 		{
-			if (Board[i][laneIndex] == null) continue;
-			Disc? d = Board[i][laneIndex];
-			if (d.IsPlayerOne) DiscCount1 += 1;
-			else DiscCount2 += 1;
+			IsPlayerOne = isPlayerOne;
+			Symbol = IsPlayerOne ? "B" : "b";
 		}
 
-		// Drill the lane
-		for (int i = 1; i < Board.Length; i++)
+		public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 		{
-			Board[i][laneIndex] = null;
+			Console.WriteLine("[Run]\t BoringDisc, ApplyEffects");
+			int DiscCount1 = 0;
+			int DiscCount2 = 0;
+
+			int laneIndex = lane - 1;
+
+			// Count discs of each player
+			for (int i = 0; i < Board.Length; i++)
+			{
+				if (Board[i][laneIndex] == null) continue;
+				Disc? d = Board[i][laneIndex];
+				if (d.IsPlayerOne) DiscCount1 += 1;
+				else DiscCount2 += 1;
+			}
+
+			// Drill the lane
+			for (int i = 1; i < Board.Length; i++)
+			{
+				Board[i][laneIndex] = null;
+			}
+
+			// Convert Boring to Ordinary at the bottom of the lane
+			Board[^1][laneIndex] = new OrdinaryDisc(IsPlayerOne);
+
+			// TODO: Return all disk to hands of respective players
+			// ...
+
+			return true;
 		}
 
-		// Convert Boring to Ordinary at the bottom of the lane
-		Board[^1][laneIndex] = new OrdinaryDisc(IsPlayerOne);
+		public override bool HasDiscRemaining(Player player)
+		{
+			return player.DiscBalance["Boring"] > 0;
+		}
 
-		// TODO: Return all disk to hands of respective players
-		// ...
-
-		return true;
+		public override void WithdrawDisc(Player player)
+		{
+			player.DiscBalance["Boring"]--;
+		}
 	}
-
-	public override bool HasDiscRemaining(Player player)
-	{
-		return player.DiscBalance["Boring"] > 0;
-	}
-	
-	public override void WithdrawDisc(Player player)
-    {
-		player.DiscBalance["Boring"]--;
-    }
 }
+

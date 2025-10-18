@@ -1,86 +1,90 @@
-/// <summary>
-/// This class is basically a 'settings' object that defines the configuration for the chosen game
-/// </summary>
-public class GameConfig
+
+namespace LineUP2
 {
-    // Defines the options for player modes
-    public enum PlayerMode
+    /// <summary>
+    /// This class is basically a 'settings' object that defines the configuration for the chosen game
+    /// </summary>
+    public class GameConfig
     {
-        HvH,
-        HvC,
-    }
-
-    // Defines the options for game modes
-    public enum GameMode
-    {
-        Classic,
-        Basic,
-        Spin,
-    }
-
-    public PlayerMode SelectedPlayerMode { get; private set; }
-    public GameMode SelectedGameMode { get; private set; }
-
-    // Initial number of rows
-    public int GridHeight { get; private set; }
-
-    // Initial number of columns
-    public int GridWidth { get; private set; }
-
-    // Constructor
-    public GameConfig(
-        PlayerMode playerMode = PlayerMode.HvH,
-        GameMode gameMode = GameMode.Classic,
-        int GridHeight = 6,
-        int GridWidth = 7)
-    {
-        SelectedPlayerMode = playerMode;
-        SelectedGameMode = gameMode;
-        this.GridHeight = GridHeight;
-        this.GridWidth = GridWidth;
-    }
-
-    public bool SetGameMode(GameMode mode)
-    {
-        if (!Enum.IsDefined(typeof(GameMode), mode))
+        // Defines the options for player modes
+        public enum PlayerMode
         {
-            return false;
+            HvH,
+            HvC,
         }
 
-        SelectedGameMode = mode;
-        return true;
-    }
-
-    public bool SetPlayerMode(PlayerMode mode)
-    {
-        if (!Enum.IsDefined(typeof(PlayerMode), mode))
+        // Defines the options for game modes
+        public enum GameMode
         {
-            return false;
+            Classic,
+            Basic,
+            Spin,
         }
 
-        SelectedPlayerMode = mode;
-        return true;
-    }
+        public PlayerMode SelectedPlayerMode { get; private set; }
+        public GameMode SelectedGameMode { get; private set; }
 
-    public bool SetGridHeight(int rows)
-    {
-        if (rows < 1 || rows > 10)
+        // Initial number of rows
+        public int GridHeight { get; private set; }
+
+        // Initial number of columns
+        public int GridWidth { get; private set; }
+
+        // Constructor
+        public GameConfig(
+            PlayerMode playerMode = PlayerMode.HvH,
+            GameMode gameMode = GameMode.Classic,
+            int GridHeight = 6,
+            int GridWidth = 7)
         {
-            return false;
+            SelectedPlayerMode = playerMode;
+            SelectedGameMode = gameMode;
+            this.GridHeight = GridHeight;
+            this.GridWidth = GridWidth;
         }
 
-        GridHeight = rows;
-        return true;
-    }
-
-    public bool SetGridWidth(int cols)
-    {
-        if (cols < 1 || cols > 10 || cols < GridHeight)
+        public bool SetGameMode(GameMode mode)
         {
-            return false;
+            if (!Enum.IsDefined(typeof(GameMode), mode))
+            {
+                return false;
+            }
+
+            SelectedGameMode = mode;
+            return true;
         }
 
-        GridWidth = cols;
-        return true;
+        public bool SetPlayerMode(PlayerMode mode)
+        {
+            if (!Enum.IsDefined(typeof(PlayerMode), mode))
+            {
+                return false;
+            }
+
+            SelectedPlayerMode = mode;
+            return true;
+        }
+
+        public bool SetGridHeight(int rows)
+        {
+            if (rows < 1 || rows > 10)
+            {
+                return false;
+            }
+
+            GridHeight = rows;
+            return true;
+        }
+
+        public bool SetGridWidth(int cols)
+        {
+            if (cols < 1 || cols > 10 || cols < GridHeight)
+            {
+                return false;
+            }
+
+            GridWidth = cols;
+            return true;
+        }
     }
 }

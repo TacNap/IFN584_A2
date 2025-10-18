@@ -1,27 +1,29 @@
 
-
-public abstract class Disc
+namespace LineUP2
 {
-	public string Symbol { get; protected set; }
-	public bool IsPlayerOne { get; protected set; }
-
-	public static Disc CreateDisc(char discType, bool isPlayerOne)
+    public abstract class Disc
     {
-        Disc disc = char.ToLower(discType) switch
+        public string Symbol { get; protected set; }
+        public bool IsPlayerOne { get; protected set; }
+
+        public static Disc CreateDisc(char discType, bool isPlayerOne)
         {
-            'o' => new OrdinaryDisc(isPlayerOne),
-            'b' => new BoringDisc(isPlayerOne),
-            'e' => new ExplodingDisc(isPlayerOne),
-            'm' => new MagneticDisc(isPlayerOne),
-            _ => throw new ArgumentException($"Invalid disc type: {discType}")
-        };
+            Disc disc = char.ToLower(discType) switch
+            {
+                'o' => new OrdinaryDisc(isPlayerOne),
+                'b' => new BoringDisc(isPlayerOne),
+                'e' => new ExplodingDisc(isPlayerOne),
+                'm' => new MagneticDisc(isPlayerOne),
+                _ => throw new ArgumentException($"Invalid disc type: {discType}")
+            };
 
-        return disc;
+            return disc;
+        }
+
+        public abstract bool ApplyEffects(ref Disc?[][] Board, int lane);
+
+        public abstract bool HasDiscRemaining(Player player);
+
+        public abstract void WithdrawDisc(Player player);
     }
-
-	public abstract bool ApplyEffects(ref Disc?[][] Board, int lane);
-
-	public abstract bool HasDiscRemaining(Player player);
-
-	public abstract void WithdrawDisc(Player player);
 }

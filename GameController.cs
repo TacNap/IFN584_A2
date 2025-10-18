@@ -1,110 +1,114 @@
-public class GameController
+
+namespace LineUP2
 {
-    // Properties
-    private bool IsMenuActive { get; set; }
-
-    private FileController file { get; set; }
-
-    // Constructor
-    public GameController()
+    public class GameController
     {
-        IsMenuActive = true;
-        file = new FileController();
-    }
-    
-    // Methods
-    public void RunCommand(int input)
-    {
-        switch (input)
+        // Properties
+        private bool IsMenuActive { get; set; }
+
+        private FileController file { get; set; }
+
+        // Constructor
+        public GameController()
         {
-            case 1:
-                NewGame();
-                break;
-            case 2:
-                LoadGame();
-                break;
-            // Test mode (temp)
-            // TODO: touch up
-            case 3:
-                TestMode();
-                break;
-            case 4:
-                IOController.PrintHelp();
-                break;
-            case 5:
-                Console.WriteLine("Bye Bye!");
-                IsMenuActive = false;
-                break;    
-            default:
-                IOController.PrintError("Error: Unknown Command");
-                break;
+            IsMenuActive = true;
+            file = new FileController();
         }
-    }
-    
-    public Game GameFactory(GameConfig config)
-    {
-        switch (config.SelectedGameMode)
-        {
-            case GameConfig.GameMode.Classic:
-                return new LineUpClassic(
-                    config.GridHeight,
-                    config.GridWidth,
-                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
-                );
-            case GameConfig.GameMode.Basic:
-                return new LineUpBasic(
-                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
-                );
-            case GameConfig.GameMode.Spin:
-                return new LineUpSpin(
-                    config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
-                );
-        }
-        IOController.PrintError("Error: Unrecognised GameMode");
-        return null;
-    }
 
-    // Typical program entry point
-    public void Start()
-    {
-        while (IsMenuActive) // may need to place a variable here later
+        // Methods
+        public void RunCommand(int input)
         {
-            IOController.PrintMenu();
-            int input = IOController.GetInputMenu();
-            RunCommand(input);
+            switch (input)
+            {
+                case 1:
+                    NewGame();
+                    break;
+                case 2:
+                    LoadGame();
+                    break;
+                // Test mode (temp)
+                // TODO: touch up
+                case 3:
+                    TestMode();
+                    break;
+                case 4:
+                    IOController.PrintHelp();
+                    break;
+                case 5:
+                    Console.WriteLine("Bye Bye!");
+                    IsMenuActive = false;
+                    break;
+                default:
+                    IOController.PrintError("Error: Unknown Command");
+                    break;
+            }
         }
-    }
-    
-    /// <summary>
-    /// Prompts the user for game configuration.
-    /// Then creates a Game object and runs the main loop
-    /// </summary>
-    public void NewGame()
-    {
-        GameConfig config = IOController.GetInputNewGame();
-        Game game = GameFactory(config);
-        game.GameLoop();
-    }
 
-    public void LoadGame()
-    {
-        string?[]? saveFiles = file.GetSaves();
-        if (saveFiles == null)
-            return;
-        IOController.PrintSaveFiles(saveFiles);
-        string filePath = IOController.GetInputLoad(saveFiles);
-        if (filePath == null)
-            return;
-        Game Game = file.GameDeserialization(filePath);
-        Game.GameLoop();
-    }
-    
-    // Test mode (temp)
-    // TODO: touch up
-    public void TestMode()
-    {
-        GameConfig config = IOController.GetInputNewGame();
-        Game game = GameFactory(config);
-        game.TestLoop();
+        public Game GameFactory(GameConfig config)
+        {
+            switch (config.SelectedGameMode)
+            {
+                case GameConfig.GameMode.Classic:
+                    return new LineUpClassic(
+                        config.GridHeight,
+                        config.GridWidth,
+                        config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                    );
+                case GameConfig.GameMode.Basic:
+                    return new LineUpBasic(
+                        config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                    );
+                case GameConfig.GameMode.Spin:
+                    return new LineUpSpin(
+                        config.SelectedPlayerMode == GameConfig.PlayerMode.HvH ? true : false
+                    );
+            }
+            IOController.PrintError("Error: Unrecognised GameMode");
+            return null;
+        }
+
+        // Typical program entry point
+        public void Start()
+        {
+            while (IsMenuActive) // may need to place a variable here later
+            {
+                IOController.PrintMenu();
+                int input = IOController.GetInputMenu();
+                RunCommand(input);
+            }
+        }
+
+        /// <summary>
+        /// Prompts the user for game configuration.
+        /// Then creates a Game object and runs the main loop
+        /// </summary>
+        public void NewGame()
+        {
+            GameConfig config = IOController.GetInputNewGame();
+            Game game = GameFactory(config);
+            game.GameLoop();
+        }
+
+        public void LoadGame()
+        {
+            string?[]? saveFiles = file.GetSaves();
+            if (saveFiles == null)
+                return;
+            IOController.PrintSaveFiles(saveFiles);
+            string filePath = IOController.GetInputLoad(saveFiles);
+            if (filePath == null)
+                return;
+            Game Game = file.GameDeserialization(filePath);
+            Game.GameLoop();
+        }
+
+        // Test mode (temp)
+        // TODO: touch up
+        public void TestMode()
+        {
+            GameConfig config = IOController.GetInputNewGame();
+            Game game = GameFactory(config);
+            game.TestLoop();
+        }
     }
 }

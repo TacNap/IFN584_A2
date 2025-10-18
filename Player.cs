@@ -1,31 +1,34 @@
-public class Player
+namespace LineUP2
 {
-	public Dictionary<string, int> DiscBalance { get; protected set; }
-
-	public bool IsHuman { get; set; }
-
-	public Player(Dictionary<string, int> discBalance, bool isHuman = true)
+	public class Player
 	{
-		// Change this to accept a dictionary. 
-		this.DiscBalance = discBalance;
-		IsHuman = isHuman;
-	}
+		public Dictionary<string, int> DiscBalance { get; protected set; }
 
-	// Currently returns true if the Player has ANY discs remaining
-	public bool HasDiscBalanceRemaining()
-	{
-		foreach (var (type, balance) in DiscBalance)
+		public bool IsHuman { get; set; }
+
+		public Player(Dictionary<string, int> discBalance, bool isHuman = true)
 		{
-			if (balance > 0)
-			{
-				return true;
-			}
+			// Change this to accept a dictionary. 
+			this.DiscBalance = discBalance;
+			IsHuman = isHuman;
 		}
-		return false;
-	}
 
-	public void ResetDiscBalance(Dictionary<string, int> DiscBalance_)
-    {
-		DiscBalance = DiscBalance_;
-    }
+		// Currently returns true if the Player has ANY discs remaining
+		public bool HasDiscBalanceRemaining()
+		{
+			foreach (var (type, balance) in DiscBalance)
+			{
+				if (balance > 0)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public void ResetDiscBalance(Dictionary<string, int> DiscBalance_)
+		{
+			DiscBalance = DiscBalance_;
+		}
+	}
 }
