@@ -102,9 +102,9 @@ public class Grid
     /// <param name="disc"></param>
     /// <param name="lane"></param>
     /// <returns>True if the disc is successfully placed.</returns>
-    public bool AddDisc(Disc disc, int lane)
+    public bool AddDisc(Move move)
     {
-        lane--; // User input must be reduced by 1 to match array indexing
+        int lane = move.Lane - 1; // User input must be reduced by 1 to match array indexing
         int pre_rows = Board.Length;
         int pre_cols = Board[0].Length;
 
@@ -122,13 +122,13 @@ public class Grid
                         continue;
                     else
                     {
-                        Board[row - 1][lane] = disc;
+                        Board[row - 1][lane] = move.Disc;
                         return true;
                     }
                 }
 
                 // If column is empty, add disc to the bottom
-                Board[pre_rows - 1][lane] = disc;
+                Board[pre_rows - 1][lane] = move.Disc;
                 return true;
 
             case Orientation.East:
@@ -143,12 +143,12 @@ public class Grid
                 {
                     if (Board[lane][col] != null)
                     {
-                        Board[lane][col - 1] = disc;
+                        Board[lane][col - 1] = move.Disc;
                         return true;
                     }
                 }
 
-                Board[lane][pre_cols - 1] = disc;
+                Board[lane][pre_cols - 1] = move.Disc;
                 return true;
 
             case Orientation.South:
@@ -164,13 +164,13 @@ public class Grid
                         continue;
                     else
                     {
-                        Board[row + 1][lane] = disc;
+                        Board[row + 1][lane] = move.Disc;
                         return true;
                     }
                 }
 
                 // If column is empty, add disc to the bottom
-                Board[0][lane] = disc;
+                Board[0][lane] = move.Disc;
                 return true;
 
             case Orientation.West:
@@ -184,12 +184,12 @@ public class Grid
                 {
                     if (Board[lane][col] != null)
                     {
-                        Board[lane][col + 1] = disc;
+                        Board[lane][col + 1] = move.Disc;
                         return true;
                     }
                 }
 
-                Board[lane][0] = disc;
+                Board[lane][0] = move.Disc;
                 return true;
         }
         return false;

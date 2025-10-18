@@ -281,9 +281,12 @@ public abstract class Game
                 continue;
             }
 
+            // Place into move struct for portability
+            Move move = new Move(disc, lane);
+
             // At this point, we have a disc and know its within balance.
             // Try to add the disc. If it fails, its because the lane is full.
-            if (!Grid.AddDisc(disc, lane))
+            if (!Grid.AddDisc(move))
             {
                 //Move fails
                 IOController.PrintError("Error: Lane is full");
@@ -293,38 +296,14 @@ public abstract class Game
             {
                 // Successful move
                 // DocumentMove
-                disc.WithdrawDisc(player);
+                move.Disc.WithdrawDisc(player);
                 Grid.DrawGrid();
-                if (disc.ApplyEffects(ref Grid.Board, lane))
+                if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
                 {
                     Grid.ApplyGravity();
                     Grid.DrawGrid();
                 }
-                // TODO: (Remove) from this
-                // Note: Temp code to test Undo/Redo
-                string move = "";
-                switch(disc.Symbol)
-                {
-                    case "@":
-                    case "#":
-                        move = "o";
-                        break;
-                    case "B":
-                    case "b":
-                        move = "b";
-                        break;
-                    case "M":
-                    case "m":
-                        move = "m";
-                        break;
-                    case "E":
-                    case "e":
-                        move = "e";
-                        break;
-                }
-                move += $"{lane}";
                 DocumentMove(move);
-                // TODO: (Remove) to this
                 return true;
             }
         }
