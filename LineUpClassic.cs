@@ -1,12 +1,17 @@
 using Newtonsoft.Json;
 
-public class LineUpClassic : Game {
+public class LineUpClassic : Game
+{
+    private void ConfigureAllowedDiscs()
+    {
+        AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
+    }
 
     public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
     {
-        Grid = new Grid(GridHeight, GridWidth);
+        ConfigureAllowedDiscs();
 
-        // Define disc amounts
+        Grid = new Grid(GridHeight, GridWidth);
         int ordinaryBalance = GridHeight * GridWidth / 2;
         Dictionary<string, int> discBalance = new Dictionary<string, int>
         {
@@ -21,18 +26,17 @@ public class LineUpClassic : Game {
         IsGameActive = true;
         MoveSequence = [];
         file = new FileController();
+    
+        computerStrategy = new BasicComputerStrategy();
     }
 
-    // Constructor used when loading from file
     [JsonConstructor]
     public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
-    }
+        ConfigureAllowedDiscs();
 
-    public override bool ComputerTurn(Player player)
-    {
-        throw new NotImplementedException();
+        // Strategy is initialized in base constructor
     }
 
     // * Revisit meee. Make me a template method or something 

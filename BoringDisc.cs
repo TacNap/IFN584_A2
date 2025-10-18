@@ -50,7 +50,12 @@ public class BoringDisc : Disc
 		return true;
 	}
 
-	public override bool HasDiscRemaining(Player player)
+	public override Disc Clone()
+	{
+		return new BoringDisc(IsPlayerOne);
+	}
+
+    public override bool HasDiscRemaining(Player player)
 	{
 		return player.DiscBalance["Boring"] > 0;
 	}

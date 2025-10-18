@@ -7,11 +7,14 @@ public abstract class Game
 
     public bool IsGameActive { get; set; }
 
+    protected char[] AllowedDiscChars = new[] { 'o' };
+
     public List<Move> MoveSequence { get; set; }
 
     private Stack<Move> redoStack = new();
 
     public FileController file { get; set; }
+    protected IComputerStrategy computerStrategy;
 
     // Empty constructor is required to differentiate from JSON constructor
     protected Game()
@@ -27,6 +30,7 @@ public abstract class Game
         IsGameActive = isGameActive;
         MoveSequence = moveSequence ?? [];
         file = fileController ?? new FileController();
+        computerStrategy = new BasicComputerStrategy();
     }
 
     public string GetInputGame(bool testMode = false)
@@ -196,6 +200,25 @@ public abstract class Game
         }
     }
 
+    /// <summary>
+    /// Verifies if the player's input for disc type is allowed in this game mode.
+    /// </summary>
+    /// <param name="discChar"></param>
+    /// <returns>true if allowed</returns>
+    protected virtual bool VerifyDiscChar(char discChar)
+    {
+        char normalized = char.ToLowerInvariant(discChar);
+
+        foreach (char allowed in AllowedDiscChars)
+        {
+            if (normalized == allowed)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // **** Revisit meee. Make me a template method or something 
     // Do I even account for grid length = 10?
     // do i even account for spin???
@@ -212,13 +235,17 @@ public abstract class Game
     public virtual bool TryParseMove(string input, out int lane)
     {
         lane = 0; // Must be instantited before continuing
-        if (input == "" | input == null)
+
+        // Check if empty
+        if (input == "" || input == null)
         {
             IOController.PrintError("Input is empty");
             lane = -1;
             return false;
         }
-        if (input[0] != 'o') // This should reference some dictionary of moves on the game subclass
+      
+        // Check if disc type is allowed
+        if (!VerifyDiscChar(input[0])) 
         {
             IOController.PrintError("Invalid disc type");
             return false;
@@ -240,7 +267,7 @@ public abstract class Game
         {
             if (lane < 1 || lane > Grid.Board[1].Length)
             {
-                IOController.PrintError("Invalid lane");
+                IOController.PrintError("Invalid lane - Out of bounds");
                 return false;
             }
 
@@ -349,8 +376,34 @@ public abstract class Game
         PlayMoveSequence(MoveSequence.Count);
     }
 
-    // Might become a template method later 
-    public abstract bool ComputerTurn(Player player);
+    // Might become a template method later
+    // Template Method for computer player
+    public bool ComputerTurn(Player player)
+    {
+        // Use the strategy to select a move
+        Move move = computerStrategy.SelectMove(Grid, player);
+
+        // Execute the move
+        if (!Grid.AddDisc(move.Disc, move.Lane))
+        {
+            IOController.PrintError("Error: Computer selected invalid move");
+            return false;
+        }
+        // uncomment after merge
+        //DocumentMove(move);
+
+        // Withdraw the disc from player's balance
+        move.Disc.WithdrawDisc(player);
+        Grid.DrawGrid();
+
+        // Apply effects
+        if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
+        {
+            Grid.ApplyGravity();
+            Grid.DrawGrid();
+        }
+        return true;
+    }
 
     public abstract void CheckBoard();
 
