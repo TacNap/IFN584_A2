@@ -12,7 +12,7 @@ This framework includes full support for several versions of the **LineUp** game
 
 All games are designed to share core logic and infrastructure, demonstrating the extensibility, reusability and maintainability of the underlying framework.
 
-------
+--------
 
 ## Features
 
@@ -40,15 +40,16 @@ All games are designed to share core logic and infrastructure, demonstrating the
   - Human inputs are validated in real-time via error handling.
   - In-game help system guides players on valid commands and usage examples.
 
----
+--------
 
 ## Technologies Used
 
 - **Language**: C#
 - **Framework**: .NET 8.0
 - **IDE**: Visual Studio / Visual Studio Code
+- **External libraries**:  Newtonsoft.Json 
 
----
+--------
 
 ## Getting Started
 
@@ -68,5 +69,8 @@ All games are designed to share core logic and infrastructure, demonstrating the
 dotnet run
 
 5. Enjoy the game
+
+External libraries used:
+- 
 
 (C) TacNap, meowliodaz, lkplucy, Sanjika97, yeeweilimmy
