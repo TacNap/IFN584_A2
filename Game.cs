@@ -324,10 +324,8 @@ public abstract class Game
                     // Tyler: return disc to hand for special (boring only)
                     if (disc.DiscReturn != null)
                     {
-                        foreach (Dictionary<string, int> discDict in disc.DiscReturn)
-                        {
-                            player.ReturnDisc(discDict);
-                        }
+                        PlayerOne.ReturnDisc(disc.DiscReturn[0]);
+                        PlayerTwo.ReturnDisc(disc.DiscReturn[1]);
                     }
                     
                     Grid.ApplyGravity();
