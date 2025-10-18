@@ -23,4 +23,9 @@ public class Player
 		}
 		return false;
 	}
+
+	public void ResetDiscBalance(Dictionary<string, int> DiscBalance_)
+    {
+		DiscBalance = DiscBalance_;
+    }
 }
