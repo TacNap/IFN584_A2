@@ -41,7 +41,7 @@ public class BasicComputerStrategy : IComputerStrategy
             Disc testDisc = Disc.CreateDisc(discChar, isPlayerOne);
 
             // Make sure the player has a disc of this type remaining
-            if (testDisc.HasDiscRemaining(player)) continue;
+            if (!testDisc.HasDiscRemaining(player)) continue;
 
             // Try each lane
             for (int lane = 1; lane <= cols; lane++)
@@ -53,10 +53,10 @@ public class BasicComputerStrategy : IComputerStrategy
                 if (TrySimulateMove(grid, testDisc, lane, out Grid simulatedGrid))
                 {
                     // Check if this move wins
-                    if (simulatedGrid.CheckWinCondition())
+                    if (simulatedGrid.CheckWinCondition(true))
                     {
                         // Found a winning move!
-                        return new Move(Disc.CreateDisc(discChar, isPlayerOne), lane);
+                        return new Move(testDisc, lane);
                     }
                 }
             }
