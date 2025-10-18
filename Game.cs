@@ -284,6 +284,7 @@ namespace LineUp2
         {
             while (true)
             {
+                PrintPlayerData();
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
@@ -410,7 +411,7 @@ namespace LineUp2
         {
             while (IsGameActive)
             {
-                PrintPlayerData();
+                //PrintPlayerData();
                 //Grid.DrawGrid();
 
                 // Check if both players have discs remaining
@@ -427,7 +428,7 @@ namespace LineUp2
 
                 if (activePlayer.IsHuman)
                 {
-                    PrintPlayerData();
+                    IOController.PrintGameBanner();
                     Grid.DrawGrid();
                 }
 
@@ -465,9 +466,9 @@ namespace LineUp2
 
         public virtual void PrintPlayerData()
         {
-            Console.WriteLine("--------------");
+            Console.WriteLine();
             Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-            Console.WriteLine($"Discs: {player.DiscBalance["Ordinary"]}");
+            IOController.PrintDiscInventory(player.DiscBalance);
         }
     }
 }

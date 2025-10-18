@@ -2,6 +2,30 @@ namespace LineUp2
 {
     public static class IOController
     {
+
+        public static void PrintGameBanner()
+        {
+            PrintGreen("╔═══════════════════════════════════════════════════════════════╗\n");
+            PrintGreen("║                          LineUp                               ║\n");
+            PrintGreen("╚═══════════════════════════════════════════════════════════════╝\n");
+        }
+
+        public static void PrintDiscInventory(Dictionary<string, int> discBalance)
+        {
+            Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
+            
+            foreach (var disc in discBalance)
+            {
+                Console.Write("║ ");
+                PrintYellow($"{disc.Key,-12}");
+                Console.Write(": ");
+                PrintCyan($"{disc.Value,2}");
+                Console.WriteLine(new string(' ', 46) + "║");
+            }
+            
+            Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
+        }
+
         /// <summary>
         /// Changes text colour to green
         /// </summary>
