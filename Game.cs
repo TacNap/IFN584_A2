@@ -217,6 +217,12 @@ public abstract class Game
     public virtual bool TryParseMove(string input, out int lane)
     {
         lane = 0; // Must be instantited before continuing
+        if (input == "" | input == null)
+        {
+            IOController.PrintError("Input is empty");
+            lane = -1;
+            return false;
+        }
         if (input[0] != 'o') // This should reference some dictionary of moves on the game subclass
         {
             IOController.PrintError("Invalid disc type");
