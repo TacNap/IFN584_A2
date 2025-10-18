@@ -1,60 +1,63 @@
 using Newtonsoft.Json;
 
-public class LineUpSpin : Game
+namespace LineUp2
 {
-    public LineUpSpin(bool HvH = true)
+    public class LineUpSpin : Game
     {
-        int fixedRows = 8;
-        int fixedCols = 9;
-        Grid = new Grid(fixedRows, fixedCols);
+        public LineUpSpin(bool HvH = true)
+        {
+            int fixedRows = 8;
+            int fixedCols = 9;
+            Grid = new Grid(fixedRows, fixedCols);
 
-        int ordinaryBalance = fixedRows * fixedCols / 2;
-        Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
-        {
-            ["Ordinary"] = ordinaryBalance,
-        };
-        Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
-        {
-            ["Ordinary"] = ordinaryBalance,
-        };
+            int ordinaryBalance = fixedRows * fixedCols / 2;
+            Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+            };
+            Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+            };
 
-        PlayerOne = new Player(p1DiscBalance);
-        PlayerTwo = new Player(p2DiscBalance, HvH);
-        IsGameActive = true;
-        MoveSequence = [];
-        file = new FileController();
-        
-        computerStrategy = new BasicComputerStrategy();
-    }
-    
-    [JsonConstructor]
-    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
-        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
-    {
-        // Strategy is initialized in base constructor
-    }
-    
-    public override void CheckBoard()
-    {
-        if (Grid.CheckWinCondition())
-        {
-            IsGameActive = false;
-            return;
+            PlayerOne = new Player(p1DiscBalance);
+            PlayerTwo = new Player(p2DiscBalance, HvH);
+            IsGameActive = true;
+            MoveSequence = [];
+            file = new FileController();
+
+            computerStrategy = new BasicComputerStrategy();
         }
-        // Spin behaviour
-        if (Grid.TurnCounter % 5 == 0)
+
+        [JsonConstructor]
+        public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
+            : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
         {
-            Grid.Spin(); 
+            // Strategy is initialized in base constructor
+        }
+
+        public override void CheckBoard()
+        {
             if (Grid.CheckWinCondition())
             {
                 IsGameActive = false;
                 return;
             }
+            // Spin behaviour
+            if (Grid.TurnCounter % 5 == 0)
+            {
+                Grid.Spin();
+                if (Grid.CheckWinCondition())
+                {
+                    IsGameActive = false;
+                    return;
+                }
+            }
+            Grid.IncrementTurnCounter();
         }
-        Grid.IncrementTurnCounter();
+
+
+
+
     }
-
-
-
-
 }

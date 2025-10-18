@@ -1,46 +1,49 @@
 using Newtonsoft.Json;
 
-public class LineUpBasic : Game
+namespace LineUp2
 {
-    public LineUpBasic(bool HvH = true)
+    public class LineUpBasic : Game
     {
-        int fixedRows = 8;
-        int fixedCols = 9;
-        Grid = new Grid(fixedRows, fixedCols);
-
-        int ordinaryBalance = fixedRows * fixedCols / 2;
-        Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+        public LineUpBasic(bool HvH = true)
         {
-            ["Ordinary"] = ordinaryBalance,
-        };
-        Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
-        {
-            ["Ordinary"] = ordinaryBalance,
-        };
+            int fixedRows = 8;
+            int fixedCols = 9;
+            Grid = new Grid(fixedRows, fixedCols);
 
-        PlayerOne = new Player(p1DiscBalance);
-        PlayerTwo = new Player(p2DiscBalance, HvH);
-        IsGameActive = true;
-        MoveSequence = [];
-        file = new FileController();
-        
-        computerStrategy = new BasicComputerStrategy();
-    }
+            int ordinaryBalance = fixedRows * fixedCols / 2;
+            Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+            };
+            Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+            };
 
-    [JsonConstructor]
-    public LineUpBasic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
-        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
-    {
-        // Strategy is initialized in base constructor
-    }
+            PlayerOne = new Player(p1DiscBalance);
+            PlayerTwo = new Player(p2DiscBalance, HvH);
+            IsGameActive = true;
+            MoveSequence = [];
+            file = new FileController();
 
-    public override void CheckBoard()
-    {
-        if (Grid.CheckWinCondition())
-        {
-            IsGameActive = false;
-            return;
+            computerStrategy = new BasicComputerStrategy();
         }
-        Grid.IncrementTurnCounter();
+
+        [JsonConstructor]
+        public LineUpBasic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
+            : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+        {
+            // Strategy is initialized in base constructor
+        }
+
+        public override void CheckBoard()
+        {
+            if (Grid.CheckWinCondition())
+            {
+                IsGameActive = false;
+                return;
+            }
+            Grid.IncrementTurnCounter();
+        }
     }
 }

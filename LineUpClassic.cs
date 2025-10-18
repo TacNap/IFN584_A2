@@ -1,57 +1,60 @@
 using Newtonsoft.Json;
 
-public class LineUpClassic : Game
+namespace LineUp2
 {
-
-    public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
+    public class LineUpClassic : Game
     {
-        AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
 
-        Grid = new Grid(GridHeight, GridWidth);
-        int ordinaryBalance = GridHeight * GridWidth / 2;
-        Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+        public LineUpClassic(int GridHeight, int GridWidth, bool HvH = true)
         {
-            ["Ordinary"] = ordinaryBalance,
-            ["Boring"] = 2,
-            ["Exploding"] = 2,
-            ["Magnetic"] = 2
-        };
-        Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
-        {
-            ["Ordinary"] = ordinaryBalance,
-            ["Boring"] = 2,
-            ["Exploding"] = 2,
-            ["Magnetic"] = 2
-        };
+            AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
 
-        PlayerOne = new Player(p1DiscBalance);
-        PlayerTwo = new Player(p2DiscBalance, HvH);
-        IsGameActive = true;
-        MoveSequence = [];
-        file = new FileController();
-    
-        computerStrategy = new BasicComputerStrategy();
-    }
+            Grid = new Grid(GridHeight, GridWidth);
+            int ordinaryBalance = GridHeight * GridWidth / 2;
+            Dictionary<string, int> p1DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+                ["Boring"] = 2,
+                ["Exploding"] = 2,
+                ["Magnetic"] = 2
+            };
+            Dictionary<string, int> p2DiscBalance = new Dictionary<string, int>
+            {
+                ["Ordinary"] = ordinaryBalance,
+                ["Boring"] = 2,
+                ["Exploding"] = 2,
+                ["Magnetic"] = 2
+            };
 
-    [JsonConstructor]
-    public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
-        : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
-    {
-        AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
+            PlayerOne = new Player(p1DiscBalance);
+            PlayerTwo = new Player(p2DiscBalance, HvH);
+            IsGameActive = true;
+            MoveSequence = [];
+            file = new FileController();
 
-        // Strategy is initialized in base constructor
-    }
-
-
-    public override void CheckBoard()
-    {
-        if (Grid.CheckWinCondition())
-        {
-            IsGameActive = false;
-            return;
+            computerStrategy = new BasicComputerStrategy();
         }
-        Grid.IncrementTurnCounter();
-    }
 
-    
+        [JsonConstructor]
+        public LineUpClassic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
+            : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
+        {
+            AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
+
+            // Strategy is initialized in base constructor
+        }
+
+
+        public override void CheckBoard()
+        {
+            if (Grid.CheckWinCondition())
+            {
+                IsGameActive = false;
+                return;
+            }
+            Grid.IncrementTurnCounter();
+        }
+
+
+    }
 }

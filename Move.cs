@@ -1,11 +1,14 @@
-public struct Move
+namespace LineUp2
 {
-    public Disc Disc { get; set; }
-    public int Lane { get; set; }
-
-    public Move(Disc disc, int lane)
+    public struct Move
     {
-        Disc = disc;
-        Lane = lane;
+        public Disc Disc { get; set; }
+        public int Lane { get; set; }
+
+        public Move(Disc disc, int lane)
+        {
+            Disc = disc;
+            Lane = lane;
+        }
     }
 }
