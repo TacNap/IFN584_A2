@@ -11,8 +11,7 @@ participant LineUpClassic as Game
 participant Grid
 participant Human
 participant Disc
-participant Computer
-participant IComputerStrategy as "AI Strategy"
+participant Computer as IComputerStrategy
 
 == Game Initialisation ==
 
@@ -31,21 +30,24 @@ loop While IsMenuActive == true
     User -> IOController: Select "No"
     IOController -> GameConfig: GetInputNewGame()
     deactivate IOController
-    GameConfig -> GameController: GameFactory()
-    deactivate GameController
+    GameController -> GameConfig: GameFactory()
+    GameConfig -> GameController: GameFactory(config)
 
     == Start Game Loop ==
     activate Game
     GameController -> Game: GameLoop()
+    deactivate GameController
 
     loop While IsGameActive == true
     Game -> User: PrintPlayerData()
     Game -> User: DrawGrid()
     alt Human Player Turn
-        Game -> User: GetInputGame()
-        User -> Game: Enter move/command
         Game -> Game: PlayerTurn(PlayerOne)
+        activate Game
+        deactivate Game
+        Game -> User: GetInputGame()
         alt Make move
+            User -> Game: Enter move
             Game -> Disc: CreateDisc()
             activate Disc
             Game -> Disc: HasDiscRemaining() == true
@@ -91,6 +93,9 @@ loop While IsMenuActive == true
             deactivate Game
         end
     else Computer Player Turn
+        Game -> Game: PlayerTurn(PlayerTwo)
+        activate Game
+        deactivate Game
         activate IComputerStrategy
         Game -> IComputerStrategy: SelectMove()
         IComputerStrategy --> Game: Move{Disc, Lane}
