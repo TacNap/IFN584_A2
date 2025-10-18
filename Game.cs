@@ -7,6 +7,8 @@ public abstract class Game
 
     public bool IsGameActive { get; set; }
 
+    protected char[] AllowedDiscChars = new[] { 'o' };
+
     public List<string> MoveSequence { get; set; }
 
     public FileController file { get; set; }
@@ -125,6 +127,25 @@ public abstract class Game
         }
     }
 
+    /// <summary>
+    /// Verifies if the player's input for disc type is allowed in this game mode.
+    /// </summary>
+    /// <param name="discChar"></param>
+    /// <returns>true if allowed</returns>
+    protected virtual bool VerifyDiscChar(char discChar)
+    {
+        char normalized = char.ToLowerInvariant(discChar);
+
+        foreach (char allowed in AllowedDiscChars)
+        {
+            if (normalized == allowed)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // **** Revisit meee. Make me a template method or something 
     // Do I even account for grid length = 10?
     // do i even account for spin???
@@ -141,7 +162,8 @@ public abstract class Game
     public virtual bool TryParseMove(string input, out int lane)
     {
         lane = 0; // Must be instantited before continuing
-        if (input[0] != 'o') // This should reference some dictionary of moves on the game subclass
+
+        if (!VerifyDiscChar(input[0])) 
         {
             IOController.PrintError("Invalid disc type");
             return false;
@@ -163,7 +185,7 @@ public abstract class Game
         {
             if (lane < 1 || lane > Grid.Board[1].Length)
             {
-                IOController.PrintError("Invalid lane");
+                IOController.PrintError("Invalid lane - Out of bounds");
                 return false;
             }
 
