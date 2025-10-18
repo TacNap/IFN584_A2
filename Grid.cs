@@ -399,7 +399,7 @@ public class Grid
         }
     }
 
-    public bool CheckWinCondition()
+    public bool CheckWinCondition(bool suppress = false)
     {
         int P1Counter;
         int P2Counter;
@@ -609,7 +609,7 @@ public class Grid
         }
         if (P1Win || P2Win)
         {
-            IOController.PrintWinner(P1Win, P2Win);
+            if(!suppress) IOController.PrintWinner(P1Win, P2Win);
             return true;
         }
         return false;

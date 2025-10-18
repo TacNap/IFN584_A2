@@ -27,8 +27,16 @@ public class BasicComputerStrategy : IComputerStrategy
     /// </summary>
     private Move? FindWinningMove(Grid grid, Player player)
     {
-        int rows = grid.Board.Length; // unused - can be removed?
-        int cols = grid.Board[0].Length;
+        int lanes;
+        if (grid.orientation == Grid.Orientation.North || grid.orientation == Grid.Orientation.South)
+        {
+            lanes = grid.Board[0].Length;
+        } else
+        {
+            lanes = grid.Board.Length;
+        }
+        // int rows = grid.Board.Length; // unused - can be removed?
+        // int cols = grid.Board[0].Length;
         bool isPlayerOne = grid.TurnCounter % 2 == 1;
 
         // Try each disc type the player has
@@ -41,22 +49,19 @@ public class BasicComputerStrategy : IComputerStrategy
             Disc testDisc = Disc.CreateDisc(discChar, isPlayerOne);
 
             // Make sure the player has a disc of this type remaining
-            if (testDisc.HasDiscRemaining(player)) continue;
+            if (!testDisc.HasDiscRemaining(player)) continue;
 
             // Try each lane
-            for (int lane = 1; lane <= cols; lane++)
+            for (int lane = 1; lane <= lanes; lane++)
             {
-                // Check if lane is not full
-                if (grid.Board[0][lane - 1] != null) continue;
-
                 // Simulate adding the disc
                 if (TrySimulateMove(grid, testDisc, lane, out Grid simulatedGrid))
                 {
                     // Check if this move wins
-                    if (simulatedGrid.CheckWinCondition())
+                    if (simulatedGrid.CheckWinCondition(true))
                     {
                         // Found a winning move!
-                        return new Move(Disc.CreateDisc(discChar, isPlayerOne), lane);
+                        return new Move(testDisc, lane);
                     }
                 }
             }

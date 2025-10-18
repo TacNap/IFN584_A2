@@ -1,0 +1,434 @@
+{
+  "$type": "LineUpClassic, IFN584_A2",
+  "Grid": {
+    "$type": "Grid, IFN584_A2",
+    "Board": {
+      "$type": "Disc[][], IFN584_A2",
+      "$values": [
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            null,
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            null,
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            null,
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "Disc[], IFN584_A2",
+          "$values": [
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            null,
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            {
+              "$type": "OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            }
+          ]
+        }
+      ]
+    },
+    "orientation": 0,
+    "WinLength": 4,
+    "TurnCounter": 21
+  },
+  "PlayerOne": {
+    "$type": "Player, IFN584_A2",
+    "DiscBalance": {
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+      "Ordinary": 9,
+      "Boring": 5,
+      "Exploding": 0,
+      "Magnetic": 2
+    },
+    "IsHuman": true
+  },
+  "PlayerTwo": {
+    "$type": "Player, IFN584_A2",
+    "DiscBalance": {
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+      "Ordinary": 9,
+      "Boring": 5,
+      "Exploding": 0,
+      "Magnetic": 2
+    },
+    "IsHuman": false
+  },
+  "IsGameActive": true,
+  "MoveSequence": {
+    "$type": "System.Collections.Generic.List`1[[Move, IFN584_A2]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "ExplodingDisc, IFN584_A2",
+          "Symbol": "e",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 7
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 2
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "ExplodingDisc, IFN584_A2",
+          "Symbol": "e",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 5
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "b",
+          "IsPlayerOne": false,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 1
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 1
+              }
+            ]
+          }
+        },
+        "Lane": 2
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 2
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "#",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 2
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "#",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 3
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 2
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "#",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "B",
+          "IsPlayerOne": true,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 4
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 1
+              }
+            ]
+          }
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "#",
+          "IsPlayerOne": false,
+          "DiscReturn": null
+        },
+        "Lane": 7
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "b",
+          "IsPlayerOne": false,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 0
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 1
+              }
+            ]
+          }
+        },
+        "Lane": 6
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "b",
+          "IsPlayerOne": false,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 0
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 2
+              }
+            ]
+          }
+        },
+        "Lane": 6
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "B",
+          "IsPlayerOne": true,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 4
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 0
+              }
+            ]
+          }
+        },
+        "Lane": 1
+      },
+      {
+        "$type": "Move, IFN584_A2",
+        "Disc": {
+          "$type": "BoringDisc, IFN584_A2",
+          "Symbol": "b",
+          "IsPlayerOne": false,
+          "DiscReturn": {
+            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]][], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 0
+              },
+              {
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+                "Boring": 1
+              }
+            ]
+          }
+        },
+        "Lane": 5
+      }
+    ]
+  },
+  "file": {
+    "$type": "FileController, IFN584_A2"
+  }
+}
