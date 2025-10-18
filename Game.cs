@@ -187,7 +187,7 @@ public abstract class Game
                     file.GameSerialization(this);
                     break;
                 case "/help":
-                    IOController.PrintGreen("Help!\n");
+                    IOController.PrintInGameHelp();
                     break;
                 case "/quit":
                     IOController.PrintGreen("Quit!\n");

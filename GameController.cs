@@ -29,7 +29,7 @@ public class GameController
                 TestMode();
                 break;
             case 4:
-                Console.WriteLine("Help");
+                IOController.PrintHelp();
                 break;
             case 5:
                 Console.WriteLine("Bye Bye!");
