@@ -411,7 +411,7 @@ namespace LineUp2
             while (IsGameActive)
             {
                 PrintPlayerData();
-                Grid.DrawGrid();
+                //Grid.DrawGrid();
 
                 // Check if both players have discs remaining
                 if (Grid.IsTieGame(PlayerOne, PlayerTwo))
@@ -424,6 +424,12 @@ namespace LineUp2
                 // Holds a reference to the current player, based on turn number
                 // Just for less repeated code :)
                 Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
+
+                if (activePlayer.IsHuman)
+                {
+                    PrintPlayerData();
+                    Grid.DrawGrid();
+                }
 
                 // NOT IDEAL
                 // For true polymorphism, PlayTurn needs to exist on the Player object. 
