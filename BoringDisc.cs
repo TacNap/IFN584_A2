@@ -22,12 +22,13 @@ public class BoringDisc : Disc
 		{
 			if (Board[i][laneIndex] == null) continue;
 			Disc? d = Board[i][laneIndex];
+			if (d.Symbol == this.Symbol) continue;
 			if (d.IsPlayerOne) DiscCount1 += 1;
 			else DiscCount2 += 1;
 		}
 
 		// Drill the lane
-		for (int i = 1; i < Board.Length; i++)
+		for (int i = 0; i < Board.Length; i++)
 		{
 			Board[i][laneIndex] = null;
 		}
