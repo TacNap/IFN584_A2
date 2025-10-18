@@ -148,9 +148,16 @@ public abstract class Game
             // Add disc
             Grid.AddDisc(disc, lane);
             Grid.ApplyGravity();
+
             // ApplyEffects
             if (disc.ApplyEffects(ref Grid.Board, lane)) Grid.ApplyGravity();
-
+            if (disc.DiscReturn != null)
+            {
+                foreach (Dictionary<string,int> discDict in disc.DiscReturn)
+                {
+                    player.ReturnDisc(discDict);
+                }
+            }
             // TODO: This is supposed to replace the "ApplyEffect" or whatever for different game mode
             // CheckBoard();
 
@@ -297,6 +304,15 @@ public abstract class Game
                 Grid.DrawGrid();
                 if (disc.ApplyEffects(ref Grid.Board, lane))
                 {
+                    // Tyler: return disc to hand for special (boring only)
+                    if (disc.DiscReturn != null)
+                    {
+                        foreach (Dictionary<string, int> discDict in disc.DiscReturn)
+                        {
+                            player.ReturnDisc(discDict);
+                        }
+                    }
+                    
                     Grid.ApplyGravity();
                     Grid.DrawGrid();
                 }

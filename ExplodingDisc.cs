@@ -11,7 +11,6 @@ public class ExplodingDisc : Disc
 
 	public override bool ApplyEffects(ref Disc?[][] Board, int lane)
 	{
-		Console.WriteLine("[Run]\t ExplodingDisc, ApplyEffects");
 		int laneIndex = lane - 1;
 
 		// Loop through played lane from the top
