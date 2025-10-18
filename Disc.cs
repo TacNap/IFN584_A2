@@ -19,6 +19,8 @@ public abstract class Disc
         return disc;
     }
 
+    public abstract Disc Clone();
+
 	public abstract bool ApplyEffects(ref Disc?[][] Board, int lane);
 
 	public abstract bool HasDiscRemaining(Player player);

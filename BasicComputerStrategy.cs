@@ -127,6 +127,7 @@ public class BasicComputerStrategy : IComputerStrategy
 
     /// <summary>
     /// Creates a deep copy of a grid for simulation purposes
+    /// We have to make a deep copy because when calling `Dics.ApplyEffects`, some discs change their own properties.
     /// </summary>
     private Grid CopyGrid(Grid original)
     {
@@ -143,8 +144,7 @@ public class BasicComputerStrategy : IComputerStrategy
                 if (original.Board[i][j] != null)
                 {
                     Disc originalDisc = original.Board[i][j];
-                    char discChar = GetDiscCharFromSymbol(originalDisc.Symbol);
-                    copy.Board[i][j] = Disc.CreateDisc(discChar, originalDisc.IsPlayerOne);
+                    copy.Board[i][j] = originalDisc.Clone();
                 }
             }
         }
@@ -153,20 +153,5 @@ public class BasicComputerStrategy : IComputerStrategy
         copy.SetTurnCounter(original.TurnCounter);
 
         return copy;
-    }
-
-    /// <summary>
-    /// Maps disc symbol back to character for CreateDisc
-    /// </summary>
-    private char GetDiscCharFromSymbol(string symbol)
-    {
-        return symbol.ToLower() switch
-        {
-            "@" or "#" => 'o',
-            "b" => 'b',
-            "e" => 'e',
-            "m" => 'm',
-            _ => 'o'
-        };
     }
 }

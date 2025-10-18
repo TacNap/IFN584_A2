@@ -14,6 +14,11 @@ public class OrdinaryDisc : Disc
         return false;
     }
 
+    public override Disc Clone()
+    {
+        return new OrdinaryDisc(IsPlayerOne);
+    }
+
     public override bool HasDiscRemaining(Player player)
     {
         return player.DiscBalance["Ordinary"] > 0;
