@@ -1,5 +1,6 @@
 @startuml
 skinparam actorStyle awesome
+skinparam titleFontSize 32
 title Sequence Diagram – LineUpClassic Game (Human vs Computer Mode)
 
 actor User as "Human Player"
