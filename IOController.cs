@@ -224,8 +224,13 @@ namespace LineUp2
 
         public static void PrintSaveFiles(string[] saveFiles)
         {
-            Console.WriteLine("- Load Banner -");
-            Console.WriteLine("Please input the number of the file you'd like to load:");
+            // Console.WriteLine("- Load Banner -");
+            Console.Clear();
+            PrintGreen("╔════════════════════════════════════════════════════════════════╗\n");
+            PrintGreen("║               Please select a saved file to load:              ║\n");
+            PrintGreen("╚════════════════════════════════════════════════════════════════╝\n");
+            Console.WriteLine(" ");
+            PrintGreen("Please enter the number corresponding to the file you want to load:\n");
             for (int i = 0; i < saveFiles.Length; i++)
             {
                 PrintGreen($"[{i + 1}] ");
