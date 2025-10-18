@@ -46,8 +46,8 @@ loop While IsMenuActive == true
         User -> Game: Enter move/command
         Game -> Game: PlayerTurn(PlayerOne)
         alt Make move
-            activate Disc
             Game -> Disc: CreateDisc()
+            activate Disc
             Game -> Disc: HasDiscRemaining() == true
             Disc -> Game: disc
             activate Grid
@@ -62,19 +62,33 @@ loop While IsMenuActive == true
             Game -> Grid: DrawGrid()
             alt Is Tie Game
                 Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+                activate Grid
+                deactivate Grid
                 Grid -> Game: IsTieGame = true
+                Game -> IOController: PrintWinner(P1)
+                Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Winner Found
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition(P1) = true
+                Game -> IOController: PrintWinner(P1)
+                Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Continue Game
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition = false
                 Game -> Grid: IncrementTurnCounter()
             deactivate Grid
             end
-            Game -> Game: DocumentMove(move)            
+            Game -> Game: DocumentMove(move)
+            activate Game
+            deactivate Game
         else Help/Undo/Redo/Quit command
-            Game -> Game: Help/Redo/Undo/Quit
+            Game -> Game: TryHandleCommand()
+            activate Game
+            deactivate Game
         end
     else Computer Player Turn
         activate IComputerStrategy
@@ -88,16 +102,25 @@ loop While IsMenuActive == true
         Game -> Grid: AddDisc(disc, lane)
         Game -> Disc: ApplyEffects(Board, lane)
         alt EffectTriggered
-            activate Grid
             Disc -> Grid: ApplyGravity()
         end
         deactivate Disc
         alt Is Tie Game
             Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+            activate Grid
+            deactivate Grid
             Grid -> Game: IsTieGame = true
+            Game -> IOController: PrintWinner(P2)
+            Game -> Game: IsGameActive = false
+            activate Game
+            deactivate Game
         else Winner Found
             Game -> Grid: CheckWinCondition()
             Grid -> Game: CheckWinCondition(P2) = true
+            Grid -> IOController: PrintWinner(P2)
+            Game -> Game: IsGameActive = false
+            activate Game
+            deactivate Game
         else Continue Game
             Game -> Grid: CheckWinCondition()
             Grid -> Game: CheckWinCondition = false
@@ -105,15 +128,10 @@ loop While IsMenuActive == true
         deactivate Grid
         end
         Game -> Game: DocumentMove(move)
+        activate Game
+        deactivate Game
     end
-
-    alt Winner Found
-        Grid -> IOController: PrintWinner(P1 | P2)
-        Game -> Game: IsGameActive = false
-    else Tie Game
-        Game -> IOController: PrintWinner(P1 && P2)
-        Game -> Game: IsGameActive = false
-    end
+deactivate Game
 end
 
 == Game Over ==
