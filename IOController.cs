@@ -29,12 +29,9 @@ namespace LineUp2
         /// <summary>
         /// Displays current game status information including turn, game mode, player mode, and win condition
         /// </summary>
-        /// <summary>
-        /// Displays current game status information including turn, game mode, player mode, and win condition
-        /// </summary>
         public static void PrintGameStatus(Grid grid, int winLength)//Grid grid, GameConfig.PlayerMode playerMode, GameConfig.GameMode gameMode, int winLength
         {
-            int boxWidth = 63; // Total width of the box
+            int boxWidth = 64; // Total width of the box
             
             Console.WriteLine("╔═══════════════════════════════════════════════════════════════╗");
             
@@ -47,7 +44,7 @@ namespace LineUp2
             PrintYellow("Turn: ");
             Console.Write($"{grid.TurnCounter} | {currentPlayer} | Win: {winLength} in a row");
             Console.Write(new string(' ', Math.Max(0, line1Padding)));
-            Console.WriteLine("  ║");
+            Console.WriteLine(" ║");
             
             // // Line 2: Game mode and player mode
             // string gameModeText = gameMode switch
