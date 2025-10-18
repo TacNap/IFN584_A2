@@ -38,11 +38,11 @@ public class BoringDisc : Disc
 		// Return all disk to hands of respective players
 		Dictionary<string, int> discDict1 = new()
         {
-			["Boring"]= DiscCount1
+			["Ordinary"]= DiscCount1
 		};
 		Dictionary<string, int> discDict2 = new()
 		{
-			["Boring"] = DiscCount2
+			["Ordinary"] = DiscCount2
 		};
 		DiscReturn[0] = discDict1;
 		DiscReturn[1] = discDict2;
