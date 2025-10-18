@@ -38,7 +38,7 @@ namespace LineUp2
 
         public string GetInputGame(bool testMode = false)
         {
-            string instruction = !testMode ? "Enter move/command" : "Enter string of moves for testing, seperated by a comma \",\"";
+            string instruction = !testMode ? "Enter move/command. Type /help for a list of commands." : "Enter string of moves for testing, seperated by a comma \",\"";
             Console.WriteLine(instruction);
             Console.Write("> ");
             string? input = Console.ReadLine();
@@ -288,7 +288,7 @@ namespace LineUp2
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
-                    IOController.PrintError("Please enter a valid move or command. Type /help for a list of commands.");
+                    IOController.PrintError("Please enter a valid move or command.");
                     continue;
                 }
 
