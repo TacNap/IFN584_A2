@@ -29,7 +29,7 @@ public class LineUpBasic : Game {
 
     // Constructor used when loading from file
     [JsonConstructor]
-    public LineUpBasic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+    public LineUpBasic(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
     }

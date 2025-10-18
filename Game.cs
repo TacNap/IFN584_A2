@@ -9,6 +9,8 @@ public abstract class Game
 
     public List<Move> MoveSequence { get; set; }
 
+    private Stack<Move> redoStack = new();
+
     public FileController file { get; set; }
 
     // Empty constructor is required to differentiate from JSON constructor
@@ -17,7 +19,7 @@ public abstract class Game
     }
 
     // Inherited by JSON Constructors
-    protected Game(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController fileController)
+    protected Game(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController fileController)
     {
         Grid = grid;
         PlayerOne = playerOne;
@@ -29,7 +31,7 @@ public abstract class Game
 
     public string GetInputGame(bool testMode = false)
     {
-        string instruction = !testMode ? "Enter move/command" : "Enter string of moves for testing, seperated by a comma \",\"; or a command";
+        string instruction = !testMode ? "Enter move/command" : "Enter string of moves for testing, seperated by a comma \",\"";
         Console.WriteLine(instruction);
         Console.Write("> ");
         string? input = Console.ReadLine();
@@ -39,132 +41,114 @@ public abstract class Game
     // Not convinced yet that these methods should exist on Game
     private void DocumentMove(Move move)
     {
-        if (Grid.TurnCounter - 1 < MoveSequence.Count) MoveSequence[Grid.TurnCounter] = move;
-        else MoveSequence.Add(move);
+        int index = Grid.TurnCounter - 1;
+        if (index < 0)
+        {
+            index = 0;
+        }
+
+        if (index < MoveSequence.Count)
+        {
+            MoveSequence[index] = move;
+        }
+        else
+        {
+            MoveSequence.Add(move);
+        }
+
+        redoStack.Clear();
     }
 
     private bool Undo()
     {
-        // attempt to undo 2 moves. If turn counter < 3 : fail?
-        if (Grid.TurnCounter <= 2)
+        if (MoveSequence.Count == 0)
         {
             IOController.PrintError("You have no move to undo yet!");
             return false;
         }
 
-        // Decrement TurnCounter
-        for (int _ = 0; _ < 2; _++)
-        {
-            Grid.DecrementTurnCounter();
-        }
-    
-        // Run Moves with new TurnCounter
-        Console.WriteLine($"\t\t Undo | TurnCounter: {Grid.TurnCounter}");
-        Grid.Reset(true);
-        Reset();
-        PlayMoveSequence();
-        Grid.DrawGrid();
+        int lastIndex = MoveSequence.Count - 1;
+        redoStack.Push(MoveSequence[lastIndex]);
+        MoveSequence.RemoveAt(lastIndex);
 
-        // TODO: Change Disc count
-        
-        return true;
+        bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
+        IsGameActive = !sequenceEnded;
+
+        return !sequenceEnded;
     }
 
     private bool Redo()
     {
-        // Decrement TurnCounter
-        for (int _ = 0; _ < 2; _++)
+        if (redoStack.Count == 0)
         {
-            Grid.IncrementTurnCounter();
+            IOController.PrintError("You have no move to redo yet!");
+            return false;
         }
 
-        // Run Moves with new TurnCounter
-        Console.WriteLine($"\t\t Redo | TurnCounter: {Grid.TurnCounter}");
-        Grid.Reset(true);
-        PlayMoveSequence();
-        Grid.DrawGrid();
+        MoveSequence.Add(redoStack.Pop());
+        bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
+        IsGameActive = !sequenceEnded;
 
-        // TODO: Change Disc count
-
-        return true;
+        return !sequenceEnded;
     }
 
-
-    /// <summary>
-    /// Responsible for replaying moves during Undo / Redo 
-    /// And testing mode, if implemented.
-    /// </summary>
-    public virtual bool PlayMoveSequence()
+    private bool PlayMoveSequence(int moveCount)
     {
-        // Reset disc balance
-        int OrdinaryDiscCount = Grid.Board.Length * Grid.Board[0].Length / 2;
-        PlayerOne.ResetDiscBalance(new Dictionary<string, int>
+        if (moveCount < 0)
         {
-            ["Ordinary"] = OrdinaryDiscCount,
-            ["Boring"] = 2,
-            ["Exploding"] = 2,
-            ["Magnetic"] = 2
-        });
-        PlayerTwo.ResetDiscBalance(new Dictionary<string, int>
-        {
-            ["Ordinary"] = OrdinaryDiscCount,
-            ["Boring"] = 2,
-            ["Exploding"] = 2,
-            ["Magnetic"] = 2
-        });
+            moveCount = 0;
+        }
 
-        // Iterate through MoveSequence based on TurnCounter
-        Console.WriteLine($"\t\t Grid.TurnCounter: {Grid.TurnCounter}");
-        Console.WriteLine($"\t\t MoveSquence length: {MoveSequence.Count}");
-        for (int i = 0; i < Grid.TurnCounter - 1; i++)
+        moveCount = Math.Min(moveCount, MoveSequence.Count);
+        Reset();
+        //IsGameActive = true;
+
+        for (int turn = 1; turn <= moveCount; turn++)
         {
-            // Check if both players have discs remaining
             if (Grid.IsTieGame(PlayerOne, PlayerTwo))
             {
                 IOController.PrintWinner(true, true);
+
+                IsGameActive = false;
                 return true;
             }
 
-            Console.WriteLine($"\t\t MoveSequence index: {i}");
-            string input = MoveSequence[i];
-            Console.WriteLine($"\t\t MoveSequence[{i}]: {input}");
-            // Parse Move
-            if (!TryParseMove(input, out int lane))
+            Move move = MoveSequence[turn - 1];
+            Player player = turn % 2 == 1 ? PlayerOne : PlayerTwo;
+
+            if (!move.Disc.HasDiscRemaining(player))
             {
-                IOController.PrintError("Stop playing sequence!");
+                IOController.PrintError("Error: Corrupted move sequence");
+
+                IsGameActive = false;
                 return true;
             }
 
-            // Check if there are disc left
-            bool IsPlayerOne = (i + 1) % 2 == 1;
-            Player player = IsPlayerOne ? PlayerOne : PlayerTwo;
-            Disc disc = Disc.CreateDisc(input[0], IsPlayerOne);
-
-            if (!disc.HasDiscRemaining(player))
+            if (!Grid.AddDisc(move))
             {
-                IOController.PrintError($"No Disc {disc.Symbol} remaining");
-                continue;
+                IOController.PrintError("Error: Invalid move sequence");
+
+                IsGameActive = false;
+                return true;
             }
 
-            // Add disc
-            Grid.AddDisc(disc, lane);
-            Grid.ApplyGravity();
-            // ApplyEffects
-            if (disc.ApplyEffects(ref Grid.Board, lane)) Grid.ApplyGravity();
+            if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
+            {
+                Grid.ApplyGravity();
+            }
 
-            // TODO: This is supposed to replace the "ApplyEffect" or whatever for different game mode
-            // CheckBoard();
+            move.Disc.WithdrawDisc(player);
+            CheckBoard();
 
-            // Update disc balance
-            disc.WithdrawDisc(player);
-            Grid.DrawGrid();
-            if (Grid.CheckWinCondition())
+            if (!IsGameActive)
             {
                 return true;
             }
         }
+
         return false;
     }
+
     
     public bool TryHandleCommand(string input)
     {
@@ -323,24 +307,37 @@ public abstract class Game
             if (TryHandleCommand(input)) break;
 
             // Split input into moves
-            string[] moveList =input.Split(",");
+            string[] moveList = input.Split(",");
             if (moveList.Length == 0) break;
+            MoveSequence.Clear();
+            redoStack.Clear();
             for (int i = 0; i < moveList.Length; i++)
             {
                 string move = moveList[i].Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(move))
+                {
+                    IOController.PrintError($"Move number {i + 1} is empty. Please enter a new test sequence!");
+                    invalidMove = true;
+                    break;
+                }
                 if (!TryParseMove(move, out int lane))
                 {
                     IOController.PrintError($"Move number {i + 1} ({move}) is invalid. Please enter a new test sequence!");
                     invalidMove = true;
                     break;
                 }
-                DocumentMove(move);
-                Grid.IncrementTurnCounter();
+                bool isPlayerOne = i % 2 == 0;
+                Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
+                MoveSequence.Add(new Move(disc, lane));
             }
-            if (invalidMove) continue;
+            if (invalidMove)
+            {
+                MoveSequence.Clear();
+                continue;
+            }
 
-            Grid.Reset(true);
-            IsGameActive = !PlayMoveSequence();
+            bool ended = PlayMoveSequence(MoveSequence.Count);
+            IsGameActive = !ended;
         }
         
     }
@@ -384,7 +381,7 @@ public abstract class Game
     
     public void Reset()
     {
-        Grid.Reset(true);
+        Grid.Reset();
         int OrdinaryDiscCount = Grid.Board.Length * Grid.Board[0].Length / 2;
         Dictionary<string, int> P1Discs = new Dictionary<string, int>
         {
@@ -398,32 +395,6 @@ public abstract class Game
         PlayerOne.ResetDiscBalance(P1Discs);
         PlayerTwo.ResetDiscBalance(P2Discs);
 
-    }
-    public bool Test()
-    {
-        // reset player disc counts somewhere
-        for (int turn = 1; turn < Grid.TurnCounter; turn++)
-        {
-            if (Grid.IsTieGame(PlayerOne, PlayerTwo))
-            {
-                IOController.PrintWinner(true, true);
-                return true;
-            }
-
-            Move move = MoveSequence[turn - 1];
-            Player player = turn % 2 == 1 ? PlayerOne : PlayerTwo;
-            if (!move.Disc.HasDiscRemaining(player))
-            {
-                IOController.PrintError("Error: Corrupted move sequence");
-                return false;
-            }
-
-            Grid.AddDisc(move);
-            if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane)) Grid.ApplyGravity();
-            move.Disc.WithdrawDisc(player);
-            CheckBoard();
-        }
-        return false;
     }
 
     public virtual void PrintPlayerData()

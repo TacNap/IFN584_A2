@@ -28,7 +28,7 @@ public class LineUpSpin : Game {
     
     // Constructor used when loading from file 
     [JsonConstructor]
-    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<string> moveSequence, FileController file)
+    public LineUpSpin(Grid grid, Player playerOne, Player playerTwo, bool isGameActive, List<Move> moveSequence, FileController file)
         : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
     {
     }
