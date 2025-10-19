@@ -374,40 +374,72 @@ namespace LineUp2
         /// </summary>
         public void TestLoop()
         {
-            Console.Clear();
-            IOController.PrintGameBanner();
-            Grid.DrawGrid(200);
-            // Get test input sequence
-            string input = GetInputGame(true);
-
-            // Split input into moves
-            string[] moveList = input.Split(",");
-            if (moveList.Length == 0) return;
-
             string ErrorMessage = "";
-            for (int turn = 0; turn < moveList.Length; turn++)
+            string CommandMessage = "";
+            while (IsGameActive)
             {
-                string move = moveList[turn].Trim().ToLower();
-                if (string.IsNullOrWhiteSpace(move))
+                Console.Clear();
+                IOController.PrintGameBanner();
+                Grid.DrawGrid(200);
+
+                // Print command message
+                if (CommandMessage != "")
                 {
-                    IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
-                    break;
+                    if (!CommandMessage.ToLower().Contains("error"))
+                        IOController.PrintGreen(CommandMessage);
+                    else
+                        IOController.PrintError(CommandMessage);
+                    CommandMessage = "";
                 }
-                // Get error message
-                ErrorMessage = TryParseMove(move, out int lane);
+                // Print error message
+                if (ErrorMessage != "" & ErrorMessage.ToLower() != "true" & ErrorMessage.ToLower() != "false")
+                {
+                    IOController.PrintError(ErrorMessage);
+                    ErrorMessage = "";
+                }
+
+                // Get test input sequence
+                string input = GetInputGame(true);
+
+                // Split input into moves
+                string[] moveList = input.Split(",");
+                if (moveList.Length == 0) return;
+
+                for (int turn = 0; turn < moveList.Length; turn++)
+                {
+                    string move = moveList[turn].Trim().ToLower();
+                    if (string.IsNullOrWhiteSpace(move))
+                    {
+                        ErrorMessage = $"Move number {turn + 1} is empty. Please enter a new test sequence!";
+                        break;
+                    }
+                    // Get command message
+                    CommandMessage = TryHandleCommand(move);
+                    if (CommandMessage.ToLower().Contains("quit"))
+                        IsGameActive = false;
+                    if (CommandMessage != "")
+                        continue;
+
+                    // Get error message
+                    ErrorMessage = TryParseMove(move, out int lane);
+                    
+                    if (ErrorMessage != "")
+                    {
+                        ErrorMessage = $"Move number {turn + 1} ({move}) is invalid: {ErrorMessage} \nPlease enter a new test sequence!";
+                        break;
+                    }
+                    bool isPlayerOne = turn % 2 == 0;
+                    Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
+                    MoveSequence.Add(new Move(disc, lane));
+                }
+
                 if (ErrorMessage != "")
                 {
-                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid: {ErrorMessage} \nPlease enter a new test sequence!");
-                    ErrorMessage = "";
-                    break;
+                    continue;
                 }
-                bool isPlayerOne = turn % 2 == 0;
-                Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
-                MoveSequence.Add(new Move(disc, lane));
+                // Play through moves
+                ErrorMessage = PlayMoveSequence(MoveSequence.Count);
             }
-
-            // Play through moves
-            PlayMoveSequence(MoveSequence.Count);
         }
 
         // Might become a template method later
