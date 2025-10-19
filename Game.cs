@@ -178,24 +178,23 @@ namespace LineUp2
                 switch (input)
                 {
                     case "/undo":
-                        IOController.PrintGreen("Undo!\n");
                         Undo();
                         break;
                     case "/redo":
-                        IOController.PrintGreen("Redo!\n");
                         Redo();
                         break;
                     case "/save":
+                        Console.Clear();
                         file.GameSerialization(this);
                         break;
                     case "/help":
                         IOController.PrintInGameHelp();
                         break;
                     case "/quit":
-                        IOController.PrintGreen("Quit!\n");
                         IsGameActive = false;
                         break;
                     default:
+                        Console.Clear();
                         IOController.PrintError("Error: Unrecognised command");
                         break;
                 }
@@ -327,8 +326,7 @@ namespace LineUp2
                 {
                     // Successful move
                     Console.Clear();
-                    IOController.PrintGameBanner();
-                    Grid.DrawGrid();
+                    PrintFrame();
                     if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
                     {
                         // Tyler: return disc to hand for special (boring only)
@@ -339,11 +337,12 @@ namespace LineUp2
                         }
 
                         Grid.ApplyGravity();
-                        Grid.DrawGrid();
+                        Thread.Sleep(500);
+                        Console.Clear();
+                        PrintFrame();
                     }
                     move.Disc.WithdrawDisc(player);
                     DocumentMove(move);
-                    PrintPlayerData(player);
                     return true;
                 }
             }
@@ -416,9 +415,8 @@ namespace LineUp2
 
         public void GameLoop()
         {
-            IOController.PrintGameBanner();
-            Grid.DrawGrid();
-            PrintPlayerData(PlayerOne);
+            Console.Clear();
+            PrintFrame(PlayerOne);
 
             while (IsGameActive)
             {
@@ -448,9 +446,7 @@ namespace LineUp2
                     CheckBoard();
                 } else
                 {
-                    IOController.PrintGameBanner();
-                    Grid.DrawGrid();
-                    PrintPlayerData(PlayerOne);
+                    PrintFrame();
                 }
             }
         }
@@ -474,8 +470,15 @@ namespace LineUp2
 
         }
 
-        public void PrintPlayerData(Player player)
+        public void PrintFrame(Player? player = null)
         {
+            if(player == null)
+            {
+                player = Grid.TurnCounter % 2 == 0 ? PlayerOne : PlayerTwo;
+            }
+            // Note: this is purposely different to activePlayer in GameLoop
+            IOController.PrintGameBanner();
+            Grid.DrawGrid();
             Console.WriteLine();
             IOController.PrintDiscInventory(player.DiscBalance);
         }
