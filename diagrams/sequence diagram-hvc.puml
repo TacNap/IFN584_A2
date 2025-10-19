@@ -29,7 +29,7 @@ GameController -> GameController: RunCommand()
 activate GameController
 GameController -> GameController: NewGame()
 deactivate GameController
-GameController -> IOCController: GetInputNewGame()
+GameController -> IOController: GetInputNewGame()
 IOController -> Terminal: PrintBannerNewGame()
 User -> IOController: Select "LineUpClassic", "HvC", "No"
 activate GameConfig
@@ -70,10 +70,10 @@ deactivate GameController
                     Disc -> Grid: ApplyGravity()
                 end
             else HasDiscRemaining() == false
-                 activate IOControll
-                 Game -> IOControll: PrintError()
-                 IOControll -> Terminal: display error message
-                 deactivate IOControll
+                 activate IOController
+                 Game -> IOController: PrintError()
+                 IOController -> Terminal: display error message
+                 deactivate IOController
             end
                 deactivate Disc
             Game -> Grid: DrawGrid()
