@@ -103,7 +103,7 @@ namespace LineUp2
 
         public void TestMode()
         {
-            GameConfig config = IOController.GetInputNewGame();
+            GameConfig config = IOController.GetInputTestMode();
             Game game = GameFactory(config);
             game.TestLoop();
         }
