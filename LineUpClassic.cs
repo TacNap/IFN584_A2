@@ -61,6 +61,7 @@ namespace LineUp2
                 if (!suppress) Thread.Sleep(500);
                 Console.Clear();
                 PrintFrame();
+            }
                 if (Grid.CheckWinCondition())
                 {
                     Grid.DecrementTurnCounter();
@@ -71,7 +72,6 @@ namespace LineUp2
                     Console.Clear();
                     return;
                 }
-            }
         }
         
         public override void Reset()
