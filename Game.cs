@@ -210,11 +210,9 @@ namespace LineUp2
         /// <returns>true if allowed</returns>
         protected virtual bool VerifyDiscChar(char discChar)
         {
-            char normalized = char.ToLowerInvariant(discChar);
-
             foreach (char allowed in AllowedDiscChars)
             {
-                if (normalized == allowed)
+                if (discChar == allowed)
                 {
                     return true;
                 }
@@ -284,7 +282,7 @@ namespace LineUp2
         {
             while (true)
             {
-                PrintPlayerData();
+                PrintPlayerData(player);
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
@@ -341,44 +339,6 @@ namespace LineUp2
             }
         }
 
-        /// <summary>
-        /// Using in Testing Mode.
-        /// Takes input from terminal and converts into a list of Move objects, which then populates MoveSequence. 
-        /// Then calls PlayMoveSequence
-        /// </summary>
-        public void TestLoop()
-        {
-            Grid.DrawGrid();
-            // Get test input sequence
-            string input = GetInputGame(true);
-
-            // Split input into moves
-            string[] moveList = input.Split(",");
-            if (moveList.Length == 0) return;
-            for (int turn = 0; turn < moveList.Length; turn++)
-            {
-                string move = moveList[turn].Trim().ToLower();
-                if (string.IsNullOrWhiteSpace(move))
-                {
-                    IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
-                    break;
-                }
-                if (!TryParseMove(move, out int lane))
-                {
-                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!");
-                    break;
-                }
-                bool isPlayerOne = turn % 2 == 0;
-                Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
-                MoveSequence.Add(new Move(disc, lane));
-            }
-
-            // Play through moves
-            PlayMoveSequence(MoveSequence.Count);
-        }
-
-        // Might become a template method later
-        // Template Method for computer player
         public bool ComputerTurn(Player player)
         {
             // Use the strategy to select a move
@@ -403,6 +363,43 @@ namespace LineUp2
                 Grid.DrawGrid();
             }
             return true;
+        }
+
+        /// <summary>
+        /// Using in Testing Mode.
+        /// Takes input from terminal and converts into a list of Move objects, which then populates MoveSequence. 
+        /// Then calls PlayMoveSequence
+        /// </summary>
+        public void TestLoop()
+        {
+            Grid.DrawGrid();
+            // Get test input sequence
+            string input = GetInputGame(true);
+
+            // Split input into moves
+            string[] moveList = input.Split(",");
+            if (moveList.Length == 0) return;
+
+            for (int turn = 0; turn < moveList.Length; turn++)
+            {
+                string move = moveList[turn].Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(move))
+                {
+                    IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
+                    break;
+                }
+                if (!TryParseMove(move, out int lane))
+                {
+                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!");
+                    break;
+                }
+                bool isPlayerOne = turn % 2 == 0;
+                Disc disc = Disc.CreateDisc(move[0], isPlayerOne);
+                MoveSequence.Add(new Move(disc, lane));
+            }
+
+            // Play through moves
+            PlayMoveSequence(MoveSequence.Count);
         }
 
         public abstract void CheckBoard();
@@ -464,10 +461,9 @@ namespace LineUp2
 
         }
 
-        public virtual void PrintPlayerData()
+        public void PrintPlayerData(Player player)
         {
             Console.WriteLine();
-            Player player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
             IOController.PrintDiscInventory(player.DiscBalance);
         }
     }
