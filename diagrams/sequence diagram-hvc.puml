@@ -38,9 +38,11 @@ IOController -> GameConfig: SetGridHeight()
 IOController -> GameConfig: SetGridWidth()
 GameConfig -> IOController: return config
 deactivate GameConfig
-== Start Game Loop ==
 activate Game
 IOController -> GameController: return config
+deactivate IOController
+
+== Start Game Loop ==
 GameController -> Game: GameFactory(config)
 GameController -> Game: GameLoop()
 deactivate GameController
@@ -55,10 +57,10 @@ deactivate GameController
         Game -> User: GetInputGame()
         alt Make move
             User -> Game: Enter move
+            activate Disc
             Game -> Disc: CreateDisc()
             Game --> HumanPlayer: HasDiscRemaining()
             HumanPlayer -> Game: return bool
-            activate Disc
             alt HasDiscRemaining() == true
                 Disc -> Game: return disc
                 activate Grid
@@ -107,14 +109,16 @@ deactivate GameController
                 activate Game
                 deactivate Game
             else Continue Game
+                activate Grid
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition = false
                 Game -> Grid: IncrementTurnCounter()
-            deactivate Grid
+                deactivate Grid
+                Game -> Game: DocumentMove(move)
+                activate Game
+                deactivate Game
             end
-            Game -> Game: DocumentMove(move)
-            activate Game
-            deactivate Game
+
         else Help/Undo/Redo/Quit command
             Game -> Game: TryHandleCommand()
             activate Game
@@ -150,7 +154,10 @@ else Computer Player Turn
             deactivate Grid
             Grid -> Game: IsTieGame = true
             deactivate Grid
+            activate IOController
             Game -> IOController: PrintWinner(P2)
+            IOController -> Terminal: display message
+            deactivate IOController
             Game -> Game: IsGameActive = false
             activate Game
             deactivate Game
@@ -158,8 +165,10 @@ else Computer Player Turn
             activate Grid
             Game -> Grid: CheckWinCondition()
             Grid -> Game: CheckWinCondition(P2) = true
+            activate IOController
             Grid -> IOController: PrintWinner(P2)
             IOController -> Terminal: display message
+            deactivate IOController
             deactivate Grid
             Game -> Game: IsGameActive = false
             activate Game
@@ -170,13 +179,15 @@ else Computer Player Turn
             Grid -> Game: CheckWinCondition = false
             Game -> Grid: IncrementTurnCounter()
             deactivate Grid
+            Game -> Game: DocumentMove(move)
+            activate Game
+            deactivate Game
         end
-        Game -> Game: DocumentMove(move)
-        activate Game
-        deactivate Game
+
     end
 deactivate Game
 end
-end
 == Game Over ==
+end
+
 @enduml
