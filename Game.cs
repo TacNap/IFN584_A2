@@ -240,6 +240,7 @@ namespace LineUp2
             // Check if empty
             if (input == "" || input == null)
             {
+                Console.Clear();
                 IOController.PrintError("Input is empty");
                 lane = -1;
                 return false;
@@ -248,6 +249,7 @@ namespace LineUp2
             // Check if disc type is allowed
             if (!VerifyDiscChar(input[0]))
             {
+                Console.Clear();
                 IOController.PrintError("Invalid disc type");
                 return false;
             }
@@ -261,6 +263,7 @@ namespace LineUp2
             if (!int.TryParse(input.Substring(1), out lane))
             {
                 // Parse failed
+                Console.Clear();
                 IOController.PrintError("Invalid Lane - Must be a number");
                 return false;
             }
@@ -268,6 +271,7 @@ namespace LineUp2
             {
                 if (lane < 1 || lane > Grid.Board[1].Length)
                 {
+                    Console.Clear();
                     IOController.PrintError("Invalid lane - Out of bounds");
                     return false;
                 }
@@ -277,17 +281,18 @@ namespace LineUp2
             }
         }
 
-        // Template Method
+        // Template Method - this doesn't need to be a loop..
         public bool PlayerTurn(Player player)
         {
             while (true)
             {
-                PrintPlayerData(player);
+                // PrintPlayerData(player);
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
+                    Console.Clear();
                     IOController.PrintError("Please enter a valid move or command.");
-                    continue;
+                    return false;
                 }
 
                 if (TryHandleCommand(input))
@@ -301,8 +306,9 @@ namespace LineUp2
                 Disc disc = Disc.CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
                 if (!disc.HasDiscRemaining(player))
                 {
+                    Console.Clear();
                     IOController.PrintError("No Disc of that type remaining");
-                    continue;
+                    return false;
                 }
 
                 // Place into move struct for portability
@@ -313,13 +319,15 @@ namespace LineUp2
                 if (!Grid.AddDisc(move))
                 {
                     //Move fails
+                    Console.Clear();
                     IOController.PrintError("Error: Lane is full");
-                    continue;
+                    return false;
                 }
                 else
                 {
                     // Successful move
-                    move.Disc.WithdrawDisc(player);
+                    Console.Clear();
+                    IOController.PrintGameBanner();
                     Grid.DrawGrid();
                     if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
                     {
@@ -333,7 +341,9 @@ namespace LineUp2
                         Grid.ApplyGravity();
                         Grid.DrawGrid();
                     }
+                    move.Disc.WithdrawDisc(player);
                     DocumentMove(move);
+                    PrintPlayerData(player);
                     return true;
                 }
             }
@@ -406,11 +416,12 @@ namespace LineUp2
 
         public void GameLoop()
         {
+            IOController.PrintGameBanner();
+            Grid.DrawGrid();
+            PrintPlayerData(PlayerOne);
+
             while (IsGameActive)
             {
-                //PrintPlayerData();
-                //Grid.DrawGrid();
-
                 // Check if both players have discs remaining
                 if (Grid.IsTieGame(PlayerOne, PlayerTwo))
                 {
@@ -419,15 +430,12 @@ namespace LineUp2
                     break;
                 }
 
+                // IOController.PrintGameBanner();
+                // Grid.DrawGrid();
+
                 // Holds a reference to the current player, based on turn number
                 // Just for less repeated code :)
                 Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
-
-                if (activePlayer.IsHuman)
-                {
-                    IOController.PrintGameBanner();
-                    Grid.DrawGrid();
-                }
 
                 // NOT IDEAL
                 // For true polymorphism, PlayTurn needs to exist on the Player object. 
@@ -438,6 +446,11 @@ namespace LineUp2
                 if (successfulMove)
                 {
                     CheckBoard();
+                } else
+                {
+                    IOController.PrintGameBanner();
+                    Grid.DrawGrid();
+                    PrintPlayerData(PlayerOne);
                 }
             }
         }
