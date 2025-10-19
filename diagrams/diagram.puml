@@ -109,7 +109,7 @@ class BoringDisc {
     WithdrawDisc(Player player) : void
 }
 
-class Exploding {
+class ExplodingDisc {
     ApplyEffects(Disc[][] Board, int lane) : bool
     Clone() : Disc
     HasDiscRemaining(Player player) : bool
@@ -209,40 +209,37 @@ class FileController {
 Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
-Game <-- Player
-
-Game::Grid *-- "1" Grid : uses
-Game - IOController
+Game *-- Player
+Game *-- "1" Grid
+Game *-- Move
+Game --> IOController
+Game --> BasicComputerStrategy
 
 ' GameController
-GameController - Game
-GameController <-- IOController
-GameController::LoadGame <-- FileController : uses
+GameController ..> Game : creates
+GameController --> IOController
+GameController::LoadGame *-- FileController : uses
+
 
 ' GameConfig
-GameConfig::PlayerMode <-- PlayerMode : uses
-GameConfig::GameMode <-- GameMode: uses
+GameConfig <-- PlayerMode : uses
+GameConfig <-- GameMode: uses
 
 ' Player
-BasicComputerStrategy <|.. IComputerStrategy
-BasicComputerStrategy <-- Move : uses
+BasicComputerStrategy <.. IComputerStrategy
 
 ' Disc Subclasses
 Disc <|-- OrdinaryDisc : inherits
 Disc <|-- BoringDisc : inherits
-Disc <|-- ExplosiveDisc : inherits
+Disc <|-- ExplodingDisc : inherits
 Disc <|-- MagneticDisc : inherits
 
 ' Grid
-Grid::Orientation <-- Orientation : uses
-Grid::Board <-- Disc : uses
-Grid::Move <-- Move : uses
+Grid <-- Orientation : uses
+Grid *-- Disc
 
-' Move
-
-Move::Disc <-- Disc : uses
 
 ' IOController
-IOController <-- GameConfig
+IOController ..> GameConfig : creates
 
 @enduml
