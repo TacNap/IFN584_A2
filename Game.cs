@@ -454,10 +454,6 @@ namespace LineUp2
                 // Just for less repeated code :)
                 Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
-                Console.Clear();
-                IOController.PrintGameBanner();
-                Grid.DrawGrid();
-
                 // NOT IDEAL
                 // For true polymorphism, PlayTurn needs to exist on the Player object. 
                 // Which would mean the entire Game object also needs to be passed in...
