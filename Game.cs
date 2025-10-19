@@ -72,12 +72,13 @@ namespace LineUp2
         /// then calls PlayMoveSequence
         /// </summary>
         /// <returns></returns>
-        private void Undo()
+        private string Undo()
         {
             if (MoveSequence.Count < 2)
             {
-                IOController.PrintError("You need at least two moves recorded to undo.");
-                return;
+                // IOController.PrintError("You need at least two moves recorded to undo.");
+                return "You need at least two moves recorded to undo!";
+                // return;
             }
 
             for (int i = 0; i < 2; i++)
@@ -89,15 +90,16 @@ namespace LineUp2
             }
 
             PlayMoveSequence(MoveSequence.Count);
-            return;
+            return "Undo!";
         }
 
-        private bool Redo()
+        private string Redo()
         {
             if (redoStack.Count < 2)
             {
-                IOController.PrintError("You have no move to redo yet!");
-                return false;
+                // IOController.PrintError("You have no move to redo yet!");
+                return "You have no move to redo yet!";
+                // return false;
             }
 
             List<Move> movesToRestore = new List<Move>(2);
@@ -110,13 +112,17 @@ namespace LineUp2
                 MoveSequence.Add(move);
             }
 
-            bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
-            IsGameActive = !sequenceEnded;
+            string sequenceResult = PlayMoveSequence(MoveSequence.Count);
+            if (sequenceResult == "true") IsGameActive = false;
+            else if (sequenceResult == "false") IsGameActive = true;
+            // bool sequenceEnded = PlayMoveSequence(MoveSequence.Count);
+            // IsGameActive = !sequenceEnded;
 
-            return !sequenceEnded;
+            return "Redo!";
+            // return !sequenceEnded;
         }
 
-        private bool PlayMoveSequence(int moveCount)
+        private string PlayMoveSequence(int moveCount)
         {
             Reset();
 
@@ -127,7 +133,7 @@ namespace LineUp2
                     IOController.PrintWinner(true, true);
 
                     IsGameActive = false;
-                    return true;
+                    return "true";
                 }
 
                 Move move = MoveSequence[turn - 1];
@@ -135,18 +141,18 @@ namespace LineUp2
 
                 if (!move.Disc.HasDiscRemaining(player))
                 {
-                    IOController.PrintError("Error: Corrupted move sequence");
+                    // IOController.PrintError("Error: Corrupted move sequence");
 
                     IsGameActive = false;
-                    return true;
+                    return "Error: Corrupted move sequence";
                 }
 
                 if (!Grid.AddDisc(move))
                 {
-                    IOController.PrintError("Error: Invalid move sequence");
+                    // IOController.PrintError("Error: Invalid move sequence");
 
-                    IsGameActive = false;
-                    return true;
+                    IsGameActive = true;
+                    return $"Error: Invalid move sequence. Lane {move.Lane} is full.";
                 }
 
                 if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
@@ -159,11 +165,11 @@ namespace LineUp2
 
                 if (!IsGameActive)
                 {
-                    return true;
+                    return "true";
                 }
             }
 
-            return false;
+            return "false";
         }
 
 
@@ -178,11 +184,11 @@ namespace LineUp2
                 switch (input)
                 {
                     case "/undo":
-                        Undo();
-                        return "Undo!\n";
+                        string undo = Undo();
+                        return $"{undo}\n";
                     case "/redo":
-                        Redo();
-                        return "Redo!\n";
+                        string redo = Redo();
+                        return $"{redo}\n";
                     case "/save":
                         file.GameSerialization(this);
                         return "";
@@ -298,7 +304,7 @@ namespace LineUp2
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
-                    IOController.PrintError("Please enter a valid move or command.");
+                    ErrorMessage = "Input is empty! Please enter a valid move or command.";
                     continue;
                 }
 
