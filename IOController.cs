@@ -195,12 +195,11 @@ namespace LineUp2
             PrintYellow("Ordinary Disc (O/o):\n");
             Console.WriteLine("  Symbol: @ (Player 1), # (Player 2)");
             Console.WriteLine("  • Standard disc with no special effects");
-            Console.WriteLine("  • Most abundant disc type\n");
 
             PrintYellow("Boring Disc (B/b):\n");
             Console.WriteLine("  Symbol: B (Player 1), b (Player 2)");
             Console.WriteLine("  • Drills through the entire lane");
-            Console.WriteLine("  • Removes all discs in that column");
+            Console.WriteLine("  • Removes all discs in that column and returns to respective player hand");
             Console.WriteLine("  • Converts to ordinary disc at the bottom");
             Console.WriteLine("  • Limited: 2 per player\n");
 
@@ -208,7 +207,6 @@ namespace LineUp2
             Console.WriteLine("  Symbol: E (Player 1), e (Player 2)");
             Console.WriteLine("  • Destroys itself and all adjacent discs");
             Console.WriteLine("  • Affects 3x3 area around the disc");
-            Console.WriteLine("  • Only triggers when matching symbol is played");
             Console.WriteLine("  • Limited: 2 per player\n");
 
             PrintYellow("Magnetic Disc (M/m):\n");
