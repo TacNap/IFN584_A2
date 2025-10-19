@@ -69,6 +69,6 @@ All games are designed to share core logic and infrastructure, demonstrating the
 dotnet build
 dotnet run
 ```
-5. Enjoy the game
+5. Enjoy the game!
 
 (C) TacNap, meowliodaz, lkplucy, Sanjika97, yeeweilimmy
