@@ -461,7 +461,6 @@ namespace LineUp2
             {
                 player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
             }
-            // Note: this is purposely different to activePlayer in GameLoop
             IOController.PrintGameBanner();
             Grid.DrawGrid();
             Console.WriteLine();

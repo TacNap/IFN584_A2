@@ -39,23 +39,24 @@ abstract class Game {
     + PlayerTurn(Player player) : bool
     + ComputerTurn(Player player) : bool
     + TestLoop() : void    
-    + {abstract} CheckBoard() : void
+    + {abstract} CheckBoard(bool suppress) : void
     + GameLoop() : void
     + Reset() : void
     + PrintPlayerData() : void
+    + PrintFrame(Player? player) : void
 }
 
 ' Game Subclasses
 class LineUpClassic {
-    + CheckBoard() : void
+    + CheckBoard(bool suppress) : void
 }
 
 class LineUpBasic {
-    + CheckBoard() : void
+    + CheckBoard(bool suppress) : void
 }
 
 class LineUpSpin {
-    + CheckBoard() : void
+    + CheckBoard(bool suppress) : void
 }
 
 ''' Grid '''
@@ -212,15 +213,16 @@ Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
 Game *-- Player
-Game *-- "1" Grid
+Game *-- Grid
 Game *-- Move
 Game --> IOController
 Game --> BasicComputerStrategy
+Game --> FileController : uses
 
 ' GameController
 GameController ..> Game : creates
 GameController --> IOController
-GameController::LoadGame *-- FileController : uses
+GameController --> FileController : uses
 
 
 ' GameConfig
