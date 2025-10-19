@@ -36,11 +36,15 @@ namespace LineUp2
             // Strategy is initialized in base constructor
         }
 
-        public override void CheckBoard()
+        public override void CheckBoard(bool suppress = false)
         {
             if (Grid.CheckWinCondition())
             {
+                PrintFrame();
                 IsGameActive = false;
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
+                Console.Clear();
                 return;
             }
             // Spin behaviour
@@ -49,15 +53,17 @@ namespace LineUp2
                 Grid.Spin();
                 if (Grid.CheckWinCondition())
                 {
+                    PrintFrame();
                     IsGameActive = false;
+                    Console.WriteLine("Press Enter to continue...");
+                    Console.ReadLine();
+                    Console.Clear();
                     return;
                 }
             }
             Grid.IncrementTurnCounter();
+            Console.Clear();
+            PrintFrame();
         }
-
-
-
-
     }
 }

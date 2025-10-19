@@ -70,6 +70,7 @@ namespace LineUp2
         {
             while (IsMenuActive) // may need to place a variable here later
             {
+                Console.Clear();
                 IOController.PrintMenu();
                 int input = IOController.GetInputMenu();
                 RunCommand(input);
@@ -105,7 +106,8 @@ namespace LineUp2
             GameConfig config = IOController.GetInputNewGame();
             Game game = GameFactory(config);
             game.TestLoop();
-            game.GameLoop();
+            Console.WriteLine("Press Enter to continue...");
+            Console.ReadLine();
         }
     }
 }

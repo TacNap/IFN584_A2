@@ -1,15 +1,13 @@
 {
-  "$type": "LineUpSpin, IFN584_A2",
+  "$type": "LineUp2.LineUpClassic, IFN584_A2",
   "Grid": {
-    "$type": "Grid, IFN584_A2",
+    "$type": "LineUp2.Grid, IFN584_A2",
     "Board": {
-      "$type": "Disc[][], IFN584_A2",
+      "$type": "LineUp2.Disc[][], IFN584_A2",
       "$values": [
         {
-          "$type": "Disc[], IFN584_A2",
+          "$type": "LineUp2.Disc[], IFN584_A2",
           "$values": [
-            null,
-            null,
             null,
             null,
             null,
@@ -20,10 +18,8 @@
           ]
         },
         {
-          "$type": "Disc[], IFN584_A2",
+          "$type": "LineUp2.Disc[], IFN584_A2",
           "$values": [
-            null,
-            null,
             null,
             null,
             null,
@@ -34,10 +30,8 @@
           ]
         },
         {
-          "$type": "Disc[], IFN584_A2",
+          "$type": "LineUp2.Disc[], IFN584_A2",
           "$values": [
-            null,
-            null,
             null,
             null,
             null,
@@ -48,10 +42,8 @@
           ]
         },
         {
-          "$type": "Disc[], IFN584_A2",
+          "$type": "LineUp2.Disc[], IFN584_A2",
           "$values": [
-            null,
-            null,
             null,
             null,
             null,
@@ -62,75 +54,48 @@
           ]
         },
         {
-          "$type": "Disc[], IFN584_A2",
-          "$values": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-          ]
-        },
-        {
-          "$type": "Disc[], IFN584_A2",
-          "$values": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-          ]
-        },
-        {
-          "$type": "Disc[], IFN584_A2",
-          "$values": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-          ]
-        },
-        {
-          "$type": "Disc[], IFN584_A2",
+          "$type": "LineUp2.Disc[], IFN584_A2",
           "$values": [
             {
-              "$type": "OrdinaryDisc, IFN584_A2",
-              "Symbol": "@",
-              "IsPlayerOne": true,
-              "DiscReturn": null
-            },
-            {
-              "$type": "OrdinaryDisc, IFN584_A2",
-              "Symbol": "#",
-              "IsPlayerOne": false,
-              "DiscReturn": null
-            },
-            {
-              "$type": "OrdinaryDisc, IFN584_A2",
-              "Symbol": "@",
-              "IsPlayerOne": true,
-              "DiscReturn": null
-            },
-            {
-              "$type": "OrdinaryDisc, IFN584_A2",
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
               "Symbol": "#",
               "IsPlayerOne": false,
               "DiscReturn": null
             },
             null,
+            {
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            {
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            {
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+              "Symbol": "#",
+              "IsPlayerOne": false,
+              "DiscReturn": null
+            },
+            {
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
             null,
             null,
             null,
@@ -140,14 +105,14 @@
       ]
     },
     "orientation": 0,
-    "WinLength": 7,
-    "TurnCounter": 5
+    "WinLength": 4,
+    "TurnCounter": 6
   },
   "PlayerOne": {
-    "$type": "Player, IFN584_A2",
+    "$type": "LineUp2.Player, IFN584_A2",
     "DiscBalance": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
-      "Ordinary": 34,
+      "Ordinary": 18,
       "Boring": 2,
       "Exploding": 2,
       "Magnetic": 2
@@ -155,10 +120,10 @@
     "IsHuman": true
   },
   "PlayerTwo": {
-    "$type": "Player, IFN584_A2",
+    "$type": "LineUp2.Player, IFN584_A2",
     "DiscBalance": {
       "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
-      "Ordinary": 34,
+      "Ordinary": 19,
       "Boring": 2,
       "Exploding": 2,
       "Magnetic": 2
@@ -167,12 +132,12 @@
   },
   "IsGameActive": true,
   "MoveSequence": {
-    "$type": "System.Collections.Generic.List`1[[Move, IFN584_A2]], System.Private.CoreLib",
+    "$type": "System.Collections.Generic.List`1[[LineUp2.Move, IFN584_A2]], System.Private.CoreLib",
     "$values": [
       {
-        "$type": "Move, IFN584_A2",
+        "$type": "LineUp2.Move, IFN584_A2",
         "Disc": {
-          "$type": "OrdinaryDisc, IFN584_A2",
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
           "Symbol": "@",
           "IsPlayerOne": true,
           "DiscReturn": null
@@ -180,9 +145,9 @@
         "Lane": 1
       },
       {
-        "$type": "Move, IFN584_A2",
+        "$type": "LineUp2.Move, IFN584_A2",
         "Disc": {
-          "$type": "OrdinaryDisc, IFN584_A2",
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
           "Symbol": "#",
           "IsPlayerOne": false,
           "DiscReturn": null
@@ -190,9 +155,9 @@
         "Lane": 2
       },
       {
-        "$type": "Move, IFN584_A2",
+        "$type": "LineUp2.Move, IFN584_A2",
         "Disc": {
-          "$type": "OrdinaryDisc, IFN584_A2",
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
           "Symbol": "@",
           "IsPlayerOne": true,
           "DiscReturn": null
@@ -200,18 +165,28 @@
         "Lane": 3
       },
       {
-        "$type": "Move, IFN584_A2",
+        "$type": "LineUp2.Move, IFN584_A2",
         "Disc": {
-          "$type": "OrdinaryDisc, IFN584_A2",
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
           "Symbol": "#",
           "IsPlayerOne": false,
           "DiscReturn": null
         },
-        "Lane": 4
+        "Lane": 1
+      },
+      {
+        "$type": "LineUp2.Move, IFN584_A2",
+        "Disc": {
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 3
       }
     ]
   },
   "file": {
-    "$type": "FileController, IFN584_A2"
+    "$type": "LineUp2.FileController, IFN584_A2"
   }
 }
