@@ -70,6 +70,7 @@ namespace LineUp2
         {
             while (IsMenuActive) // may need to place a variable here later
             {
+                Console.Clear();
                 IOController.PrintMenu();
                 int input = IOController.GetInputMenu();
                 RunCommand(input);
