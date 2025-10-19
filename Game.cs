@@ -519,7 +519,7 @@ namespace LineUp2
             {
                 player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
             }
-            IOController.PrintGameBanner();
+            IOController.PrintGameBanner(this, PlayerOne, PlayerTwo);
             Grid.DrawGrid();
             Console.WriteLine();
             IOController.PrintDiscInventory(player.DiscBalance);

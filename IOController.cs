@@ -3,10 +3,41 @@ namespace LineUp2
     public static class IOController
     {
 
-        public static void PrintGameBanner()
+        public static void PrintGameBanner(Game game, Player playerOne, Player playerTwo)
         {
+            int boxWidth = 63;
+            
             PrintGreen("╔═══════════════════════════════════════════════════════════════╗\n");
-            PrintGreen("║                          LineUp                               ║\n");
+            
+            
+            string title = "LineUp";
+            int titlePadding = (boxWidth - title.Length) / 2;
+            PrintGreen("║");
+            Console.Write(new string(' ', titlePadding));
+            Console.Write(title);
+            Console.Write(new string(' ', boxWidth - titlePadding - title.Length));
+            PrintGreen("║\n");
+            
+            // Game mode
+            string gameModeName = game switch
+            {
+                LineUpClassic => "Classic",
+                LineUpBasic => "Basic",
+                LineUpSpin => "Spin",
+                _ => "Unknown"
+            };
+            
+            // Player mode
+            string playerMode = (playerOne.IsHuman && playerTwo.IsHuman) ? "HvH" : "HvC";
+            
+            string modeInfo = $"{gameModeName} Mode | {playerMode}";
+            int modePadding = (boxWidth - modeInfo.Length) / 2;
+            PrintGreen("║");
+            Console.Write(new string(' ', modePadding));
+            PrintCyan(modeInfo);
+            Console.Write(new string(' ', boxWidth - modePadding - modeInfo.Length));
+            PrintGreen("║\n");
+            
             PrintGreen("╚═══════════════════════════════════════════════════════════════╝\n");
         }
 
