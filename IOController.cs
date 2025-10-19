@@ -325,7 +325,7 @@ namespace LineUp2
             else
             {
                 PrintGreen("╔═══════════════════════════════════════════════════════════════╗\n");
-                PrintGreen("║                          Player Two Wins!                    ║\n");
+                PrintGreen("║                          Player Two Wins!                     ║\n");
                 PrintGreen("╚═══════════════════════════════════════════════════════════════╝\n");
             }
 
