@@ -376,17 +376,18 @@ namespace LineUp2
             string[] moveList = input.Split(",");
             if (moveList.Length == 0) return;
 
+            string error = null;
             for (int turn = 0; turn < moveList.Length; turn++)
             {
                 string move = moveList[turn].Trim().ToLower();
                 if (string.IsNullOrWhiteSpace(move))
                 {
-                    IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
+                    error = $"Move number {turn + 1} is empty. Please enter a new test sequence!";
                     break;
                 }
                 if (!TryParseMove(move, out int lane))
                 {
-                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!");
+                    error = $"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!";
                     break;
                 }
                 bool isPlayerOne = turn % 2 == 0;
@@ -396,6 +397,7 @@ namespace LineUp2
 
             // Play through moves
             PlayMoveSequence(MoveSequence.Count);
+            IOController.PrintError(error);
         }
 
         public abstract void CheckBoard(bool sypress = false);
