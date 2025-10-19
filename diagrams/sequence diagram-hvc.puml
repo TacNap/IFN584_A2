@@ -1,9 +1,12 @@
 @startuml
+@startuml
 skinparam actorStyle awesome
 skinparam titleFontSize 32
 title Sequence Diagram – LineUpClassic Game (Human vs Computer Mode)
 
 actor User as "Human Player"
+participant Terminal
+participant Program
 participant GameController
 participant IOController
 participant GameConfig
@@ -14,33 +17,38 @@ participant Disc
 participant Computer as IComputerStrategy
 
 == Game Initialisation ==
-
-User -> GameController: NewGame()
+User -> Program: Open game
+loop while IsMenuActive == true
 activate GameController
-loop While IsMenuActive == true
-    activate IOController
-    GameController -> IOController: PrintMenu()
-    IOController -> User: Display game mode options
-    User -> IOController: Select "LineUpClassic"
-    IOController -> GameConfig: GameMode "Classic"
-    IOController -> User: Display player mode options
-    User -> IOController: Select "HvC"
-    IOController -> GameConfig: PlayerMode "HvC"
-    IOController -> User: Change Grid size?
-    User -> IOController: Select "No"
-    IOController -> GameConfig: GetInputNewGame()
-    deactivate IOController
-    GameController -> GameConfig: GameFactory()
-    GameConfig -> GameController: GameFactory(config)
-
-    == Start Game Loop ==
-    activate Game
-    GameController -> Game: GameLoop()
-    deactivate GameController
-
+Program -> GameController: Start()
+GameController -> IOController: PrintMenu()
+activate IOController
+IOController -> Terminal: return menu display
+User -> IOController: input (1 - NewGame)
+GameController -> GameController: RunCommand()
+activate GameController
+GameController -> GameController: NewGame()
+deactivate GameController
+GameController -> IOCController: GetInputNewGame()
+IOController -> Terminal: PrintBannerNewGame()
+User -> IOController: Select "LineUpClassic", "HvC", "No"
+activate GameConfig
+IOController -> GameConfig: SetGameMode()
+IOController -> GameConfig: SetPlayerMode()
+IOController -> GameConfig: SetGridHeight()
+IOController -> GameConfig: SetGridWidth()
+GameConfig -> IOController: return config
+deactivate GameConfig
+== Start Game Loop ==
+activate Game
+IOController -> GameController: return config
+GameController -> Game: GameFactory(config)
+GameController -> Game: GameLoop()
+deactivate GameController
     loop While IsGameActive == true
-    Game -> User: PrintPlayerData()
-    Game -> User: DrawGrid()
+    Game -> Terminal: PrintPlayerData()
+    Game -> Grid: DrawGrid()
+    Grid -> Terminal: return grid
     alt Human Player Turn
         Game -> Game: PlayerTurn(PlayerOne)
         activate Game
@@ -49,19 +57,27 @@ loop While IsMenuActive == true
         alt Make move
             User -> Game: Enter move
             Game -> Disc: CreateDisc()
+            Game --> Disc: HasDiscRemaining()
             activate Disc
-            Game -> Disc: HasDiscRemaining() == true
-            Disc -> Game: disc
-            activate Grid
-            Game -> Grid: AddDisc(disc, lane)
-            deactivate Grid
-            Game -> Disc: ApplyEffects(Board, lane)
-            opt EffectTriggered
+            alt HasDiscRemaining() == true
+                Disc -> Game: return disc
                 activate Grid
-                Disc -> Grid: ApplyGravity()
+                Game -> Grid: AddDisc(disc, lane)
+                deactivate Grid
+                Game -> Disc: ApplyEffects(Board, lane)
+                opt EffectTriggered
+                    activate Grid
+                    Disc -> Grid: ApplyGravity()
+                end
+            else HasDiscRemaining() == false
+                 activate IOControll
+                 Game -> IOControll: PrintError()
+                 IOControll -> Terminal: display error message
+                 deactivate IOControll
             end
                 deactivate Disc
             Game -> Grid: DrawGrid()
+            Grid -> Terminal: return grid
             alt Is Tie Game
                 Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
                 activate Grid
@@ -138,5 +154,6 @@ loop While IsMenuActive == true
     end
 deactivate Game
 end
-
+end
 == Game Over ==
+@enduml
