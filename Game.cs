@@ -322,6 +322,8 @@ namespace LineUp2
                 {
                     // Successful move
                     move.Disc.WithdrawDisc(player);
+                    Console.Clear();
+                    IOController.PrintGameBanner();
                     Grid.DrawGrid();
                     if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
                     {
@@ -333,6 +335,8 @@ namespace LineUp2
                         }
 
                         Grid.ApplyGravity();
+                        Console.Clear();
+                        IOController.PrintGameBanner();
                         Grid.DrawGrid();
                     }
                     DocumentMove(move);
@@ -348,6 +352,8 @@ namespace LineUp2
         /// </summary>
         public void TestLoop()
         {
+            Console.Clear();
+            IOController.PrintGameBanner();
             Grid.DrawGrid();
             // Get test input sequence
             string input = GetInputGame(true);
@@ -394,11 +400,15 @@ namespace LineUp2
 
             // Withdraw the disc from player's balance
             move.Disc.WithdrawDisc(player);
+            Console.Clear();
+            IOController.PrintGameBanner();
             Grid.DrawGrid();
 
             // Apply effects
             if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
             {
+                Console.Clear();
+                IOController.PrintGameBanner();
                 Grid.ApplyGravity();
                 Grid.DrawGrid();
             }
@@ -411,9 +421,6 @@ namespace LineUp2
         {
             while (IsGameActive)
             {
-                //PrintPlayerData();
-                //Grid.DrawGrid();
-
                 // Check if both players have discs remaining
                 if (Grid.IsTieGame(PlayerOne, PlayerTwo))
                 {
@@ -426,11 +433,9 @@ namespace LineUp2
                 // Just for less repeated code :)
                 Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
-                if (activePlayer.IsHuman)
-                {
-                    IOController.PrintGameBanner();
-                    Grid.DrawGrid();
-                }
+                Console.Clear();
+                IOController.PrintGameBanner();
+                Grid.DrawGrid();
 
                 // NOT IDEAL
                 // For true polymorphism, PlayTurn needs to exist on the Player object. 
