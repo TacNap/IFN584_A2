@@ -66,11 +66,12 @@ All games are designed to share core logic and infrastructure, demonstrating the
 4. Run the following command:
 
 ```bash
+dotnet build
 dotnet run
 
 5. Enjoy the game
 
 External libraries used:
-- 
+- Newtonsoft JSON
 
 (C) TacNap, meowliodaz, lkplucy, Sanjika97, yeeweilimmy
