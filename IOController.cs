@@ -344,6 +344,7 @@ namespace LineUp2
                 if (num < 1 || num > saveFiles.Length)
                 {
                     PrintError($"Error: Input must be between 1 and {saveFiles.Length}\n");
+                    Thread.Sleep(1000);
                     return null;
                 }
                 return saveFiles[num - 1];
@@ -351,6 +352,7 @@ namespace LineUp2
             catch (Exception e)
             {
                 PrintError($"Error: {e.Message}\n");
+                Thread.Sleep(1000);
                 return null;
             }
         }

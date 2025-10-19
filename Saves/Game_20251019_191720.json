@@ -1,0 +1,132 @@
+{
+  "$type": "LineUp2.LineUpClassic, IFN584_A2",
+  "Grid": {
+    "$type": "LineUp2.Grid, IFN584_A2",
+    "Board": {
+      "$type": "LineUp2.Disc[][], IFN584_A2",
+      "$values": [
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "$type": "LineUp2.Disc[], IFN584_A2",
+          "$values": [
+            {
+              "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+              "Symbol": "@",
+              "IsPlayerOne": true,
+              "DiscReturn": null
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    "orientation": 0,
+    "WinLength": 4,
+    "TurnCounter": 2
+  },
+  "PlayerOne": {
+    "$type": "LineUp2.Player, IFN584_A2",
+    "DiscBalance": {
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+      "Ordinary": 20,
+      "Boring": 2,
+      "Exploding": 2,
+      "Magnetic": 2
+    },
+    "IsHuman": true
+  },
+  "PlayerTwo": {
+    "$type": "LineUp2.Player, IFN584_A2",
+    "DiscBalance": {
+      "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+      "Ordinary": 21,
+      "Boring": 2,
+      "Exploding": 2,
+      "Magnetic": 2
+    },
+    "IsHuman": true
+  },
+  "IsGameActive": true,
+  "MoveSequence": {
+    "$type": "System.Collections.Generic.List`1[[LineUp2.Move, IFN584_A2]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "LineUp2.Move, IFN584_A2",
+        "Disc": {
+          "$type": "LineUp2.OrdinaryDisc, IFN584_A2",
+          "Symbol": "@",
+          "IsPlayerOne": true,
+          "DiscReturn": null
+        },
+        "Lane": 1
+      }
+    ]
+  },
+  "file": {
+    "$type": "LineUp2.FileController, IFN584_A2"
+  }
+}
