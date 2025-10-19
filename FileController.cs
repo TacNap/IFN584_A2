@@ -9,7 +9,7 @@ namespace LineUp2
 
 
         /// <summary>
-        /// 
+        /// Serializes the provided Game object and places it into a .json file in `/Saves`
         /// </summary>
         /// <param name="game"></param>
         public void GameSerialization(Game game)
@@ -82,6 +82,12 @@ namespace LineUp2
             return saveFiles;
         }
 
+
+        /// <summary>
+        /// Deserializes and returns a Game from a provided filepath
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public Game GameDeserialization(string filePath)
         {
             string json = File.ReadAllText(filePath);

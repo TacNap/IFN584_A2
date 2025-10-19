@@ -49,6 +49,7 @@ abstract class Game {
 ' Game Subclasses
 class LineUpClassic {
     + CheckBoard(bool suppress) : void
+    + Reset() : void
 }
 
 class LineUpBasic {

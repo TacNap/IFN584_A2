@@ -92,7 +92,10 @@ namespace LineUp2
         {
             string?[]? saveFiles = file.GetSaves();
             if (saveFiles == null)
+            {
+                Thread.Sleep(1000);
                 return;
+            }
             IOController.PrintSaveFiles(saveFiles);
             string filePath = IOController.GetInputLoad(saveFiles);
             if (filePath == null)

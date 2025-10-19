@@ -3,23 +3,53 @@ namespace LineUp2
 {
     public abstract class Game
     {
-        // Core Components
-        public Grid Grid { get; set; }
+        /// <summary>
+        /// Responsible for holding Disc objects and related methods
+        /// </summary>
+        public Grid Grid { get; set; } 
+        
+        /// <summary>
+        /// First player. Always goes first. 
+        /// </summary>
         public Player PlayerOne { get; set; }
+        
+        /// <summary>
+        /// Second player
+        /// </summary>
         public Player PlayerTwo { get; set; }
 
+        /// <summary>
+        /// False when game is quit or finished
+        /// </summary>
         public bool IsGameActive { get; set; }
 
+        /// <summary>
+        /// Determines the disc types that are allowed in this game mode.
+        /// </summary>
         protected char[] AllowedDiscChars = new[] { 'o' };
 
+        /// <summary>
+        /// History of played moves for this game. Used for undo/redo and testing
+        /// </summary>
         public List<Move> MoveSequence { get; set; }
 
+        /// <summary>
+        /// Stack of possible /redo moves
+        /// Does not get serialized
+        /// </summary>
         private Stack<Move> redoStack = new();
 
+        /// <summary>
+        /// Responsible for file io
+        /// </summary>
         public FileController file { get; set; }
+
+        /// <summary>
+        /// Responsible for AI behaviour
+        /// </summary>
         protected IComputerStrategy computerStrategy;
 
-        // Empty constructor is required to differentiate from JSON constructor
+        // Empty constructor is required to differentiate from JSON constructor when loading
         protected Game()
         {
         }
@@ -36,6 +66,11 @@ namespace LineUp2
             computerStrategy = new BasicComputerStrategy();
         }
 
+        /// <summary>
+        /// Get input from terminal during a game
+        /// </summary>
+        /// <param name="testMode"></param>
+        /// <returns></returns>
         public string GetInputGame(bool testMode = false)
         {
             string instruction = !testMode ? "Enter move/command. Type /help for a list of commands." : "Enter string of moves for testing, seperated by a comma \",\"";
@@ -69,7 +104,7 @@ namespace LineUp2
         /// <summary>
         /// Orchestration of move undo.
         /// Moves the last two moves in MoveSequence to redoStack,
-        /// then calls PlayMoveSequence
+        /// then calls PlayMoveSequence to 'replay' the game from turn 1
         /// </summary>
         /// <returns></returns>
         private void Undo()
@@ -92,6 +127,7 @@ namespace LineUp2
             return;
         }
 
+        /// Returns moves in RedoStack to MoveSequence before playing again
         private bool Redo()
         {
             if (redoStack.Count < 2)
@@ -116,6 +152,11 @@ namespace LineUp2
             return !sequenceEnded;
         }
 
+        /// <summary>
+        /// Resets the game and plays all moves in MoveSequence. 
+        /// </summary>
+        /// <param name="moveCount"></param>
+        /// <returns></returns>
         private bool PlayMoveSequence(int moveCount)
         {
             Reset();
@@ -166,7 +207,11 @@ namespace LineUp2
             return false;
         }
 
-
+        /// <summary>
+        /// Check if the user's input is a command, and run accordingly
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public bool TryHandleCommand(string input)
         {
             if (!input.StartsWith("/"))
@@ -222,9 +267,6 @@ namespace LineUp2
             return false;
         }
 
-        // **** Revisit meee. Make me a template method or something 
-        // Do I even account for grid length = 10?
-        // do i even account for spin???
         /// <summary>
         /// Check if the input describes a valid move for this game mode:
         /// Check input format
@@ -243,7 +285,7 @@ namespace LineUp2
             if (input == "" || input == null)
             {
                 Console.Clear();
-                IOController.PrintError("Input is empty");
+                IOController.PrintError("Error: Input is empty");
                 lane = -1;
                 return false;
             }
@@ -252,13 +294,14 @@ namespace LineUp2
             if (!VerifyDiscChar(input[0]))
             {
                 Console.Clear();
-                IOController.PrintError("Invalid disc type");
+                IOController.PrintError("Error: Invalid disc type");
                 return false;
             }
 
             if (input.Length > 3)
             {
-                IOController.PrintError("Invalid lane");
+                Console.Clear();
+                IOController.PrintError("Error: Invalid lane");
                 return false;
             }
 
@@ -266,7 +309,7 @@ namespace LineUp2
             {
                 // Parse failed
                 Console.Clear();
-                IOController.PrintError("Invalid Lane - Must be a number");
+                IOController.PrintError("Error: Invalid lane - Must be a number");
                 return false;
             }
             else
@@ -274,7 +317,7 @@ namespace LineUp2
                 if (lane < 1 || lane > Grid.Board[1].Length)
                 {
                     Console.Clear();
-                    IOController.PrintError("Invalid lane - Out of bounds");
+                    IOController.PrintError("Error: Invalid lane - Out of bounds");
                     return false;
                 }
 
@@ -283,12 +326,20 @@ namespace LineUp2
             }
         }
 
-        // Template Method - this doesn't need to be a loop..
+        /// <summary>
+        /// Main orchestration for (Human) player's turn:
+        /// Get Input
+        /// Validate the input
+        /// Check if its a valid move
+        /// Execute it
+        /// Document it 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool PlayerTurn(Player player)
         {
             while (true)
             {
-                // PrintPlayerData(player);
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
@@ -309,7 +360,7 @@ namespace LineUp2
                 if (!disc.HasDiscRemaining(player))
                 {
                     Console.Clear();
-                    IOController.PrintError("No Disc of that type remaining");
+                    IOController.PrintError("Error: No Disc of that type remaining");
                     return false;
                 }
 
@@ -335,6 +386,11 @@ namespace LineUp2
             }
         }
 
+        /// <summary>
+        /// Calls out to computerStrategy to find a winning move or random move.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool ComputerTurn(Player player)
         {
             // Use the strategy to select a move
@@ -400,6 +456,12 @@ namespace LineUp2
             IOController.PrintError(error);
         }
 
+        /// <summary>
+        /// Unique behaviour that is implemented by subclasses.
+        /// eg. Spin
+        /// or Apply Effects
+        /// </summary>
+        /// <param name="sypress"></param>
         public abstract void CheckBoard(bool sypress = false);
 
         public void GameLoop()
@@ -416,19 +478,11 @@ namespace LineUp2
                     IsGameActive = false;
                     break;
                 }
-
-                // IOController.PrintGameBanner();
-                // Grid.DrawGrid();
-
                 // Holds a reference to the current player, based on turn number
                 // Just for less repeated code :)
                 Player activePlayer = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
 
-                // NOT IDEAL
-                // For true polymorphism, PlayTurn needs to exist on the Player object. 
-                // Which would mean the entire Game object also needs to be passed in...
                 bool successfulMove = activePlayer.IsHuman ? PlayerTurn(activePlayer) : ComputerTurn(activePlayer);
-                // ! Board currently renders twice by accident after a move is played.. Will fix later. 
 
                 if (successfulMove)
                 {
@@ -455,9 +509,13 @@ namespace LineUp2
 
         }
 
+        /// <summary>
+        /// Prints pretty colours to the screen 
+        /// </summary>
+        /// <param name="player"></param>
         public void PrintFrame(Player? player = null)
         {
-            if(player == null)
+            if (player == null)
             {
                 player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
             }

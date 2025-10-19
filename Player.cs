@@ -2,6 +2,9 @@ namespace LineUp2
 {
 	public class Player
 	{
+		/// <summary>
+        /// Discs available to the current player
+        /// </summary>
 		public Dictionary<string, int> DiscBalance { get; protected set; }
 
 		public bool IsHuman { get; set; }

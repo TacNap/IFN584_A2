@@ -1,20 +1,8 @@
-﻿
-﻿using System.Text.Json.Nodes;
+﻿using LineUp2;
 
-using LineUp2;
-
-Testing test = new Testing();
-//test.TestGrid();
-//test.TestWin();
-test.TestGameController();
-
-//test.TestBoring();
-//test.TestMagnetic();
-//test.TestExploding();
-
-public class Testing()
+class Program
 {
-    public void TestGameController()
+    static void Main(string[] args)
     {
         GameController gc = new GameController();
         gc.Start();

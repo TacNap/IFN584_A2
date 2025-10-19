@@ -4,6 +4,7 @@ namespace LineUp2
 {
 	public class ExplodingDisc : Disc
 	{
+		// JSON Constructors are required for deserialization
 		[JsonConstructor]
 		public ExplodingDisc([JsonProperty("IsPlayerOne")] bool isPlayerOne)
 		{

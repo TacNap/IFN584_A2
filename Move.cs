@@ -1,5 +1,8 @@
 namespace LineUp2
 {
+    /// <summary>
+    /// Portable Move struct that contains a valid Disc and Lane number. 
+    /// </summary>
     public struct Move
     {
         public Disc Disc { get; set; }
