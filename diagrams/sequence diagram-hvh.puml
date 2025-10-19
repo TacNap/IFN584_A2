@@ -3,135 +3,203 @@ skinparam actorStyle awesome
 skinparam titleFontSize 32
 title Sequence Diagram – LineUpClassic Game (Human vs Human Mode)
 
-actor User as "Human Player"
+actor User
+participant Terminal
+participant Program
 participant GameController
 participant IOController
 participant GameConfig
 participant LineUpClassic as Game
 participant Grid
-participant Human
+participant HumanPlayer
 participant Disc
 
 == Game Initialisation ==
-
-User -> GameController: NewGame()
+User -> Program: Open game
+loop while IsMenuActive == true
 activate GameController
-loop While IsMenuActive == true
-    activate IOController
-    GameController -> IOController: PrintMenu()
-    IOController -> User: Display game mode options
-    User -> IOController: Select "LineUpClassic"
-    IOController -> GameConfig: GameMode "Classic"
-    IOController -> User: Display player mode options
-    User -> IOController: Select "HvH"
-    IOController -> GameConfig: PlayerMode "HvH"
-    IOController -> User: Change Grid size?
-    User -> IOController: Select "No"
-    IOController -> GameConfig: GetInputNewGame()
-    deactivate IOController
-    GameController -> GameConfig: GameFactory()
-    GameConfig -> GameController: GameFactory(config)
+Program -> GameController: Start()
+GameController -> IOController: PrintMenu()
+activate IOController
+IOController -> Terminal: return menu display
+User -> IOController: input (1 - NewGame)
+GameController -> GameController: RunCommand()
+activate GameController
+GameController -> GameController: NewGame()
+deactivate GameController
+GameController -> IOController: GetInputNewGame()
+IOController -> Terminal: PrintBannerNewGame()
+User -> IOController: Select "LineUpClassic", "HvC", "No"
+activate GameConfig
+IOController -> GameConfig: SetGameMode()
+IOController -> GameConfig: SetPlayerMode()
+IOController -> GameConfig: SetGridHeight()
+IOController -> GameConfig: SetGridWidth()
+GameConfig -> IOController: return config
+deactivate GameConfig
+activate Game
+IOController -> GameController: return config
+deactivate IOController
 
 == Start Game Loop ==
-activate Game
+GameController -> Game: GameFactory(config)
 GameController -> Game: GameLoop()
 deactivate GameController
-
-loop While IsGameActive == true
-
-    group Player One Turn
-        Game -> User: PrintPlayerData()
-        Game -> User: DrawGrid()
+    loop While IsGameActive == true
+    Game -> Terminal: PrintPlayerData()
+    Game -> Grid: DrawGrid()
+    Grid -> Terminal: return grid
+    alt If IsPlayerOne == true
         Game -> Game: PlayerTurn(PlayerOne)
+        activate Game
+        deactivate Game
         Game -> User: GetInputGame()
-
         alt Make move
             User -> Game: Enter move
-            Game -> Disc: CreateDisc()
             activate Disc
-            Game -> Disc: HasDiscRemaining() == true
-            Disc -> Game: disc
-            activate Grid
-            Game -> Grid: AddDisc(disc, lane)
-            deactivate Grid
-            Game -> Disc: ApplyEffects(Board, lane)
-            opt EffectTriggered
+            Game -> Disc: CreateDisc()
+            Game --> HumanPlayer: HasDiscRemaining()
+            HumanPlayer -> Game: return bool
+            alt HasDiscRemaining() == true
+                Disc -> Game: return disc
                 activate Grid
-                Disc -> Grid: ApplyGravity()
+                Game -> Grid: AddDisc(disc, lane)
+                Game -> Disc: WithdrawDisc()
+                Disc -> HumanPlayer: return DiscBalance
+                deactivate Grid
+                Game -> Disc: ApplyEffects(Board, lane)
+                
+                opt EffectTriggered
+                    Game -> Disc: ReturnDisc()
+                    Disc -> HumanPlayer: return DiscBalance
+                end
+            else HasDiscRemaining() == false
+                 activate IOController
+                 Game -> IOController: PrintError()
+                 IOController -> Terminal: display error message
+                 deactivate IOController
             end
-            deactivate Disc
+                deactivate Disc
             Game -> Grid: DrawGrid()
-
+            Grid -> Terminal: return grid
             alt Is Tie Game
                 Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+                activate Grid
+                deactivate Grid
                 Grid -> Game: IsTieGame = true
-                Game -> IOController: PrintWinner(PlayerOne)
+                activate IOController
+                Game -> IOController: PrintWinner(P1)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Winner Found
+                activate Grid
                 Game -> Grid: CheckWinCondition()
-                Grid -> Game: CheckWinCondition(PlayerOne) = true
-                Game -> IOController: PrintWinner(PlayerOne)
+                Grid -> Game: CheckWinCondition(P1) = true
+                deactivate Grid
+                activate IOController
+                Game -> IOController: PrintWinner(P1)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Continue Game
+                activate Grid
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition = false
                 Game -> Grid: IncrementTurnCounter()
-            deactivate Grid
+                deactivate Grid
+                Game -> Game: DocumentMove(move)
+                activate Game
+                deactivate Game
             end
 
-            Game -> Game: DocumentMove(move)
         else Help/Undo/Redo/Quit command
             Game -> Game: TryHandleCommand()
+            activate Game
+            deactivate Game
         end
-    end
 
-    group Player Two Turn
-        Game -> User: PrintPlayerData()
-        Game -> User: DrawGrid()
+    alt Else IsPlayerOne == false
         Game -> Game: PlayerTurn(PlayerTwo)
+        activate Game
+        deactivate Game
         Game -> User: GetInputGame()
-
         alt Make move
             User -> Game: Enter move
-            Game -> Disc: CreateDisc()
             activate Disc
-            Game -> Disc: HasDiscRemaining() == true
-            Disc -> Game: disc
-            activate Grid
-            Game -> Grid: AddDisc(disc, lane)
-            deactivate Grid
-            Game -> Disc: ApplyEffects(Board, lane)
-            opt EffectTriggered
+            Game -> Disc: CreateDisc()
+            Game --> HumanPlayer: HasDiscRemaining()
+            HumanPlayer -> Game: return bool
+            alt HasDiscRemaining() == true
+                Disc -> Game: return disc
                 activate Grid
-                Disc -> Grid: ApplyGravity()
+                Game -> Grid: AddDisc(disc, lane)
+                Game -> Disc: WithdrawDisc()
+                Disc -> HumanPlayer: return DiscBalance
+                deactivate Grid
+                Game -> Disc: ApplyEffects(Board, lane)
+                
+                opt EffectTriggered
+                    Game -> Disc: ReturnDisc()
+                    Disc -> HumanPlayer: return DiscBalance
+                end
+            else HasDiscRemaining() == false
+                 activate IOController
+                 Game -> IOController: PrintError()
+                 IOController -> Terminal: display error message
+                 deactivate IOController
             end
-            deactivate Disc
+                deactivate Disc
             Game -> Grid: DrawGrid()
-
+            Grid -> Terminal: return grid
             alt Is Tie Game
                 Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
+                activate Grid
+                deactivate Grid
                 Grid -> Game: IsTieGame = true
-                Game -> IOController: PrintWinner(PlayerTwo)
+                activate IOController
+                Game -> IOController: PrintWinner(P2)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Winner Found
+                activate Grid
                 Game -> Grid: CheckWinCondition()
-                Grid -> Game: CheckWinCondition(PlayerTwo) = true
-                Game -> IOController: PrintWinner(PlayerTwo)
+                Grid -> Game: CheckWinCondition(P2) = true
+                deactivate Grid
+                activate IOController
+                Game -> IOController: PrintWinner(P2)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
+                activate Game
+                deactivate Game
             else Continue Game
+                activate Grid
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition = false
                 Game -> Grid: IncrementTurnCounter()
-            deactivate Grid
+                deactivate Grid
+                Game -> Game: DocumentMove(move)
+                activate Game
+                deactivate Game
             end
 
-            Game -> Game: DocumentMove(move)
         else Help/Undo/Redo/Quit command
             Game -> Game: TryHandleCommand()
+            activate Game
+            deactivate Game
         end
+
     end
-
+deactivate Game
 end
-
 == Game Over ==
+end
 @enduml

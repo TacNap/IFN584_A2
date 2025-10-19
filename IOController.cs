@@ -109,7 +109,7 @@ namespace LineUp2
             PrintGreen("╔═══════════════════════════════════════╗\n");
             PrintGreen("║           Welcome to LineUp           ║\n");
             PrintGreen("╚═══════════════════════════════════════╝\n");
-            PrintGreen("Developed by: Matthew, Trieu, YeeWei, Linh, Sanjika\n\n");
+            PrintGreen("Developed by: Matthew, Trieu, Yee Wei, Linh, Sanjika\n\n");
             PrintGreen("Please enter one of the following commands:\n");
             PrintGreen("[1] New Game\n");
             PrintGreen("[2] Load Game\n");
