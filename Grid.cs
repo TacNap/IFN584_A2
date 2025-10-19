@@ -309,7 +309,8 @@ namespace LineUp2
         /// DrawGrid renders the board and its contents to the console.
         /// Orientation defines the rotation of the board.
         /// </summary>
-        public void DrawGrid()//GameConfig.GameMode gameMode = GameConfig.GameMode.Classic,GameConfig.PlayerMode playerMode = GameConfig.PlayerMode.HvH
+        /// GameConfig.GameMode gameMode = GameConfig.GameMode.Classic,GameConfig.PlayerMode playerMode = GameConfig.PlayerMode.HvH
+        public void DrawGrid(int FrameDelay=500)
         {
             IOController.PrintGameStatus(this, WinLength);//, playerMode, gameMode, WinLength
             int pre_rows = Board.Length;
@@ -399,6 +400,7 @@ namespace LineUp2
                     }
                     break;
             }
+            Thread.Sleep(FrameDelay);
         }
 
         public bool CheckWinCondition(bool suppress = false)
