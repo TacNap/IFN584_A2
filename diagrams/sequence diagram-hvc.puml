@@ -1,10 +1,9 @@
 @startuml
-@startuml
 skinparam actorStyle awesome
 skinparam titleFontSize 32
 title Sequence Diagram – LineUpClassic Game (Human vs Computer Mode)
 
-actor User as "Human Player"
+actor User
 participant Terminal
 participant Program
 participant GameController
@@ -12,9 +11,9 @@ participant IOController
 participant GameConfig
 participant LineUpClassic as Game
 participant Grid
-participant Human
+participant HumanPlayer
 participant Disc
-participant Computer as IComputerStrategy
+participant Computer
 
 == Game Initialisation ==
 User -> Program: Open game
@@ -57,17 +56,22 @@ deactivate GameController
         alt Make move
             User -> Game: Enter move
             Game -> Disc: CreateDisc()
-            Game --> Disc: HasDiscRemaining()
+            Game --> HumanPlayer: HasDiscRemaining()
+            HumanPlayer -> Game: return bool
             activate Disc
             alt HasDiscRemaining() == true
                 Disc -> Game: return disc
                 activate Grid
                 Game -> Grid: AddDisc(disc, lane)
+                Game -> Disc: WithdrawDisc()
+                Disc -> HumanPlayer: return DiscBalance
                 deactivate Grid
                 Game -> Disc: ApplyEffects(Board, lane)
+                
                 opt EffectTriggered
-                    activate Grid
-                    Disc -> Grid: ApplyGravity()
+                    Game -> Disc: ReturnDisc()
+                    Disc -> HumanPlayer: return DiscBalance
+                    Disc -> Computer: return DiscBalance
                 end
             else HasDiscRemaining() == false
                  activate IOController
@@ -83,14 +87,22 @@ deactivate GameController
                 activate Grid
                 deactivate Grid
                 Grid -> Game: IsTieGame = true
+                activate IOController
                 Game -> IOController: PrintWinner(P1)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
                 activate Game
                 deactivate Game
             else Winner Found
+                activate Grid
                 Game -> Grid: CheckWinCondition()
                 Grid -> Game: CheckWinCondition(P1) = true
+                deactivate Grid
+                activate IOController
                 Game -> IOController: PrintWinner(P1)
+                IOController -> Terminal: display message
+                deactivate IOController
                 Game -> Game: IsGameActive = false
                 activate Game
                 deactivate Game
@@ -108,45 +120,56 @@ deactivate GameController
             activate Game
             deactivate Game
         end
-    else Computer Player Turn
-        Game -> Game: PlayerTurn(PlayerTwo)
-        activate Game
-        deactivate Game
-        activate IComputerStrategy
-        Game -> IComputerStrategy: SelectMove()
-        IComputerStrategy --> Game: Move{Disc, Lane}
-        deactivate IComputerStrategy
-        activate Disc
-        Game -> Disc: CreateDisc()
-        Disc -> Game: disc
-        activate Grid
-        Game -> Grid: AddDisc(disc, lane)
-        Game -> Disc: ApplyEffects(Board, lane)
-        opt EffectTriggered
-            Disc -> Grid: ApplyGravity()
-        end
-        deactivate Disc
+else Computer Player Turn
+    Game -> Game: PlayerTurn(PlayerTwo)
+    activate Game
+    deactivate Game
+    activate Computer
+    Game -> Computer: SelectMove()
+    Computer --> Game: Move{Disc, Lane}
+    deactivate Computer
+    activate Disc
+    Game -> Disc: CreateDisc()
+    Disc -> Game: return disc
+    activate Grid
+    Game -> Grid: AddDisc(disc, lane)
+    Game -> Disc: WithdrawDisc()
+    Disc -> HumanPlayer: return DiscBalance
+    deactivate Grid
+    Game -> Disc: ApplyEffects(Board, lane)
+    opt EffectTriggered
+        Game -> Disc: ReturnDisc()
+        Disc -> HumanPlayer: return DiscBalance
+        Disc -> Computer: return DiscBalance
+    end
+    deactivate Disc
         alt Is Tie Game
+            activate Grid
             Grid -> Grid: IsTieGame(PlayerOne, PlayerTwo)
             activate Grid
             deactivate Grid
             Grid -> Game: IsTieGame = true
+            deactivate Grid
             Game -> IOController: PrintWinner(P2)
             Game -> Game: IsGameActive = false
             activate Game
             deactivate Game
         else Winner Found
+            activate Grid
             Game -> Grid: CheckWinCondition()
             Grid -> Game: CheckWinCondition(P2) = true
             Grid -> IOController: PrintWinner(P2)
+            IOController -> Terminal: display message
+            deactivate Grid
             Game -> Game: IsGameActive = false
             activate Game
             deactivate Game
         else Continue Game
+            activate Grid
             Game -> Grid: CheckWinCondition()
             Grid -> Game: CheckWinCondition = false
             Game -> Grid: IncrementTurnCounter()
-        deactivate Grid
+            deactivate Grid
         end
         Game -> Game: DocumentMove(move)
         activate Game
