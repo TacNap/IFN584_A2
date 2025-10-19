@@ -6,74 +6,76 @@
 
 ''' GameController '''
 class GameController {
-    IsMenuActive : bool
-    file : FileController
-    RunCommand(string input) : void
-    GameFactory(GameConfig config) : Game
-    Start() : void
-    NewGame() : void
-    LoadGame() : void
-    TestMode() : void
+    - IsMenuActive : bool
+    - file : FileController
+    + RunCommand(string input) : void
+    + GameFactory(GameConfig config) : Game
+    + Start() : void
+    + NewGame() : void
+    + LoadGame() : void
+    + TestMode() : void
 }
 
 ''' Game '''
 abstract class Game {
-    Grid : Grid
-    PlayerOne : Player
-    PlayerTwo: Player
-    IsGameActive : bool
-    AllowedDiscChars : char[]
-    MoveSequence : List<Move>
-    file : FileController
-    computerStrategy : IComputerStrategy
-    GetInputGame() : string
-    DocumentMove(Move move) : void
-    UndoMove() : void
-    RedoMove() : bool
-    PlayMoveSequence(int moveCount) : bool
-    TryHandleCommand(string input) : bool
-    VerifyDiscChar() : bool
-    TryParseMove(string input, out int lane) : bool
-    PlayerTurn(Player player) : bool
-    ComputerTurn(Player player) : bool
-    TestLoop() : void    
-    {abstract} CheckBoard() : void
-    GameLoop() : void
-    Reset() : void
-    PrintPlayerData() : void
+    + Grid : Grid
+    + PlayerOne : Player
+    + PlayerTwo: Player
+    + IsGameActive : bool
+    # AllowedDiscChars : char[]
+    + MoveSequence : List<Move>
+    - redoStack : Stack<Move>
+    + file : FileController
+    # computerStrategy : IComputerStrategy
+    # Game()
+    + GetInputGame() : string
+    - DocumentMove(Move move) : void
+    - Undo() : void
+    - Redo() : bool
+    - PlayMoveSequence(int moveCount) : bool
+    + TryHandleCommand(string input) : bool
+    # VerifyDiscChar() : bool
+    + TryParseMove(string input, out int lane) : bool
+    + PlayerTurn(Player player) : bool
+    + ComputerTurn(Player player) : bool
+    + TestLoop() : void    
+    + {abstract} CheckBoard() : void
+    + GameLoop() : void
+    + Reset() : void
+    + PrintPlayerData() : void
 }
 
 ' Game Subclasses
 class LineUpClassic {
-    CheckBoard() : void
+    + CheckBoard() : void
 }
 
 class LineUpBasic {
-    CheckBoard() : void
+    + CheckBoard() : void
 }
 
 class LineUpSpin {
-    CheckBoard() : void
+    + CheckBoard() : void
 }
 
 ''' Grid '''
 class Grid {
-    Board : Disc[][]
-    Orientation : enum
-    orientation : Orientation
-    WinLength : int
-    TurnCounter : int
-    IncrementTurnCounter() : void
-    DecrementTurnCounter() : void
-    SetTurnCounter(int num) : bool
-    IncrementOrientation() : void
-    IsTieGame(Player p1, Player p2) : bool
-    AddDisc(Move move) : bool
-    ApplyGravity() : void
-    Spin() : void
-    DrawGrid() : void
-    CheckWinCondition() : bool
-    Reset() : void
+    + Board : Disc[][]
+    + Orientation : enum
+    + orientation : Orientation
+    + WinLength : int
+    + TurnCounter : int
+    + IncrementTurnCounter() : void
+    + DecrementTurnCounter() : void
+    + SetTurnCounter(int num) : bool
+    + IncrementOrientation() : void
+    + IsTieGame(Player p1, Player p2) : bool
+    + AddDisc(Move move) : bool
+    + ApplyGravity() : void
+    + Spin() : void
+    + DrawGrid() : void
+    + CheckWinCondition() : bool
+    + Reset() : void
 }
 
 enum Orientation {
@@ -85,56 +87,56 @@ enum Orientation {
 
 '''Disc'''
 abstract class Disc {
-    Symbol : string
-    IsPlayerOne : bool
-    DiscReturn : Dictionary<string, int>[]
-    CreateDisc(char discType, bool isPlayerOne) : Disc
-    {abstract} Clone() : Disc
-    {abstract} ApplyEffects(Disc[][] Board, int lane) : bool
-    {abstract} HasDiscRemaining(Player player) : bool
-    {abstract} WithdrawDisc(Player player) : void
+    + Symbol : string
+    + IsPlayerOne : bool
+    + DiscReturn : Dictionary<string, int>[]
+    + CreateDisc(char discType, bool isPlayerOne) : Disc
+    + {abstract} Clone() : Disc
+    + {abstract} ApplyEffects(Disc[][] Board, int lane) : bool
+    + {abstract} HasDiscRemaining(Player player) : bool
+    + {abstract} WithdrawDisc(Player player) : void
 }
 
 class OrdinaryDisc {
-    ApplyEffects(Disc[][] Board, int lane) : bool
-    Clone() : Disc
-    HasDiscRemaining(Player player) : bool
-    WithdrawDisc(Player player) : void
+    + ApplyEffects(Disc[][] Board, int lane) : bool
+    + Clone() : Disc
+    + HasDiscRemaining(Player player) : bool
+    + WithdrawDisc(Player player) : void
 }
 
 class BoringDisc {
-    ApplyEffects(Disc[][] Board, int lane) : bool
-    Clone() : Disc
-    HasDiscRemaining(Player player) : bool
-    WithdrawDisc(Player player) : void
+    + ApplyEffects(Disc[][] Board, int lane) : bool
+    + Clone() : Disc
+    + HasDiscRemaining(Player player) : bool
+    + WithdrawDisc(Player player) : void
 }
 
 class ExplodingDisc {
-    ApplyEffects(Disc[][] Board, int lane) : bool
-    Clone() : Disc
-    HasDiscRemaining(Player player) : bool
-    WithdrawDisc(Player player) : void
+    + ApplyEffects(Disc[][] Board, int lane) : bool
+    + Clone() : Disc
+    + HasDiscRemaining(Player player) : bool
+    + WithdrawDisc(Player player) : void
 }
 
 class MagneticDisc {
-    ApplyEffects(Disc[][] Board, int lane) : bool
-    Clone() : Disc
-    HasDiscRemaining(Player player) : bool
-    WithdrawDisc(Player player) : void
+    + ApplyEffects(Disc[][] Board, int lane) : bool
+    + Clone() : Disc
+    + HasDiscRemaining(Player player) : bool
+    + WithdrawDisc(Player player) : void
 }
 
 class Move {
-    Disc : Disc 
-    Lane : int
+    + Disc : Disc 
+    + Lane : int
 }
 
 ''' Player ''' 
 class Player {
-    DiscBalance : Dictionary<string, int>
-    IsHuman : bool
-    HasDiscBalanceRemaining() : bool
-    ResetDiscBalance(Dictionary<string, int> DiscBalance_) : void
-    ReturnDisc(Dictionary<string, int> discReturned) : void
+    + DiscBalance : Dictionary<string, int>
+    + IsHuman : bool
+    + HasDiscBalanceRemaining() : bool
+    + ResetDiscBalance(Dictionary<string, int> DiscBalance_) : void
+    + ReturnDisc(Dictionary<string, int> discReturned) : void
 }
 
 interface IComputerStrategy {
@@ -142,48 +144,48 @@ interface IComputerStrategy {
 }
 
 class BasicComputerStrategy {
-    random : Random
-    SelectMove(Grid grid, Player player) : Move
-    FindWinningMove(Grid grid, Player player) : Move
-    FindRandomMove(Grid grid, Player player) : Move
-    TrySimulateMove(Grid original, Disc disc, Int lane, out Grid simulated) : bool
-    CopyGrid(Grid original) : Grid
+    - random : Random
+    + SelectMove(Grid grid, Player player) : Move
+    - FindWinningMove(Grid grid, Player player) : Move
+    - FindRandomMove(Grid grid, Player player) : Move
+    - TrySimulateMove(Grid original, Disc disc, Int lane, out Grid simulated) : bool
+    - CopyGrid(Grid original) : Grid
 }
 
 ''' IOController '''
 class IOController {
-    PrintGameBanner() : void
-    PrintDiscInventory(Dictionary<string, int> discBalance) : void
-    PrintGameStatus(Grid grid, int winLength) : void
-    PrintGreen(string text) : void
-    PrintCyan(string text) : void
-    PrintYellow(string text) : void
-    PrintError(string text) : void
-    PrintSuccess(string text) : void
-    PrintMenu() : void
-    PrintBannerNewGame() : void
-    PrintHelp() : void
-    PrintInGameHelp() : void
-    PrintSaveFiles(string[] saveFiles) : void
-    PrintWinner(bool P1, bool P2) : void
-    GetInputMenu() : int
-    GetInputLoad(string[] saveFiles) : string
-    GetInputNewGame() : GameConfig
+    + PrintGameBanner() : void
+    + PrintDiscInventory(Dictionary<string, int> discBalance) : void
+    + PrintGameStatus(Grid grid, int winLength) : void
+    + PrintGreen(string text) : void
+    + PrintCyan(string text) : void
+    + PrintYellow(string text) : void
+    + PrintError(string text) : void
+    + PrintSuccess(string text) : void
+    + PrintMenu() : void
+    + PrintBannerNewGame() : void
+    + PrintHelp() : void
+    + PrintInGameHelp() : void
+    + PrintSaveFiles(string[] saveFiles) : void
+    + PrintWinner(bool P1, bool P2) : void
+    + GetInputMenu() : int
+    + GetInputLoad(string[] saveFiles) : string
+    + GetInputNewGame() : GameConfig
 }
 
 ''' GameConfig '''
 class GameConfig {
-    PlayerMode : enum
-    GameMode : enum
-    SelectedPlayerMode : PlayerMode
-    SelectedGameMode : GameMode
-    GridHeight : int
-    GridWidth : int
-    GameConfig()
-    SetGameMode(GameMode mode) : bool
-    SetPlayerMode(PlayerMode mode) : bool
-    SetGridHeight(int rows) : bool
-    SetGridWidth(int cols) : bool
+    + PlayerMode : enum
+    + GameMode : enum
+    + SelectedPlayerMode : PlayerMode
+    + SelectedGameMode : GameMode
+    + GridHeight : int
+    + GridWidth : int
+    + GameConfig()
+    + SetGameMode(GameMode mode) : bool
+    + SetPlayerMode(PlayerMode mode) : bool
+    + SetGridHeight(int rows) : bool
+    + SetGridWidth(int cols) : bool
 }
 
 enum PlayerMode {
@@ -199,9 +201,9 @@ enum GameMode {
 
 ''' FileController '''
 class FileController {
-    GameSerialization(Game game) : void
-    GetSaves() : string[]
-    GameDeserialization(string filePath) : Game
+    + GameSerialization(Game game) : void
+    + GetSaves() : string[]
+    + GameDeserialization(string filePath) : Game
 }
 
 ' Relationships
