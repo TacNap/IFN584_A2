@@ -167,39 +167,34 @@ namespace LineUp2
         }
 
 
-        public bool TryHandleCommand(string input)
+        public string TryHandleCommand(string input)
         {
             if (!input.StartsWith("/"))
             {
-                return false;
+                return "";
             }
             else
             {
                 switch (input)
                 {
                     case "/undo":
-                        IOController.PrintGreen("Undo!\n");
                         Undo();
-                        break;
+                        return "Undo!\n";
                     case "/redo":
-                        IOController.PrintGreen("Redo!\n");
                         Redo();
-                        break;
+                        return "Redo!\n";
                     case "/save":
                         file.GameSerialization(this);
-                        break;
+                        return "";
                     case "/help":
                         IOController.PrintInGameHelp();
-                        break;
+                        return "";
                     case "/quit":
-                        IOController.PrintGreen("Quit!\n");
                         IsGameActive = false;
-                        break;
+                        return "Quit!\n";
                     default:
-                        IOController.PrintError("Error: Unrecognised command");
-                        break;
+                        return "Error: Unrecognised command!";
                 }
-                return true;
             }
         }
 
@@ -235,56 +230,71 @@ namespace LineUp2
         /// <param name="input"></param>
         /// <param name="lane"></param>
         /// <returns></returns>
-        public bool TryParseMove(string input, out int lane)
+        public string TryParseMove(string input, out int lane)
         {
             lane = 0; // Must be instantited before continuing
 
             // Check if empty
             if (input == "" || input == null)
             {
-                IOController.PrintError("Input is empty");
                 lane = -1;
-                return false;
+                return "Input is empty";
             }
 
             // Check if disc type is allowed
             if (!VerifyDiscChar(input[0]))
             {
-                IOController.PrintError("Invalid disc type");
-                return false;
+                return "Invalid disc type";
             }
 
             if (input.Length > 3)
             {
-                IOController.PrintError("Invalid lane");
-                return false;
+                return "Invalid lane";
             }
 
             if (!int.TryParse(input.Substring(1), out lane))
             {
                 // Parse failed
-                IOController.PrintError("Invalid Lane - Must be a number");
-                return false;
+                return "Invalid Lane - Must be a number";
             }
             else
             {
                 if (lane < 1 || lane > Grid.Board[1].Length)
                 {
-                    IOController.PrintError("Invalid lane - Out of bounds");
-                    return false;
+                    return "Invalid lane - Out of bounds";
                 }
 
                 // Valid Input
-                return true;
+                return "";
             }
         }
 
         // Template Method
         public bool PlayerTurn(Player player)
         {
+            string ErrorMessage = "";
+            string CommandMessage = "";
             while (true)
             {
+                Console.Clear();
+                IOController.PrintGameBanner();
+                Grid.DrawGrid();
                 PrintPlayerData();
+
+                // Print command message
+                if (CommandMessage != "")
+                {
+                    if (!CommandMessage.ToLower().Contains("error"))
+                        IOController.PrintGreen(CommandMessage);
+                    else
+                        IOController.PrintError(CommandMessage);
+                    CommandMessage = "";
+                }
+                // Print error message
+                if (ErrorMessage != "")
+                    IOController.PrintError(ErrorMessage);
+                    ErrorMessage = "";
+
                 string input = GetInputGame();
                 if (string.IsNullOrEmpty(input))
                 {
@@ -292,12 +302,17 @@ namespace LineUp2
                     continue;
                 }
 
-                if (TryHandleCommand(input))
+                // Get command message
+                CommandMessage = TryHandleCommand(input);
+                if (CommandMessage.ToLower().Contains("quit"))
                     return false;
+                if (CommandMessage != "")
+                    continue;
 
-
-                if (!TryParseMove(input, out int lane))
-                    return false;
+                // Get error message
+                ErrorMessage = TryParseMove(input, out int lane);
+                if (ErrorMessage != "")
+                    continue;
 
                 // At this point, its valid input
                 Disc disc = Disc.CreateDisc(input[0], Grid.TurnCounter % 2 == 1 ? true : false);
@@ -316,6 +331,7 @@ namespace LineUp2
                 {
                     //Move fails
                     IOController.PrintError("Error: Lane is full");
+                    ErrorMessage = $"Error: Lane {lane} is full";
                     continue;
                 }
                 else
@@ -354,13 +370,15 @@ namespace LineUp2
         {
             Console.Clear();
             IOController.PrintGameBanner();
-            Grid.DrawGrid();
+            Grid.DrawGrid(200);
             // Get test input sequence
             string input = GetInputGame(true);
 
             // Split input into moves
             string[] moveList = input.Split(",");
             if (moveList.Length == 0) return;
+
+            string ErrorMessage = "";
             for (int turn = 0; turn < moveList.Length; turn++)
             {
                 string move = moveList[turn].Trim().ToLower();
@@ -369,9 +387,12 @@ namespace LineUp2
                     IOController.PrintError($"Move number {turn + 1} is empty. Please enter a new test sequence!");
                     break;
                 }
-                if (!TryParseMove(move, out int lane))
+                // Get error message
+                ErrorMessage = TryParseMove(move, out int lane);
+                if (ErrorMessage != "")
                 {
-                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid. Please enter a new test sequence!");
+                    IOController.PrintError($"Move number {turn + 1} ({move}) is invalid: {ErrorMessage} \nPlease enter a new test sequence!");
+                    ErrorMessage = "";
                     break;
                 }
                 bool isPlayerOne = turn % 2 == 0;
