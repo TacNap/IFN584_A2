@@ -46,31 +46,6 @@ namespace LineUp2
             Console.Write(new string(' ', Math.Max(0, line1Padding)));
             Console.WriteLine(" ║");
             
-            // // Line 2: Game mode and player mode
-            // string gameModeText = gameMode switch
-            // {
-            //     GameConfig.GameMode.Classic => "Classic",
-            //     GameConfig.GameMode.Basic => "Basic", 
-            //     GameConfig.GameMode.Spin => "Spin",
-            //     _ => "Unknown"
-            // };
-            
-            // string playerModeText = playerMode switch
-            // {
-            //     GameConfig.PlayerMode.HvH => "Human vs Human",
-            //     GameConfig.PlayerMode.HvC => "Human vs Computer",
-            //     _ => "Unknown"
-            // };
-            
-            // string line2 = $"Mode: {gameModeText} | {playerModeText}";
-            // int line2Padding = boxWidth - line2.Length - 3; // -3 for "║ " and " ║"
-            
-            // Console.Write("║ ");
-            // PrintYellow("Mode: ");
-            // Console.Write($"{gameModeText} | {playerModeText}");
-            // Console.Write(new string(' ', Math.Max(0, line2Padding)));
-            // Console.WriteLine("  ║");
-            
             Console.WriteLine("╚═══════════════════════════════════════════════════════════════╝");
         }
 
@@ -310,6 +285,7 @@ namespace LineUp2
 
         public static void PrintWinner(bool P1, bool P2)
         {
+            Console.Clear();
             if (P1 && P2)
             {
                 PrintCyan("╔═══════════════════════════════════════════════════════════════╗\n");
@@ -328,8 +304,6 @@ namespace LineUp2
                 PrintGreen("║                          Player Two Wins!                     ║\n");
                 PrintGreen("╚═══════════════════════════════════════════════════════════════╝\n");
             }
-
-            Console.ReadLine();
         }
 
         public static int GetInputMenu()

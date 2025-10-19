@@ -40,19 +40,56 @@ namespace LineUp2
             : base(grid, playerOne, playerTwo, isGameActive, moveSequence, file)
         {
             AllowedDiscChars = new[] { 'o', 'b', 'e', 'm' };
-
-            // Strategy is initialized in base constructor
         }
 
 
-        public override void CheckBoard()
+        public override void CheckBoard(bool suppress = false)
         {
-            if (Grid.CheckWinCondition())
-            {
-                IsGameActive = false;
-                return;
-            }
             Grid.IncrementTurnCounter();
+            Move move = MoveSequence[^1];
+            Console.Clear();
+            PrintFrame();
+            if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
+            {
+                if (move.Disc.DiscReturn != null)
+                {
+                    PlayerOne.ReturnDisc(move.Disc.DiscReturn[0]);
+                    PlayerTwo.ReturnDisc(move.Disc.DiscReturn[1]);
+                }
+
+                Grid.ApplyGravity();
+                if (!suppress) Thread.Sleep(500);
+                Console.Clear();
+                PrintFrame();
+                if (Grid.CheckWinCondition())
+                {
+                    Grid.DecrementTurnCounter();
+                    PrintFrame();
+                    IsGameActive = false;
+                    Console.WriteLine("Press Enter to continue...");
+                    Console.ReadLine();
+                    Console.Clear();
+                    return;
+                }
+            }
+        }
+        
+        public override void Reset()
+        {
+            Grid.Reset();
+            int OrdinaryDiscCount = Grid.Board.Length * Grid.Board[0].Length / 2;
+            Dictionary<string, int> P1Discs = new Dictionary<string, int>
+            {
+                ["Ordinary"] = OrdinaryDiscCount,
+                ["Boring"] = 2,
+                ["Exploding"] = 2,
+                ["Magnetic"] = 2
+            };
+            Dictionary<string, int> P2Discs = new Dictionary<string, int>(P1Discs);
+
+            PlayerOne.ResetDiscBalance(P1Discs);
+            PlayerTwo.ResetDiscBalance(P2Discs);
+
         }
 
 

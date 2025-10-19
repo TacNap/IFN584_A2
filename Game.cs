@@ -155,7 +155,7 @@ namespace LineUp2
                 }
 
                 move.Disc.WithdrawDisc(player);
-                CheckBoard();
+                CheckBoard(true);
 
                 if (!IsGameActive)
                 {
@@ -179,9 +179,11 @@ namespace LineUp2
                 {
                     case "/undo":
                         Undo();
+                        Console.Clear();
                         break;
                     case "/redo":
                         Redo();
+                        Console.Clear();
                         break;
                     case "/save":
                         Console.Clear();
@@ -192,6 +194,7 @@ namespace LineUp2
                         break;
                     case "/quit":
                         IsGameActive = false;
+                        Console.Clear();
                         break;
                     default:
                         Console.Clear();
@@ -325,22 +328,6 @@ namespace LineUp2
                 else
                 {
                     // Successful move
-                    Console.Clear();
-                    PrintFrame();
-                    if (move.Disc.ApplyEffects(ref Grid.Board, move.Lane))
-                    {
-                        // Tyler: return disc to hand for special (boring only)
-                        if (disc.DiscReturn != null)
-                        {
-                            PlayerOne.ReturnDisc(disc.DiscReturn[0]);
-                            PlayerTwo.ReturnDisc(disc.DiscReturn[1]);
-                        }
-
-                        Grid.ApplyGravity();
-                        Thread.Sleep(500);
-                        Console.Clear();
-                        PrintFrame();
-                    }
                     move.Disc.WithdrawDisc(player);
                     DocumentMove(move);
                     return true;
@@ -411,7 +398,7 @@ namespace LineUp2
             PlayMoveSequence(MoveSequence.Count);
         }
 
-        public abstract void CheckBoard();
+        public abstract void CheckBoard(bool sypress = false);
 
         public void GameLoop()
         {
@@ -451,17 +438,13 @@ namespace LineUp2
             }
         }
 
-        // Need a way to only reset the correct discs based on game mode. 
-        public void Reset()
+        public virtual void Reset()
         {
             Grid.Reset();
             int OrdinaryDiscCount = Grid.Board.Length * Grid.Board[0].Length / 2;
             Dictionary<string, int> P1Discs = new Dictionary<string, int>
             {
                 ["Ordinary"] = OrdinaryDiscCount,
-                ["Boring"] = 2,
-                ["Exploding"] = 2,
-                ["Magnetic"] = 2
             };
             Dictionary<string, int> P2Discs = new Dictionary<string, int>(P1Discs);
 
@@ -474,7 +457,7 @@ namespace LineUp2
         {
             if(player == null)
             {
-                player = Grid.TurnCounter % 2 == 0 ? PlayerOne : PlayerTwo;
+                player = Grid.TurnCounter % 2 == 1 ? PlayerOne : PlayerTwo;
             }
             // Note: this is purposely different to activePlayer in GameLoop
             IOController.PrintGameBanner();
