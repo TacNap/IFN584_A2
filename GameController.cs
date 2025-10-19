@@ -106,7 +106,6 @@ namespace LineUp2
             GameConfig config = IOController.GetInputNewGame();
             Game game = GameFactory(config);
             game.TestLoop();
-            game.GameLoop();
         }
     }
 }
