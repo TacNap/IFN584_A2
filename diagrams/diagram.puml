@@ -7,11 +7,13 @@
 ''' GameController '''
 class GameController {
     IsMenuActive : bool
+    file : FileController
     RunCommand(string input) : void
     GameFactory(GameConfig config) : Game
-    void Start() :
-    void NewGame()
-    void LoadGame()
+    Start() : void
+    NewGame() : void
+    LoadGame() : void
+    TestMode() : void
 }
 
 ''' Game '''
@@ -21,41 +23,37 @@ abstract class Game {
     PlayerTwo: Player
     IsGameActive : bool
     AllowedDiscChars : char[]
-    MoveSequence : list<Move>
-    FileController : file
-    IComputerStrategy : computerStrategy
-
+    MoveSequence : List<Move>
+    file : FileController
+    computerStrategy : IComputerStrategy
     GetInputGame() : string
-    void DocumentMove(string move)
-    void UndoMove()
+    DocumentMove(Move move) : void
+    UndoMove() : void
     RedoMove() : bool
     PlayMoveSequence(int moveCount) : bool
     TryHandleCommand(string input) : bool
+    VerifyDiscChar() : bool
     TryParseMove(string input, out int lane) : bool
-    PlayTurn(Human player) : bool
-    PlayTurn(Computer player) : bool
-    void TestLoop()
-    {abstract} void CheckBoard()
-    {abstract} CreateDisc() : Disc
-    void GameLoop()
-    void Reset()
-    {virtual} void PrintPlayerData()
+    PlayerTurn(Player player) : bool
+    ComputerTurn(Player player) : bool
+    TestLoop() : void    
+    {abstract} CheckBoard() : void
+    GameLoop() : void
+    Reset() : void
+    PrintPlayerData() : void
 }
 
 ' Game Subclasses
 class LineUpClassic {
-    LineUpClassic()
-    override void CheckBoard()
+    CheckBoard() : void
 }
 
 class LineUpBasic {
-    LineUpBasic()
-    override void CheckBoard()
+    CheckBoard() : void
 }
 
 class LineUpSpin {
-    LineUpSpin()
-    override void CheckBoard()
+    CheckBoard() : void
 }
 
 ''' Grid '''
@@ -65,17 +63,17 @@ class Grid {
     orientation : Orientation
     WinLength : int
     TurnCounter : int
-    void IncrementTurnCounter()
-    void DecrementTurnCounter()
+    IncrementTurnCounter() : void
+    DecrementTurnCounter() : void
     SetTurnCounter(int num) : bool
-    void IncrementOrientation()
+    IncrementOrientation() : void
     IsTieGame(Player p1, Player p2) : bool
     AddDisc(Move move) : bool
-    void ApplyGravity()
-    void Spin()
-    void DrawGrid()
+    ApplyGravity() : void
+    Spin() : void
+    DrawGrid() : void
     CheckWinCondition() : bool
-    void Reset()
+    Reset() : void
 }
 
 enum Orientation {
@@ -90,41 +88,37 @@ abstract class Disc {
     Symbol : string
     IsPlayerOne : bool
     DiscReturn : Dictionary<string, int>[]
-    CreateDisc(char discType, bool isPlayerOne) : static
+    CreateDisc(char discType, bool isPlayerOne) : Disc
     {abstract} Clone() : Disc
     {abstract} ApplyEffects(Disc[][] Board, int lane) : bool
     {abstract} HasDiscRemaining(Player player) : bool
-    {abstract} void WithdrawDisc(Player player)
+    {abstract} WithdrawDisc(Player player) : void
 }
 
 class OrdinaryDisc {
-    OrdinaryDisc
-    override ApplyEffects(Disc[][] Board, int lane) : bool
-    override Clone() : Disc
+    ApplyEffects(Disc[][] Board, int lane) : bool
+    Clone() : Disc
     HasDiscRemaining(Player player) : bool
     WithdrawDisc(Player player) : void
 }
 
 class BoringDisc {
-    BoringDisc
-    override ApplyEffects(Disc[][] Board, int lane) : bool
-    override Clone() : Disc
+    ApplyEffects(Disc[][] Board, int lane) : bool
+    Clone() : Disc
     HasDiscRemaining(Player player) : bool
     WithdrawDisc(Player player) : void
 }
 
-class Exploding {
-    ExplodingDisc
-    override ApplyEffects(Disc[][] Board, int lane) : bool
-    override Clone() : Disc
+class ExplodingDisc {
+    ApplyEffects(Disc[][] Board, int lane) : bool
+    Clone() : Disc
     HasDiscRemaining(Player player) : bool
     WithdrawDisc(Player player) : void
 }
 
 class MagneticDisc {
-    MagneticDisc
-    override ApplyEffects(Disc[][] Board, int lane) : bool
-    override Clone() : Disc
+    ApplyEffects(Disc[][] Board, int lane) : bool
+    Clone() : Disc
     HasDiscRemaining(Player player) : bool
     WithdrawDisc(Player player) : void
 }
@@ -132,59 +126,50 @@ class MagneticDisc {
 class Move {
     Disc : Disc 
     Lane : int
-    Move(Disc disc, int lane)
 }
 
 ''' Player ''' 
 class Player {
     DiscBalance : Dictionary<string, int>
     IsHuman : bool
-    Player(Dictionary<string, int> discBalance, bool isHuman = true)
     HasDiscBalanceRemaining() : bool
-    void ResetDiscBalance(Dictionary<string, int> DiscBalance_)
-    void ReturnDisc(Dictionary<string, int> discReturned)
+    ResetDiscBalance(Dictionary<string, int> DiscBalance_) : void
+    ReturnDisc(Dictionary<string, int> discReturned) : void
 }
 
 interface IComputerStrategy {
-    Move SelectMove(Grid grid, Player player)
+    SelectMove(Grid grid, Player player) : Move
 }
 
 class BasicComputerStrategy {
-    Random : random;
-    BasicComputerStrategy()
-    SelectMove(Grid grid, Player player): Move
+    random : Random
+    SelectMove(Grid grid, Player player) : Move
     FindWinningMove(Grid grid, Player player) : Move
     FindRandomMove(Grid grid, Player player) : Move
-    TrySimulateMove() : bool
-    CopyGrid() : Grid
+    TrySimulateMove(Grid original, Disc disc, Int lane, out Grid simulated) : bool
+    CopyGrid(Grid original) : Grid
 }
 
 ''' IOController '''
 class IOController {
-    static void PrintGreen(string text)
-    static void PrintCyan(string text)
-    static void PrintYellow(string text)
-    static void PrintError(string text)
-    static void PrintSuccess(string text)
-    static void PrintMenu()
-    static void PrintBannerNewGame()
-    static void PrintHelp()
-    static void PrintInGameHelp()
-    static void PrintSaveFiles()
-    static void PrintWinner(bool P1, bool P2)
-    static GetInputMenu() : int
-    static GetInputLoad() : string
-    static GetInputNewGame() : GameConfig
+    PrintGameBanner() : void
+    PrintDiscInventory(Dictionary<string, int> discBalance) : void
+    PrintGameStatus(Grid grid, int winLength) : void
+    PrintGreen(string text) : void
+    PrintCyan(string text) : void
+    PrintYellow(string text) : void
+    PrintError(string text) : void
+    PrintSuccess(string text) : void
+    PrintMenu() : void
+    PrintBannerNewGame() : void
+    PrintHelp() : void
+    PrintInGameHelp() : void
+    PrintSaveFiles(string[] saveFiles) : void
+    PrintWinner(bool P1, bool P2) : void
+    GetInputMenu() : int
+    GetInputLoad(string[] saveFiles) : string
+    GetInputNewGame() : GameConfig
 }
-
-note left of IOController::GetInputNewGame
-    Currently responsible for too much.
-    Will need to be broken into:
-    GetInputGameMode
-    GetInputPlayerMode
-    GetInputGridSize
-end note
-
 
 ''' GameConfig '''
 class GameConfig {
@@ -214,9 +199,9 @@ enum GameMode {
 
 ''' FileController '''
 class FileController {
-    void GameSerialization()
-    GetSaves() : string
-    GameDeserialization() : Game
+    GameSerialization(Game game) : void
+    GetSaves() : string[]
+    GameDeserialization(string filePath) : Game
 }
 
 ' Relationships
@@ -224,40 +209,37 @@ class FileController {
 Game <|-- LineUpClassic : inherits
 Game <|-- LineUpBasic : inherits
 Game <|-- LineUpSpin : inherits
-Game <-- Player
-
-Game::Grid *-- "1" Grid : uses
-Game - IOController
+Game *-- Player
+Game *-- "1" Grid
+Game *-- Move
+Game --> IOController
+Game --> BasicComputerStrategy
 
 ' GameController
-GameController - Game
-GameController <-- IOController
-GameController::LoadGame <-- FileController : uses
+GameController ..> Game : creates
+GameController --> IOController
+GameController::LoadGame *-- FileController : uses
+
 
 ' GameConfig
-GameConfig::PlayerMode <-- PlayerMode : uses
-GameConfig::GameMode <-- GameMode: uses
+GameConfig <-- PlayerMode : uses
+GameConfig <-- GameMode: uses
 
 ' Player
-BasicComputerStrategy <|.. IComputerStrategy
-BasicComputerStrategy <-- Move : uses
+BasicComputerStrategy <.. IComputerStrategy
 
 ' Disc Subclasses
 Disc <|-- OrdinaryDisc : inherits
 Disc <|-- BoringDisc : inherits
-Disc <|-- ExplosiveDisc : inherits
+Disc <|-- ExplodingDisc : inherits
 Disc <|-- MagneticDisc : inherits
 
 ' Grid
-Grid::Orientation <-- Orientation : uses
-Grid::Board <-- Disc : uses
-Grid::Move <-- Move : uses
+Grid <-- Orientation : uses
+Grid *-- Disc
 
-' Move
-
-Move::Disc <-- Disc : uses
 
 ' IOController
-IOController <-- GameConfig
+IOController ..> GameConfig : creates
 
 @enduml
